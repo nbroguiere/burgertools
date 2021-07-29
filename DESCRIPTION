@@ -1,0 +1,28 @@
+Package: burgertools
+Title: Collection of tools extending the functionality of Seurat
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Nicolas",
+           family = "Broguiere",
+           role = c("aut", "cre"),
+           email = "nicolas.broguiere@epfl.ch",
+           comment = c(ORCID = "0000-0001-9934-4505"))
+Description: The package contains various tools facilitating the analysis
+    of samples with highly heterogeneous cell types, such as MAGIC
+    imputation wrappers, signature scoring, cell type classifier based on
+    markers (relying on signature scoring and MAGIC imputation to overcome
+    dropouts), quality control (QC) by cell type (relying on the previous
+    classifier), cell type aware QC plots.
+License: GPL (>= 3)
+Encoding: UTF-8
+Language: en
+LazyData: TRUE
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Depends: 
+    Seurat (>= 4.0.1)
+Imports: 
+    ggplot2,
+    dplyr,
+    Rmagic (>= 2.0.0),
+    cowplot
