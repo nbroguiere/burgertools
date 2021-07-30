@@ -1,4 +1,25 @@
+#' QC plot with cell type highlight
+#'
+#' This function makes quality control (QC) plots from a Seurat object, by default percent.mito vs nFeature_RNA, while highlighting cell types in color.
+#'
+#' This is useful when making scRNA-seq from heterogeneous samples: for example immune cells are small and might be discarded as debris from much larger epithelial cancer cells if one is not aware of the differences in QC parameters occuring between various cell types.
+#' @param object Seurat object. Must contain nFeature_RNA and percent.mito metadata columns, or the x and y plot parameters must be changed accordingly to plot other QC info otherwise.
+#' @param ident The name of the categorical metadata column to use as cell types (Default: NA, using the current active annotations, i.e. Idents(object)). If ident is a list, an array of plots for the various set of annotations provided will be returned.
+#' @param x Which parameter to set to the x axis in the QC plot (Default: nFeature_RNA).
+#' @param y Which parameter to set to the y axis in the QC plot (Default: percent.mito).
+#' @param log.scale Whether to plot with log.scale or not (Default: TRUE)
+#' @param ncol Number of columns (Default = NA, determined from the data)
+#' @return A ggplot grid object.
+#' @keywords QC plot with cell types highlighted.
 #' @export
+#' @examples
+#' # After MySeuratObject has been log-normalized in order to contain an RNA>data assay>slot and been augmented with a percent.mito metadata column:
+#' # SignatureList should be a list of character vectors, each containing a series of feature/gene names. In this example, the signatures correspond to cell types, and the name of each signature is the name of the corresponding cell type (e.g. Tcell, Bcell, EpithelialCell, Fibroblasts, etc).
+#' MySeuratObject <- Impute(MySeuratObject)
+#' MySeuratObject <- ScoreSignatures(MySeuratObject,SignatureList)
+#' MySeuratObject <- Classify(MySeuratObject,names(SignatureList),"CellType") # Automatic cell type annotation based on cell type signatures.
+#' IdentPlotQC(MySeuratObject,"celltype")
+
 IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA){
   if(sum(is.na(ident))){
     object$tmp <- as.character(Idents(object))
