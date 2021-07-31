@@ -7,7 +7,7 @@
 #' @param object Seurat object.
 #' @param features The signature, typically a gene list (character vector).
 #' @param name The name of the signature (character). The single cell scores are added to the Seurat object metadata in a column with this name, and can be accessed as object$name or displayed with FeaturePlot(object,name).
-#' @param assay The assay within the Seurat object to use for signature scoring. If NA (default), it will use the "imputed" assay if it is present, or the "RNA" assay otherwise.
+#' @param assay.use The assay within the Seurat object to use for signature scoring. If NA (default), it will use the "imputed" assay if it is present, or the "RNA" assay otherwise.
 #' @param slot.use The slot to use within the assay to get data for signature scoring. By default, using the "data" assay.
 #' @return Seurat object with an additional metadata slot containing the signature score.
 #' @keywords Signature Scoring
@@ -18,25 +18,25 @@
 #' FeaturePlot(MySeuratObject,"EpithelialSignature")
 #' @export
 
-ScoreSignature <- function(object, features, name = "Signature", assay=NA, slot.use="data"){
+ScoreSignature <- function(object, features, name = "Signature", assay.use=NA, slot.use="data"){
   print(paste0("Scoring the signature: ",name))
-  if(is.na(assay)){
+  if(is.na(assay.use)){
     if("imputed" %in% names(object@assays)){
-      assay <- "imputed"
+      assay.use <- "imputed"
       print("Using the imputed assay.")
     }else if("RNA" %in% names(object@assays)){
-      assay <- "RNA"
+      assay.use <- "RNA"
       print("Using the RNA assay.")
     }else{
       warning("No imputed or RNA assay found in the Seurat object. Provide an assay.")
     }
   }
-  features.use <- intersect(features,rownames(slot(object[[assay]],slot.use)))
-  missing.genes <- setdiff(unique(features), rownames(slot(object[[assay]],slot.use)))
+  features.use <- intersect(features,rownames(slot(object[[assay.use]],slot.use)))
+  missing.genes <- setdiff(unique(features), rownames(slot(object[[assay.use]],slot.use)))
   if(length(missing.genes)>0){
     print(paste("Missing features assumed null:",toString(missing.genes)))
   }
-  scores <- colSums(rbind(slot(object[[assay]],slot.use)[features.use,],0))/length(features) # Concatenate a line of zeros because colSums doesn't deal with one-line matrices.
+  scores <- colSums(rbind(slot(object[[assay.use]],slot.use)[features.use,],0))/length(features) # Concatenate a line of zeros because colSums doesn't deal with one-line matrices.
   object <- AddMetaData(object = object, metadata = scores, col.name = name)
 }
 
@@ -47,7 +47,7 @@ ScoreSignature <- function(object, features, name = "Signature", assay=NA, slot.
 #' If imputed data is available (assay "imputed"), the imputed data will be used. Otherwise, data from the RNA assay will be used. This can be overrun by setting the assay paramter.
 #' @param object Seurat object.
 #' @param signature.list The named list of signatures. Each element of the list is a signature (character vector), the names of the elements in the list will be used as signature names.
-#' @param assay The assay within the Seurat object to use for signature scoring. If NA (default), it will use the "imputed" assay if it is present, or the "RNA" assay otherwise.
+#' @param assay.use The assay within the Seurat object to use for signature scoring. If NA (default), it will use the "imputed" assay if it is present, or the "RNA" assay otherwise.
 #' @param slot.use The slot to use within the assay to get data for signature scoring. By default, using the "data" assay.
 #' @return Seurat object with additional metadata slots containing signature scores.
 #' @keywords Multiple Signature Scoring
@@ -61,9 +61,9 @@ ScoreSignature <- function(object, features, name = "Signature", assay=NA, slot.
 #' FeaturePlot(MySeuratObject,c("EpithelialSignature","FibroSignature"))
 #' @export
 
-ScoreSignatures <- function(object, signature.list, assay=NA, slot.use="data"){
+ScoreSignatures <- function(object, signature.list, assay.use=NA, slot.use="data"){
   for(i in names(signature.list)){
-    object <- ScoreSignature(object, signature.list[[i]], i, assay=assay, slot.use=slot.use)
+    object <- ScoreSignature(object, signature.list[[i]], i, assay.use=assay.use, slot.use=slot.use)
   }
   return(object)
 }

@@ -4,14 +4,14 @@
 \alias{ComputeMitoContent}
 \title{Compute the fraction/percentage of mitochondrial genes (mouse and human) in Seurat objects}
 \usage{
-ComputeMitoContent(object, name = "percent.mito", as.percent = FALSE)
+ComputeMitoContent(object, name = "percent.mito", as.percent = TRUE)
 }
 \arguments{
 \item{object}{Seurat object. Must contain an RNA assay.}
 
 \item{name}{Name of the new metadata column created containing the fraction of mitochondrial transcripts (Default: percent.mito)}
 
-\item{as.percent}{Whether to report the result as a fraction (between 0 and 1) or percentage (between 0 and 100). Default: TRUE (fraction).}
+\item{as.percent}{Whether to report the result as a fraction (between 0 and 1) or percentage (between 0 and 100). Default: TRUE (percent).}
 }
 \value{
 Seurat object with an additional metadata column containing mitochondrial fraction/percentage.

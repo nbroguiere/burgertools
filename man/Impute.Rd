@@ -4,12 +4,25 @@
 \alias{Impute}
 \title{MAGIC imputation}
 \usage{
-Impute(object, features = NA, npca = 100, knn = 3, t = 2, n.jobs = 6)
+Impute(
+  object,
+  features = NULL,
+  append.variable.features = TRUE,
+  npca = 40,
+  knn = 3,
+  t = 2,
+  n.jobs = 6,
+  assay.use = "RNA",
+  slot.use = "data",
+  name = "imputed"
+)
 }
 \arguments{
 \item{object}{Seurat object. Must contain an RNA assay with a data slot that will be used for imputation.}
 
-\item{features}{A subset of features on which to run the imputation. NA (default) uses VariableFeatures(object).}
+\item{features}{A subset of features/genes on which to run the imputation. Can be a list of signatures (Default: NULL/none, i.e. only impute all variable features if append.variable.features=TRUE as set by default).}
+
+\item{append.variable.features}{Whether to append the variable features of the active assay in the Seurat object to the list of features to impute (Default: TRUE)}
 
 \item{npca}{Number of principal components to use for imputation.}
 
@@ -18,9 +31,15 @@ Impute(object, features = NA, npca = 100, knn = 3, t = 2, n.jobs = 6)
 \item{t}{Diffusion parameter passed to MAGIC.}
 
 \item{n.jobs}{Number of threads on which to run the imputation. Defaults to 6.}
+
+\item{assay.use}{Name of the assay to impute (Default: "RNA").}
+
+\item{slot.use}{Name of the slot to impute (Default: "data").}
+
+\item{name}{Name of the assay storing the imputed data (Default: "imputed").}
 }
 \value{
-Seurat object with an additional slot (accessed as object[\link{"imputed"}]) containing MAGIC imputed data.
+Seurat object with an additional slot (accessed as object[\link{name}], by default object[\link{"imputed">}]) containing MAGIC imputed data.
 }
 \description{
 This function is a wrapper of the MAGIC imputation function to easily impute Seurat objects containing scRNA-seq data, with more reasonable default parameters.

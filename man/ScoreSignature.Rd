@@ -8,7 +8,7 @@ ScoreSignature(
   object,
   features,
   name = "Signature",
-  assay = NA,
+  assay.use = NA,
   slot.use = "data"
 )
 }
@@ -19,7 +19,7 @@ ScoreSignature(
 
 \item{name}{The name of the signature (character). The single cell scores are added to the Seurat object metadata in a column with this name, and can be accessed as object$name or displayed with FeaturePlot(object,name).}
 
-\item{assay}{The assay within the Seurat object to use for signature scoring. If NA (default), it will use the "imputed" assay if it is present, or the "RNA" assay otherwise.}
+\item{assay.use}{The assay within the Seurat object to use for signature scoring. If NA (default), it will use the "imputed" assay if it is present, or the "RNA" assay otherwise.}
 
 \item{slot.use}{The slot to use within the assay to get data for signature scoring. By default, using the "data" assay.}
 }

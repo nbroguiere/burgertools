@@ -4,14 +4,14 @@
 \alias{ScoreSignatures}
 \title{Multiple signature scoring on Seurat objects}
 \usage{
-ScoreSignatures(object, signature.list, assay = NA, slot.use = "data")
+ScoreSignatures(object, signature.list, assay.use = NA, slot.use = "data")
 }
 \arguments{
 \item{object}{Seurat object.}
 
 \item{signature.list}{The named list of signatures. Each element of the list is a signature (character vector), the names of the elements in the list will be used as signature names.}
 
-\item{assay}{The assay within the Seurat object to use for signature scoring. If NA (default), it will use the "imputed" assay if it is present, or the "RNA" assay otherwise.}
+\item{assay.use}{The assay within the Seurat object to use for signature scoring. If NA (default), it will use the "imputed" assay if it is present, or the "RNA" assay otherwise.}
 
 \item{slot.use}{The slot to use within the assay to get data for signature scoring. By default, using the "data" assay.}
 }

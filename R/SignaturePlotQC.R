@@ -47,7 +47,7 @@ SignaturePlotQC <- function(object, sign.names, x= "nFeature_RNA", y="percent.mi
         warning(paste("Incorrect number of signatures found (",length(sign.name),")."))
       }
     }
-    p <- plot_grid(plotlist = p, ncol= ncol)
+    p <- cowplot::plot_grid(plotlist = p, ncol= ncol)
     return(p)
   }else{
     warning("Columns x or y (default: nFeature_RNA and percent.mito) not present in the object metadata.")

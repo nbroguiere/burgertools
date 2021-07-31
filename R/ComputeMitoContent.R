@@ -3,14 +3,14 @@
 #' This function computes the mitochondrial content of cells in a Seurat object and adds it to the metadata.
 #' @param object Seurat object. Must contain an RNA assay.
 #' @param name Name of the new metadata column created containing the fraction of mitochondrial transcripts (Default: percent.mito)
-#' @param as.percent Whether to report the result as a fraction (between 0 and 1) or percentage (between 0 and 100). Default: TRUE (fraction).
+#' @param as.percent Whether to report the result as a fraction (between 0 and 1) or percentage (between 0 and 100). Default: TRUE (percent).
 #' @return Seurat object with an additional metadata column containing mitochondrial fraction/percentage.
 #' @keywords Mitochondrial genes content percentage fraction Mito
 #' @export
 #' @examples
 #' MySeuratObject <- ComputeMitoContent(MySeuratObject)
 
-ComputeMitoContent <- function(object, name = "percent.mito", as.percent = FALSE){
+ComputeMitoContent <- function(object, name = "percent.mito", as.percent = TRUE){
 
   mouse_mito_genes <- grep(pattern = "^mt-", x = rownames(object), value = TRUE)
   human_mito_genes <- grep(pattern = "^MT-", x = rownames(object), value = TRUE)
