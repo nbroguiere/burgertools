@@ -13,7 +13,7 @@ Impute(object, features = NA, npca = 100, knn = 3, t = 2, n.jobs = 6)
 
 \item{npca}{Number of principal components to use for imputation.}
 
-\item{knn}{Number of nearest neighbors on which to perform data diffusion for imputation.}
+\item{knn}{Number of nearest neighbors on which to compute bandiwth imputation.}
 
 \item{t}{Diffusion parameter passed to MAGIC.}
 
@@ -23,7 +23,7 @@ Impute(object, features = NA, npca = 100, knn = 3, t = 2, n.jobs = 6)
 Seurat object with an additional slot (accessed as object[\link{"imputed"}]) containing MAGIC imputed data.
 }
 \description{
-This function is a wrapper of the MAGIC imputation function to easily impute Seurat objects containing scRNA-seq data.
+This function is a wrapper of the MAGIC imputation function to easily impute Seurat objects containing scRNA-seq data, with more reasonable default parameters.
 }
 \examples{
 MySeuratObject <- Impute(MySeuratObject)
