@@ -12,8 +12,6 @@
 #' @export
 #' @examples
 #' MySeuratObject <- RunQC(MySeuratObject)
-#' MySeuratObject <- ScoreSignatures(MySeuratObject,SignatureList)
-#' MySeuratObject <- Classify(MySeuratObject,names(SignatureList),"CellType") # Automatic cell type annotation based on cell type signatures.
 
 RunQC <- function(object, celltypes, parameter, min.val=0, max.val=Inf){
   # Check the type of the inputs.
