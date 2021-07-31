@@ -25,8 +25,6 @@ This function does cell-type aware quality control for scRNA-seq data in Seurat 
 }
 \examples{
 MySeuratObject <- RunQC(MySeuratObject)
-MySeuratObject <- ScoreSignatures(MySeuratObject,SignatureList)
-MySeuratObject <- Classify(MySeuratObject,names(SignatureList),"CellType") # Automatic cell type annotation based on cell type signatures.
 }
 \keyword{Filtering}
 \keyword{QC}
