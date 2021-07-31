@@ -19,7 +19,7 @@
 #' SeuratObject <- FindVariableFeatures(SeuratObject)
 #' # Annotate all variable features:
 #' AnnotatedVariableFeaturePlot(SeuratObject)
-#' # Annotate a few user-defined genes:
+#' # Annotate user-defined genes:
 #' AnnotatedVariableFeaturePlot(SeuratObject,c("OLFM4","LGR5","CD44","GAPDH"))
 #  # Annotate only a subset of the most variable genes:
 #' AnnotatedVariableFeaturePlot(SeuratObject,500)
