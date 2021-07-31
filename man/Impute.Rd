@@ -39,7 +39,7 @@ Impute(
 \item{name}{Name of the assay storing the imputed data (Default: "imputed").}
 }
 \value{
-Seurat object with an additional slot (accessed as object[\link{name}], by default object[\link{"imputed">}]) containing MAGIC imputed data.
+Seurat object with an additional slot containing MAGIC imputed data.
 }
 \description{
 This function is a wrapper of the MAGIC imputation function to easily impute Seurat objects containing scRNA-seq data, with more reasonable default parameters.

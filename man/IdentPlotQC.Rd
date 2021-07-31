@@ -10,7 +10,8 @@ IdentPlotQC(
   x = "nFeature_RNA",
   y = "percent.mito",
   log.scale = TRUE,
-  ncol = NA
+  ncol = NA,
+  pt.size = 1
 )
 }
 \arguments{
@@ -25,9 +26,11 @@ IdentPlotQC(
 \item{log.scale}{Whether to plot with log.scale or not (Default: TRUE)}
 
 \item{ncol}{Number of columns (Default = NA, determined from the data)}
+
+\item{pt.size}{The point size, passed to ggplot (Default: 1)}
 }
 \value{
-A ggplot grid object.
+A ggplot/cowplot grid object.
 }
 \description{
 This function makes quality control (QC) plots from a Seurat object, by default percent.mito vs nFeature_RNA, while highlighting cell types in color.

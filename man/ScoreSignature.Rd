@@ -29,8 +29,8 @@ Seurat object with an additional metadata slot containing the signature score.
 \description{
 This function scores a signature at the single cell level on Seurat objects (sum of the expression for each cell).
 The signature is a list of features (character vector).
-By default, the score is computed as the sum of the log-normalized expression of the features (i.e. using the "data" slot).
-If imputed data is available (assay "imputed"), the imputed data will be used. Otherwise, data from the RNA assay will be used. This can be overrun by setting the assay paramter.
+By default, the score is computed as the average log-normalized expression of the features (i.e. using the "data" slot).
+If imputed data is available (assay "imputed"), the imputed data will be used. Otherwise, data from the RNA assay will be used. This can be overrun by setting the assay parameter.
 }
 \examples{
 MySeuratObject <- Impute(MySeuratObject)

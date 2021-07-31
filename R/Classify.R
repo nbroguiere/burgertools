@@ -5,8 +5,8 @@
 #' Each single cell will be associated to the cell type whose signature is maximal on the cell. A list of expected values for the signatures can be given (for example, checking the typical signature score for cells of known identity beforehand) and are used to normalize signature scores before determining the classification. It is strongly recommended to use imputed data to score the cell type signatures (markers), to avoid mis-classification due on dropouts.
 #'
 #' @param object Seurat object. Must contain nFeature_RNA and percent.mito metadata columns, or the x and y plot parameters must be changed accordingly to plot other QC info otherwise.
-#' @param sign.names The names of the signatures to use for classification. Must correspond to the names of metadata columns. These names will also be used to name the corresponding cell types.
-#' @param expected.values Vector/List of expected values for the signatures, used for normalization of the signatures before classifying cells. If NA (Default), no normalization is performed. If The vector/list is named and the names match the signature names, the names will be used to match each scale factor to the right signature. If no matching names are given, the expected values are assumed to be given in the same order as the signatures.
+#' @param signatures A vector containing the names of the signatures to highlight in color. Must correspond to names of metadata columns. If a named list of signatures is passed, the names of the list will be used.
+#' @param expected.values Vector/List of expected values for the signatures, used for normalization of the signatures before classifying cells. If NA (Default), normalized to max. If 1, no normalization. If The vector/list is named and the names match the signature names, the names will be used to match each scale factor to the right signature. If no matching names are given, the expected values are assumed to be given in the same order as the signatures.
 #' @param metadata.name The name of the new metadata column where cell type annotations are stored (Default: celltype)
 #' @return A Seurat object with an additional metadata column containing the cell type annotations and Idents() set to these annotations.
 #' @keywords Cell type classification celltype Classifier
@@ -18,15 +18,30 @@
 #' MySeuratObject <- ScoreSignatures(MySeuratObject,SignatureList)
 #' MySeuratObject <- Classify(MySeuratObject,names(SignatureList),"CellType") # Automatic cell type annotation based on cell type signatures.
 
-Classify <- function(object, sign.names, expected.values=NA, metadata.name="celltype"){
-  if(sum(is.na(expected.values))){
-    expected.values <- vector(mode="numeric",length=length(sign.names))+1
+Classify <- function(object, signatures, expected.values=NA, metadata.name="celltype"){
+  if(is.list(signatures)){
+    sign.names <- names(signatures)
+  }else if(is.vector(signatures, mode="character")){
+    sign.names <- signatures
+  }else{
+    warning("The format of the 'signatures' argument (i.e. ",typeof(signatures),") is not supported. Provide a vector of metadata column names, or a named signature list.")
+    return(object)
   }
   sign.not.found <- setdiff(sign.names, colnames(object@meta.data))
   if(length(sign.not.found)>0){
     warning(paste("Signatures not found:",toString(sign.not.found)))
     sign.names <- intersect(sign.names, colnames(object@meta.data))
   }
+
+  if(sum(is.na(expected.values))){
+    print("Normalize the signatures to their max to determine the ranking for classifying.")
+    expected.values = colMaxs(as.matrix(object@meta.data[,sign.names]))
+    names(expected.values) <- sign.names
+  }else if(length(expected.values)==1 & expected.values[1]==1){
+    expected.values <- vector(mode="numeric",length=length(sign.names))+1
+    names(expected.values) <- sign.names
+  }
+
   if(length(expected.values)!=length(sign.names)){
     warning("The length of expected values does not match the length of the signature names. Aborting.")
     return(object)
@@ -40,6 +55,7 @@ Classify <- function(object, sign.names, expected.values=NA, metadata.name="cell
       return(object)
     }
   }
+
   sign.scores <- data.frame(row.names = rownames(object@meta.data))
   for(n in sign.names){
     sign.scores[,n] <- object@meta.data[,n]/expected.values[n]

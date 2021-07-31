@@ -4,14 +4,14 @@
 \alias{Classify}
 \title{Cell classification based on signatures}
 \usage{
-Classify(object, sign.names, expected.values = NA, metadata.name = "celltype")
+Classify(object, signatures, expected.values = NA, metadata.name = "celltype")
 }
 \arguments{
 \item{object}{Seurat object. Must contain nFeature_RNA and percent.mito metadata columns, or the x and y plot parameters must be changed accordingly to plot other QC info otherwise.}
 
-\item{sign.names}{The names of the signatures to use for classification. Must correspond to the names of metadata columns. These names will also be used to name the corresponding cell types.}
+\item{signatures}{A vector containing the names of the signatures to highlight in color. Must correspond to names of metadata columns. If a named list of signatures is passed, the names of the list will be used.}
 
-\item{expected.values}{Vector/List of expected values for the signatures, used for normalization of the signatures before classifying cells. If NA (Default), no normalization is performed. If The vector/list is named and the names match the signature names, the names will be used to match each scale factor to the right signature. If no matching names are given, the expected values are assumed to be given in the same order as the signatures.}
+\item{expected.values}{Vector/List of expected values for the signatures, used for normalization of the signatures before classifying cells. If NA (Default), normalized to max. If 1, no normalization. If The vector/list is named and the names match the signature names, the names will be used to match each scale factor to the right signature. If no matching names are given, the expected values are assumed to be given in the same order as the signatures.}
 
 \item{metadata.name}{The name of the new metadata column where cell type annotations are stored (Default: celltype)}
 }

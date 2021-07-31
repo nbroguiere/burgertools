@@ -20,7 +20,7 @@ Seurat object with additional metadata slots containing signature scores.
 }
 \description{
 This function scores multiple signatures at the single cell level on a Seurat object (sum of the expression for each cell and signature).
-By default, the score is computed as the sum of the log-normalized expression of the features (i.e. using the "data" slot).
+By default, the score is computed as the average of the log-normalized expression of the features (i.e. using the "data" slot).
 If imputed data is available (assay "imputed"), the imputed data will be used. Otherwise, data from the RNA assay will be used. This can be overrun by setting the assay paramter.
 }
 \examples{

@@ -2,8 +2,8 @@
 #'
 #' This function scores a signature at the single cell level on Seurat objects (sum of the expression for each cell).
 #' The signature is a list of features (character vector).
-#' By default, the score is computed as the sum of the log-normalized expression of the features (i.e. using the "data" slot).
-#' If imputed data is available (assay "imputed"), the imputed data will be used. Otherwise, data from the RNA assay will be used. This can be overrun by setting the assay paramter.
+#' By default, the score is computed as the average log-normalized expression of the features (i.e. using the "data" slot).
+#' If imputed data is available (assay "imputed"), the imputed data will be used. Otherwise, data from the RNA assay will be used. This can be overrun by setting the assay parameter.
 #' @param object Seurat object.
 #' @param features The signature, typically a gene list (character vector).
 #' @param name The name of the signature (character). The single cell scores are added to the Seurat object metadata in a column with this name, and can be accessed as object$name or displayed with FeaturePlot(object,name).
@@ -43,7 +43,7 @@ ScoreSignature <- function(object, features, name = "Signature", assay.use=NA, s
 #' Multiple signature scoring on Seurat objects
 #'
 #' This function scores multiple signatures at the single cell level on a Seurat object (sum of the expression for each cell and signature).
-#' By default, the score is computed as the sum of the log-normalized expression of the features (i.e. using the "data" slot).
+#' By default, the score is computed as the average of the log-normalized expression of the features (i.e. using the "data" slot).
 #' If imputed data is available (assay "imputed"), the imputed data will be used. Otherwise, data from the RNA assay will be used. This can be overrun by setting the assay paramter.
 #' @param object Seurat object.
 #' @param signature.list The named list of signatures. Each element of the list is a signature (character vector), the names of the elements in the list will be used as signature names.

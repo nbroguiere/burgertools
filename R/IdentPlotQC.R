@@ -9,7 +9,8 @@
 #' @param y Which parameter to set to the y axis in the QC plot (Default: percent.mito).
 #' @param log.scale Whether to plot with log.scale or not (Default: TRUE)
 #' @param ncol Number of columns (Default = NA, determined from the data)
-#' @return A ggplot grid object.
+#' @param pt.size The point size, passed to ggplot (Default: 1)
+#' @return A ggplot/cowplot grid object.
 #' @keywords QC plot with cell types highlighted.
 #' @export
 #' @examples
@@ -20,7 +21,7 @@
 #' MySeuratObject <- Classify(MySeuratObject,names(SignatureList),"CellType") # Automatic cell type annotation based on cell type signatures.
 #' IdentPlotQC(MySeuratObject,"celltype")
 
-IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA){
+IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA, pt.size=1){
   if(sum(is.na(ident))){
     object$tmp <- as.character(Idents(object))
     ident <- "tmp"
@@ -34,9 +35,9 @@ IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", l
     p <- list()
     for(n in ident){
       if(log.scale){
-        p[[n]] <- ggplot(object@meta.data) + geom_point(aes_string(x="nFeature_RNA", y="percent.mito", color=n)) + scale_x_continuous(trans='log10')+scale_y_continuous(trans='log10')
+        p[[n]] <- ggplot(object@meta.data) + geom_point(aes_string(x="nFeature_RNA", y="percent.mito", color=n), size=pt.size) + scale_x_continuous(trans='log10')+scale_y_continuous(trans='log10')
       }else{
-        p[[n]] <- ggplot(object@meta.data) + geom_point(aes_string(x="nFeature_RNA", y="percent.mito", color=n))
+        p[[n]] <- ggplot(object@meta.data) + geom_point(aes_string(x="nFeature_RNA", y="percent.mito", color=n), size=pt.size)
       }
     }
     if(is.na(ncol)){
@@ -52,7 +53,7 @@ IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", l
         warning(paste("Incorrect number of signatures found (",length(sign.name),")."))
       }
     }
-    p <- plot_grid(plotlist = p, ncol= ncol)
+    p <- cowplot::plot_grid(plotlist = p, ncol= ncol)
     return(p)
   }else{
     warning("Columns x or y (default: nFeature_RNA and percent.mito) not present in the object metadata.")

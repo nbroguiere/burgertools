@@ -6,17 +6,18 @@
 \usage{
 SignaturePlotQC(
   object,
-  sign.names,
+  signatures,
   x = "nFeature_RNA",
   y = "percent.mito",
   log.scale = TRUE,
-  ncol = NA
+  ncol = NA,
+  pt.size = 1
 )
 }
 \arguments{
 \item{object}{Seurat object. Must contain nFeature_RNA and percent.mito metadata columns, or the x and y plot parameters must be changed accordingly to plot other QC info otherwise.}
 
-\item{sign.names}{The names of the signatures to highlight in color. Must correspond to the names of metadata columns.}
+\item{signatures}{A vector containing the names of the signatures to highlight in color. Must correspond to names of metadata columns. If a named list of signatures is passed, the names of the list will be used.}
 
 \item{x}{Which parameter to set to the x axis in the QC plot (Default: nFeature_RNA).}
 
@@ -25,9 +26,11 @@ SignaturePlotQC(
 \item{log.scale}{Whether to plot with log.scale or not (Default: TRUE)}
 
 \item{ncol}{Number of columns (Default = NA, determined from the data)}
+
+\item{pt.size}{The point size, passed to ggplot (Default: 1)}
 }
 \value{
-A ggplot grid object.
+A ggplot/cowplot grid object.
 }
 \description{
 This function makes quality control (QC) plots from a Seurat object, by default percent.mito vs nFeature_RNA, while highlighting signature scores in color.

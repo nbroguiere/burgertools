@@ -11,7 +11,7 @@
 #' @param name Name of the assay storing the imputed data (Default: "imputed").
 #' @param assay.use Name of the assay to impute (Default: "RNA").
 #' @param slot.use Name of the slot to impute (Default: "data").
-#' @return Seurat object with an additional slot (accessed as object[[name]], by default object[["imputed">]]) containing MAGIC imputed data.
+#' @return Seurat object with an additional slot containing MAGIC imputed data.
 #' @keywords MAGIC Rmagic imputation
 #' @export
 #' @examples
