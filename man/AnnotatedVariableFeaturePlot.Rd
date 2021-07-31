@@ -48,7 +48,7 @@ This function displays a variable feature plot with feature annotations.
 SeuratObject <- FindVariableFeatures(SeuratObject)
 # Annotate all variable features:
 AnnotatedVariableFeaturePlot(SeuratObject)
-# Annotate a few user-defined genes:
+# Annotate user-defined genes:
 AnnotatedVariableFeaturePlot(SeuratObject,c("OLFM4","LGR5","CD44","GAPDH"))
 AnnotatedVariableFeaturePlot(SeuratObject,500)
 }
