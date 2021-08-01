@@ -21,9 +21,9 @@ ComputeMitoContent <- function(object, name = "percent.mito", as.percent = TRUE)
     return(object)
   }else{
     if(n_hu>n_mm){
-      mito.content <- colSums(object[grep(pattern = "^MT-", x = rownames(object), value = TRUE), ])/colSums(object)
+      mito.content <- Matrix::colSums(object[grep(pattern = "^MT-", x = rownames(object), value = TRUE), ])/colSums(object)
     }else{
-      mito.content <- colSums(object[grep(pattern = "^mt-", x = rownames(object), value = TRUE), ])/colSums(object)
+      mito.content <- Matrix::colSums(object[grep(pattern = "^mt-", x = rownames(object), value = TRUE), ])/colSums(object)
     }
     if(as.percent){
       mito.content <- 100*mito.content

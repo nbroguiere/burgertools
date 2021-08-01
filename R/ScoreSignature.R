@@ -36,7 +36,7 @@ ScoreSignature <- function(object, features, name = "Signature", assay.use=NA, s
   if(length(missing.genes)>0){
     print(paste("Missing features assumed null:",toString(missing.genes)))
   }
-  scores <- colSums(rbind(slot(object[[assay.use]],slot.use)[features.use,],0))/length(features) # Concatenate a line of zeros because colSums doesn't deal with one-line matrices.
+  scores <- Matrix::colSums(rbind(slot(object[[assay.use]],slot.use)[features.use,],0))/length(features) # Concatenate a line of zeros because colSums doesn't deal with one-line matrices.
   object <- AddMetaData(object = object, metadata = scores, col.name = name)
 }
 
