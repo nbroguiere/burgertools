@@ -26,6 +26,7 @@ Imports:
     dplyr,
     Rmagic (>= 2.0.0),
     cowplot,
-    Matrix
+    Matrix,
+    plotly
 URL: https://github.com/nbroguiere/burgertools
 BugReports: https://github.com/nbroguiere/burgertools/issues

@@ -11,7 +11,8 @@ IdentPlotQC(
   y = "percent.mito",
   log.scale = TRUE,
   ncol = NA,
-  pt.size = 1
+  pt.size = 1,
+  interactive = TRUE
 )
 }
 \arguments{
@@ -28,14 +29,19 @@ IdentPlotQC(
 \item{ncol}{Number of columns (Default = NA, determined from the data)}
 
 \item{pt.size}{The point size, passed to ggplot (Default: 1)}
+
+\item{interactive}{Enable interactive plot? (Default: TRUE).}
 }
 \value{
-A ggplot/cowplot grid object.
+If one ident is plotted and interactive is enabled, returns interactive plot (plotly). If several, returns a ggplot grid (cowplot).
 }
 \description{
-This function makes quality control (QC) plots from a Seurat object, by default percent.mito vs nFeature_RNA, while highlighting cell types in color.
+This function makes interactive quality control (QC) plots from a Seurat object, by default percent.mito vs nFeature_RNA, while color-coding various cell types.
 }
 \details{
+Plotly interactions: click on legend categories to toggle the display on/off, double click to isolate one cell type/category/ident.
+Hover to get cell info (useful to choose filtering parameters), and select pan/zoom in the top-right menu to do close-ups and navigate.
+
 This is useful when making scRNA-seq from heterogeneous samples: for example immune cells are small and might be discarded as debris from much larger epithelial cancer cells if one is not aware of the differences in QC parameters occuring between various cell types.
 }
 \examples{

@@ -21,9 +21,9 @@ ComputeMitoContent <- function(object, name = "percent.mito", as.percent = TRUE)
     return(object)
   }else{
     if(n_hu>n_mm){
-      mito.content <- Matrix::colSums(object[grep(pattern = "^MT-", x = rownames(object), value = TRUE), ])/colSums(object)
+      mito.content <- Matrix::colSums(GetAssayData(object[human_mito_genes, ],"counts",assay="RNA"))/Matrix::colSums(GetAssayData(object,"counts",assay="RNA"))
     }else{
-      mito.content <- Matrix::colSums(object[grep(pattern = "^mt-", x = rownames(object), value = TRUE), ])/colSums(object)
+      mito.content <- Matrix::colSums(GetAssayData(object[mouse_mito_genes, ],"counts",assay="RNA"))/Matrix::colSums(GetAssayData(object,"counts",assay="RNA"))
     }
     if(as.percent){
       mito.content <- 100*mito.content
