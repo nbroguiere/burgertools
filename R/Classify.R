@@ -1,8 +1,8 @@
-#' Cell classification based on signatures
+#' Automatic cell type classification based on signatures
 #'
-#' This function performs a simple cell type classification based on signatures, useful for automating the simple first broad classification of cell types before a cell-type aware QC (for example, taking into account that immune cells have less detected genes/transcripts, and fibroblast less mitochondrial content, than epithelial cancer cells).
+#' This function performs a simple automatic cell type classification based on signatures, useful for automating the simple first broad classification of cell types before a cell-type aware QC (for example, taking into account that immune cells have less detected genes/transcripts, and fibroblast less mitochondrial content, than epithelial cancer cells).
 #'
-#' Each single cell will be associated to the cell type whose signature is maximal on the cell. A list of expected values for the signatures can be given (for example, checking the typical signature score for cells of known identity beforehand) and are used to normalize signature scores before determining the classification. It is strongly recommended to use imputed data to score the cell type signatures (markers), to avoid mis-classification due on dropouts.
+#' Each single cell will be associated to the cell type whose signature is maximal on the cell. A list of expected values for the signatures is optional (typically obtained by checking the typical signature score for cells of known identity beforehand). If given, expected values are used to normalize signature scores before classifying cells to the signature having maximal score. It is strongly recommended to use imputed data to score cell type signatures, to avoid misclassifications due to dropouts.
 #'
 #' @param object Seurat object. Must contain nFeature_RNA and percent.mito metadata columns, or the x and y plot parameters must be changed accordingly to plot other QC info otherwise.
 #' @param signatures A vector containing the names of the signatures to highlight in color. Must correspond to names of metadata columns. If a named list of signatures is passed, the names of the list will be used.

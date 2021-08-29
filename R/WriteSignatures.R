@@ -1,4 +1,4 @@
-#' WriteSignatures
+#' Write signatures in .gmt format
 #'
 #' This function writes signature lists in the [.gmt format](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29).
 #' @param signatures Named list of chr vectors, in which the names of the list elements are the signature names, and the chr vectors are the corresponding gene collections.

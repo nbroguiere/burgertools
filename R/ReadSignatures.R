@@ -1,4 +1,4 @@
-#' ReadSignatures
+#' Read signatures in .gmt format
 #'
 #' This function reads signatures in the [.gmt format](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29) and returns them as a named list.
 #' @param file The address/name of the file from which signatures are read.
