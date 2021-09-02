@@ -2,7 +2,7 @@
 % Please edit documentation in R/Classify.R
 \name{Classify}
 \alias{Classify}
-\title{Cell classification based on signatures}
+\title{Automatic cell type classification based on signatures}
 \usage{
 Classify(object, signatures, expected.values = NA, metadata.name = "celltype")
 }
@@ -19,10 +19,10 @@ Classify(object, signatures, expected.values = NA, metadata.name = "celltype")
 A Seurat object with an additional metadata column containing the cell type annotations and Idents() set to these annotations.
 }
 \description{
-This function performs a simple cell type classification based on signatures, useful for automating the simple first broad classification of cell types before a cell-type aware QC (for example, taking into account that immune cells have less detected genes/transcripts, and fibroblast less mitochondrial content, than epithelial cancer cells).
+This function performs a simple automatic cell type classification based on signatures, useful for automating the simple first broad classification of cell types before a cell-type aware QC (for example, taking into account that immune cells have less detected genes/transcripts, and fibroblast less mitochondrial content, than epithelial cancer cells).
 }
 \details{
-Each single cell will be associated to the cell type whose signature is maximal on the cell. A list of expected values for the signatures can be given (for example, checking the typical signature score for cells of known identity beforehand) and are used to normalize signature scores before determining the classification. It is strongly recommended to use imputed data to score the cell type signatures (markers), to avoid mis-classification due on dropouts.
+Each single cell will be associated to the cell type whose signature is maximal on the cell. A list of expected values for the signatures is optional (typically obtained by checking the typical signature score for cells of known identity beforehand). If given, expected values are used to normalize signature scores before classifying cells to the signature having maximal score. It is strongly recommended to use imputed data to score cell type signatures, to avoid misclassifications due to dropouts.
 }
 \examples{
 # After MySeuratObject has been log-normalized in order to contain an RNA>data assay>slot and been augmented with a percent.mito metadata column:

@@ -2,6 +2,7 @@
 
 export(AnnotatedVariableFeaturePlot)
 export(Classify)
+export(ClassifyManual)
 export(ComputeMitoContent)
 export(IdentPlotQC)
 export(Impute)

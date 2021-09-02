@@ -2,7 +2,7 @@
 % Please edit documentation in R/ReadSignatures.R
 \name{ReadSignatures}
 \alias{ReadSignatures}
-\title{ReadSignatures}
+\title{Read signatures in .gmt format}
 \usage{
 ReadSignatures(file)
 }

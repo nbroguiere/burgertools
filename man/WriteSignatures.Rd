@@ -2,7 +2,7 @@
 % Please edit documentation in R/WriteSignatures.R
 \name{WriteSignatures}
 \alias{WriteSignatures}
-\title{WriteSignatures}
+\title{Write signatures in .gmt format}
 \usage{
 WriteSignatures(signature.list, file, comment = "cell type gene signatures")
 }
