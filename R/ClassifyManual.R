@@ -23,6 +23,7 @@
 ClassifyManual <- function(object, gates, metadata.name="celltype"){
   # Split by cell types:
   gates <- gsub(" ", "", gates)
+  gates <- gsub("\n", "", gates)
   gates <- unlist(strsplit(gates,","))
   n_celltypes <- length(gates)
 
