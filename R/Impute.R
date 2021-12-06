@@ -28,7 +28,7 @@ Impute <- function(object, features=NULL, append.variable.features=TRUE, npca=40
     }
   }
   if(append.variable.features){
-    if(length(VariableFeatures(SO))){
+    if(length(VariableFeatures(object))){
       features <- unique(c(features,VariableFeatures(object)))
     }else{
       warning("Variable features required for imputation, but not present in the Seurat object. Imputation not computed. To run imputation on user-defined features only, set append.variable.features to FALSE.")
