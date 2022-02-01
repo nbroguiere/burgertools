@@ -2,11 +2,11 @@
 # burgertools
 
 The burgertools package contains various tools facilitating the analysis of samples with highly heterogeneous cell types. It relies on Seurat for scRNA-seq data handling and MAGIC for imputation, and provides a user-friendly interface to classify cells based on signatures of just a few canonical markers, and make the data filtering by cell type. 
-- Mitochondrial content determination and imputation with Seurat/MAGIC wrappers.
-- Signature scoring functions (best combined with imputed data).
+- Imputation with MAGIC wrappers for Seurat objects with sensible default parameters.
+- Single-cell signature scoring functions (best combined with imputed data to overcome dropouts).
 - Cell type classifier based on markers (relying on signature scoring and MAGIC imputation to overcome dropouts for reliable classification based on even few markers).
 - Cell type aware quality control (QC) plots.
-- Quality control by cell type.
+- Cell type aware filtering in natural language.
 
 ## Installation
 
