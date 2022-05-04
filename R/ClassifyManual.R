@@ -12,14 +12,18 @@
 #' @keywords Cell type classification celltype Classifier manual gates gating
 #' @export
 #' @examples
-#' # MySeuratObject should contain an RNA slot with log-normalized data assay. In this example cells are classified as T cells (TC) or Epithelial cells (EP) based on some signatures. Note that cells that validate no gate will remain unclassified, and cells which validate several will be classified as multiplets. It's recommended to first do a signature scatter plot in order to choose threshold values for the gates.
+#' # MySeuratObject should contain an RNA slot with log-normalized data assay.
+#' # In this example cells are classified as T cells (TC) or Epithelial cells (EP) based on manual signatures.
+#' # Note that cells that validate no gate will have cell type "None", and cells which validate several will be classified as "Multiplets".
+#' # It's recommended to first do a signature scatter plot in order to choose threshold values for the gates.
 #' MySeuratObject <- Impute(MySeuratObject)
-#' signature.list <- list(TCsign=c("CD3D","CD3E","CD3G","CD4","CD8A","CD8B","GZMA","IFNG"),EPsign=c("EPCAM","TFF3","CKB","AGR2","CDX2","CLDN3","KRT8","KRT19","KRT18","OLFM4","FABP1","REG1A"))
+#' signature.list <- list(TCsign=c("CD3D","CD3E","CD3G","CD4","CD8A","CD8B","GZMA","IFNG"),
+#'                        EPsign=c("EPCAM","TFF3","CDX2","CLDN3","KRT8","KRT19","KRT18","OLFM4"))
 #' MySeuratObject <- ScoreSignatures(MySeuratObject,signature.list)
 #' gates <- "TC = TCsign > 1.2 & EPsign < 0.2,
 #'           EP = EPsign > 1.1 & TCsign < 0.3"
 #' MySeuratObject <- ClassifyManual(MySeuratObject,gates)
-
+#' DimPlot(MySeuratObject) # Plot the current Idents, set to "celltype".
 ClassifyManual <- function(object, gates, metadata.name="celltype"){
   # Split by cell types:
   gates <- gsub(" ", "", gates)
