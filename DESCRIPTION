@@ -28,6 +28,7 @@ Imports:
     cowplot,
     Matrix,
     plotly,
-    readr
+    readr,
+    heatmaply
 URL: https://github.com/nbroguiere/burgertools
 BugReports: https://github.com/nbroguiere/burgertools/issues
