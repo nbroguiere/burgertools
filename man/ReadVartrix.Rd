@@ -25,11 +25,17 @@ Read the vartrix ref and alt matrices, and computes a frequency and a consensus 
 }
 \details{
 The frequency sparse matrix is offset by 1 in order to distinguish zero-frequency (value 1) from missing data (value 0, not stored in the sparse matrix).
+
 The consensus matrix makes a call for no data (value 0, not stored in the sparse matrix), ref/ref (value 1), alt/alt (value 2) or alt/ref (value 3) genotypes. Since in scRNA-seq data, there is likely some extracellular RNA from dead cells or debris slightly contaminating the reads of other cells, a tolerance can be set above 0. For example, at a tolerance of 5\%, up to 1 read in 20 can differ from the rest without making the call switch to heterozygous. The behavior of the vartrix consensus matrix calculation corresponds to a tolerance of 0.
+
 Equivalence between vartrix, human, and vcf genotype naming conventions:
+
 "0" for "no call", "./."
+
 "1" for "ref/ref", "0/0"
+
 "2" for "alt/alt", "1/1"
+
 "3" for "ref/alt", "0/1"
 }
 \examples{
