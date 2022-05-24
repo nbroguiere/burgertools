@@ -1,19 +1,19 @@
 #' Object storing genotypes and variant metadata
 #'
 #' The genotype objects are tailored to handle efficiently in R the contents of (mouse/human) vcf files, i.e. variant metadata, and several genotypes. They are also meant to be augmented with additional information such as annotations (e.g. vep) and single-cell analysis statistics.
-#' 
-#' For efficient handling, the genotypes are stored as a sparse numeric matrix. When creating the object with ReadVcf, the vartrix conventions (from 10X genomics) are used, namely: 
+#'
+#' For efficient handling, the genotypes are stored as a sparse numeric matrix. When creating the object with ReadVcf, the vartrix conventions (from 10X genomics) are used, namely:
 #' 0 for "no call" or in vcf "./."
 #' 1 for "ref/ref" or in vcf "0/0"
 #' 2 for "alt/alt" or in vcf "1/1"
 #' 3 for "ref/alt" or in vcf "0/1"
-#' 
-#' The objects can also be created manually typically with: CreateGenotypeObject(matrix, metadata, variants). 
-#' 
+#'
+#' The objects can also be created manually typically with: GenotypeObject(matrix, metadata, variants).
+#'
 #' The genotype data is found in the matrix slot, and information concerning the variants is contained in the metadata slot. The list of variants currently in the object is found in the variants slot.
-#' 
-#' Additional slots can be populated with additional data relevant to single cell analysis: most informative variants (informative_variants slot), and variants sorted by coverage (variants_by_coverage slot) or by entropy (variants_by_information). 
-#' 
+#'
+#' Additional slots can be populated with additional data relevant to single cell analysis: most informative variants (informative_variants slot), and variants sorted by coverage (variants_by_coverage slot) or by entropy (variants_by_information).
+#'
 #' Standard generic methods can be used on the genotype object. In particular, the object can be subset with object[[i,j]] to obtain a genotype object with the corresponding subset of variants and genotypes (with full associated metadata, and restricted ranked variant lists). Object[i,j(,drop)] enables to access the genotype matrix in read and write, as well as rowSums, colSums, rownames, colnames, nrow, ncol, and dim. The $ operator enables to access directly to metadata columns, for both read and write.
 #'
 #' @slot matrix A dgCMatrix containing genotype data in vartrix conventions.
@@ -21,7 +21,7 @@
 #' @slot variants A character vector listing the variants described in the object, in the same order as the rows of the matrix and metadata slots.
 #' @slot variants_by_coverage A character vector listing the variants sorted from max coverage (number of cells in which there is data) to min.
 #' @slot variants_by_information A character vector listing the variants sorted from max information (excess entropy in single cell data) to min.
-#' @slot informative_variants A character vector listing the most informative variants, used for downstream clustering analysis. 
+#' @slot informative_variants A character vector listing the most informative variants, used for downstream clustering analysis.
 #' @keywords genotype vcf vep variants
 #' @export
 #' @examples
@@ -43,14 +43,14 @@
 #' genotypes[[1:10,1:5]] # Subset the genotype object
 #' genotypes[[rownames(genotypes)[1:5],colnames(genotypes)[1:5]]] # Subset the object by variant and patient name (returns a genotype object)
 #' genotypes[rownames(genotypes)[1:5],colnames(genotypes)[1:5]] # Access the genotype matrix by variant and patient name
-CreateGenotypeObject <- setClass("genotype", slots=list(matrix="dgCMatrix", 
-                                                        metadata="data.frame", 
-                                                        variants="character", 
-                                                        variants_by_coverage="character", 
+GenotypeObject <- setClass("genotype", slots=list(matrix="dgCMatrix",
+                                                        metadata="data.frame",
+                                                        variants="character",
+                                                        variants_by_coverage="character",
                                                         variants_by_information="character",
                                                         informative_variants="character"))
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Show a summary of the contents of a genotype object.
 #' @export
 setMethod("show","genotype",
           function(object){
@@ -69,7 +69,7 @@ setMethod("show","genotype",
           }
 )
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Access matrix values in a genotype object.
 #' @export
 setMethod("[","genotype",
           function(x,i=TRUE,j=TRUE,drop=F){
@@ -77,7 +77,7 @@ setMethod("[","genotype",
           }
 )
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Assign matrix values in a genotype object
 #' @export
 setMethod("[<-","genotype",
           function(x,i=TRUE,j=TRUE,value){
@@ -86,7 +86,7 @@ setMethod("[<-","genotype",
           }
 )
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Access metadata columns in a genotype object
 #' @export
 setMethod("$","genotype",
           function(x,name){
@@ -96,11 +96,11 @@ setMethod("$","genotype",
           }
 )
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Subset a genotype object
 #' @export
 setMethod("[[","genotype",
           function(x, i=TRUE, j=TRUE){
-            y <- CreateGenotypeObject(
+            y <- GenotypeObject(
               matrix=x@matrix[i,j,drop=F],
               metadata=x@metadata[i,,drop=F],
               variants=x@variants[i]
@@ -112,7 +112,7 @@ setMethod("[[","genotype",
           }
 )
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Assign values to genotype object metadata columns
 #' @export
 setMethod("$<-","genotype",
           function(x,name,value){
@@ -126,13 +126,11 @@ setMethod("$<-","genotype",
           }
 )
 
-#' @describeIn CreateGenotypeObject
-#' @export
 .DollarNames.genotype <- function(x,pattern=""){
   grep(pattern, colnames(x@metadata), value=TRUE)
 }
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Retrieve column names (i.e. genotype names) from a genotype object.
 #' @export
 setMethod("colnames","genotype",
           function(x){
@@ -140,7 +138,7 @@ setMethod("colnames","genotype",
           }
 )
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Assign column names (i.e. genotype names) to a genotype object.
 #' @export
 setMethod("colnames<-","genotype",
           function(x,value){
@@ -149,7 +147,7 @@ setMethod("colnames<-","genotype",
           }
 )
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Retrieve row names (i.e. variant names) from a genotype object.
 #' @export
 setMethod("rownames","genotype",
           function(x){
@@ -157,7 +155,7 @@ setMethod("rownames","genotype",
           }
 )
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Assign row names (i.e. variant names) from a genotype object.
 #' @export
 setMethod("rownames<-","genotype",
           function(x,value){
@@ -168,7 +166,7 @@ setMethod("rownames<-","genotype",
           }
 )
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Retrieve the number of rows (i.e. number of variants) from a genotype object.
 #' @export
 setMethod("nrow","genotype",
           function(x){
@@ -176,7 +174,7 @@ setMethod("nrow","genotype",
           }
 )
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Retrieve the number of columns (i.e. number of genotypes) from a genotype object.
 #' @export
 setMethod("ncol","genotype",
           function(x){
@@ -184,7 +182,7 @@ setMethod("ncol","genotype",
           }
 )
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Retrieve the dimension, i.e. number of variants and samples, from a genotype object.
 #' @export
 setMethod("dim","genotype",
           function(x){
@@ -192,18 +190,18 @@ setMethod("dim","genotype",
           }
 )
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Compute the number of genotypes which cover a given variant, from a genotype object.
 #' @export
 setMethod("rowSums","genotype",
           function(x){
-            return(rowSums(x@matrix))
+            return(rowSums(x@matrix>0))
           }
 )
 
-#' @describeIn CreateGenotypeObject
+#' @describeIn GenotypeObject Compute the number of variants covered in each genotype, from a genotype object.
 #' @export
 setMethod("colSums","genotype",
           function(x){
-            return(colSums(x@matrix))
+            return(colSums(x@matrix>0))
           }
 )
