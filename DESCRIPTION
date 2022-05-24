@@ -29,6 +29,7 @@ Imports:
     Matrix,
     plotly,
     readr,
-    heatmaply
+    heatmaply,
+    limma
 URL: https://github.com/nbroguiere/burgertools
 BugReports: https://github.com/nbroguiere/burgertools/issues

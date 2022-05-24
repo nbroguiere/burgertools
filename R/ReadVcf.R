@@ -13,8 +13,8 @@
 
 ReadVcf <- function(file=""){
   cat("Reading vcf file.\n")
-  vcf <- read_tsv(file = file, comment = "##",show_col_types = FALSE)
-  colnames(vcf)[1] <- str_replace(colnames(vcf)[1],pattern = "#",replacement = "")
+  vcf <- readr::read_tsv(file = file, comment = "##",show_col_types = FALSE)
+  colnames(vcf)[1] <- stringr::str_replace(colnames(vcf)[1],pattern = "#",replacement = "")
 
   cat("Converting to sparse column matrix in vartrix conventions.\n")
   GT_cols <- (which(colnames(vcf)=="FORMAT")+1):ncol(vcf)
