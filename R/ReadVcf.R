@@ -21,7 +21,7 @@ ReadVcf <- function(file=""){
   colnames(vcf)[GT_cols] <- paste0("Patient_",colnames(vcf)[GT_cols])
   GT <- vcf
   for(i in GT_cols){
-    GT[,i] <- limma::strsplit2(pull(vcf,var=i),":")[,1]
+    GT[,i] <- limma::strsplit2(dplyr::pull(vcf,var=i),":")[,1]
     cat(i-min(GT_cols)+1," out of ",length(GT_cols),"\n")
   }
   GT <- GT[,GT_cols]
@@ -54,19 +54,19 @@ ReadVcf <- function(file=""){
   # instead of showing one nucleotide being replaced. Additionally, this shifts the positions by one.
   meta$VEP_ID <- meta$ID # When there is a rs* ID present, it remains the VEP ID.
   no_id <- meta[meta$ID ==".",c("CHROM","POS","ID","REF","ALT","UNIQUE_ID")]
-  keep_as_is_logical_indices <- (str_length(no_id$REF)==1 & str_length(no_id$ALT)==1) | no_id$REF=="-" | no_id$ALT=="-"
+  keep_as_is_logical_indices <- (stringr::str_length(no_id$REF)==1 & stringr::str_length(no_id$ALT)==1) | no_id$REF=="-" | no_id$ALT=="-"
   keep_as_is <- no_id[keep_as_is_logical_indices,]
   keep_as_is$POS2 <- keep_as_is$POS
   keep_as_is$REF2 <- keep_as_is$REF
   keep_as_is$ALT2 <- keep_as_is$ALT
   need_shift <- no_id[!keep_as_is_logical_indices,]
-  shift_left <- need_shift[str_length(need_shift$REF)==1,]
+  shift_left <- need_shift[stringr::str_length(need_shift$REF)==1,]
   shift_left$POS2 <- shift_left$POS+1
   shift_left$REF2 <- "-"
-  shift_left$ALT2 <- substr(shift_left$ALT,2,str_length(shift_left$ALT))
-  shift_right <- need_shift[str_length(need_shift$ALT)==1,]
+  shift_left$ALT2 <- substr(shift_left$ALT,2,stringr::str_length(shift_left$ALT))
+  shift_right <- need_shift[stringr::str_length(need_shift$ALT)==1,]
   shift_right$POS2 <- shift_right$POS+1
-  shift_right$REF2 <- substr(shift_right$REF,2,str_length(shift_right$REF))
+  shift_right$REF2 <- substr(shift_right$REF,2,stringr::str_length(shift_right$REF))
   shift_right$ALT2 <- "-"
   no_id_vep_conventions <- rbind(shift_left,keep_as_is,shift_right)
   no_id_vep_conventions$VEP_ID <- paste0(no_id_vep_conventions$CHROM,"_",format(no_id_vep_conventions$POS2,scientific=FALSE,trim = TRUE),"_",no_id_vep_conventions$REF2,"/",no_id_vep_conventions$ALT2)
