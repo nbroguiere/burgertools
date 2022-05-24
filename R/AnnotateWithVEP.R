@@ -19,8 +19,8 @@
 #' @export
 
 AnnotateWithVEP <- function(genotype,vep,min_impact="MODERATE",avoid_underscores=TRUE){
-  vep2 <- vep[vep$Uploaded_variation %in% genotype$metadata$VEP_ID,c("Uploaded_variation","Location","Allele","Gene","SYMBOL","IMPACT","Consequence","Protein_position","Amino_acids","CLIN_SIG")]
-  annotations <- data.frame(VEP_ID=genotype$metadata$VEP_ID, symbol="-",gene_ensembl_id="-",impact="-",protein_position="-",aminoacids="-", consequence="-", clinicalsign="-",summary="-",short_description="-", row.names=genotype$metadata$UNIQUE_ID)
+  vep2 <- vep[vep$Uploaded_variation %in% genotype@metadata$VEP_ID,c("Uploaded_variation","Location","Allele","Gene","SYMBOL","IMPACT","Consequence","Protein_position","Amino_acids","CLIN_SIG")]
+  annotations <- data.frame(VEP_ID=genotype@metadata$VEP_ID, symbol="-",gene_ensembl_id="-",impact="-",protein_position="-",aminoacids="-", consequence="-", clinicalsign="-",summary="-",short_description="-", row.names=genotype@metadata$UNIQUE_ID)
   annotations$impact <- factor(annotations$impact,levels=c("-","MODIFIER","LOW","MODERATE","HIGH"),ordered = T)
 
   # Create a score - 8 points per level of IMPACT, then one point for presence of a gene name, and one point for presence of the protein position.
@@ -34,8 +34,8 @@ AnnotateWithVEP <- function(genotype,vep,min_impact="MODERATE",avoid_underscores
   vep2$IMPACT2 <- vep2$IMPACT
   vep2$IMPACT2[vep2$IMPACT2<min_impact] <- "-"
   vep2$summary <- paste0("_",vep2$SYMBOL,"_",vep2$Protein_position,"_",vep2$Amino_acids,"_",vep2$IMPACT2)
-  vep2$summary <- str_remove_all(vep2$summary,"_-")
-  vep2$summary <- str_remove_all(vep2$summary,"^_")
+  vep2$summary <- stringr::str_remove_all(vep2$summary,"_-")
+  vep2$summary <- stringr::str_remove_all(vep2$summary,"^_")
   annotations_available <- intersect(annotations$VEP_ID,rownames(vep2))
   annotations$symbol[annotations$VEP_ID %in% annotations_available] <- vep2[annotations$VEP_ID[annotations$VEP_ID %in% annotations_available],"SYMBOL"]
   annotations$gene_ensembl_id[annotations$VEP_ID %in% annotations_available] <- vep2[annotations$VEP_ID[annotations$VEP_ID %in% annotations_available],"Gene"]
@@ -55,7 +55,7 @@ AnnotateWithVEP <- function(genotype,vep,min_impact="MODERATE",avoid_underscores
   }
 
   # Update the genotype object with the human understandable descriptive names:
-  genotype@metadata <- cbind(annotations[,!colnames(annotations) %in% colnames(genotype$metadata)],genotype$metadata)
+  genotype@metadata <- cbind(annotations[,!colnames(annotations) %in% colnames(genotype@metadata)],genotype@metadata)
   rownames(genotype) <- annotations$short_description
   return(genotype)
 }
