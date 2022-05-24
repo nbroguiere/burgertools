@@ -46,7 +46,6 @@ AnnotateWithVEP <- function(genotype,vep,min_impact="MODERATE",avoid_underscores
   annotations$consequence[annotations$VEP_ID %in% annotations_available] <- vep2[annotations$VEP_ID[annotations$VEP_ID %in% annotations_available],"Consequence"]
   annotations$summary[annotations$VEP_ID %in% annotations_available] <- vep2[annotations$VEP_ID[annotations$VEP_ID %in% annotations_available],"summary"]
   annotations$short_description <- paste0(annotations$summary,"_",rownames(annotations))
-  #head(annotations[sample(1:nrow(annotations),25),],14)
 
   # Seurat doesn't accept underscores, so ends up in name conflicts later on. Replace underscores by dashes:
   if(avoid_underscores){
@@ -55,7 +54,7 @@ AnnotateWithVEP <- function(genotype,vep,min_impact="MODERATE",avoid_underscores
     annotations$short_description <- stringr::str_replace_all(annotations$short_description,"_","-")
   }
 
-  # Update the genotype object with the more descriptive names:
+  # Update the genotype object with the human understandable descriptive names:
   genotype@metadata <- cbind(annotations[,!colnames(annotations) %in% colnames(genotype$metadata)],genotype$metadata)
   rownames(genotype) <- annotations$short_description
   return(genotype)

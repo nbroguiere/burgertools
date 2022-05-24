@@ -13,7 +13,7 @@
 #' @export
 
 PrefilterVartrix <- function(vartrix_matrices,min.cells=5){
-  coverage <- rowSums(vartrix_matrices$consensus>0)
+  coverage <- Matrix::rowSums(vartrix_matrices$consensus>0)
   keep <- coverage>=min.cells
   return(lapply(vartrix_matrices,"[",keep,T))
 }

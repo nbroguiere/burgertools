@@ -18,8 +18,8 @@
 #'
 #' @param ref_matrix character(1), the file name for the reference allele count matrix.
 #' @param alt_matrix character(1), the file name for the alternate allele count matrix.
-#' @param cell_barcodes character vector, the list of cell barcodes for which vartrix was run, used as column names on the matrices.
-#' @param variants character vector, the list of variants for which vartrix was run, used as row names on the matrices.
+#' @param cell_barcodes character vector, the list of cell barcodes for which vartrix was run, used as column names on the matrices. NA for no names. Default: NA.
+#' @param variants character vector, the list of variants for which vartrix was run, used as row names on the matrices.NA for no names. Default: NA.
 #' @param tolerance_pct numeric(1), the percentage of alt or ref counts not in agreement with the rest on a unique (cell,variant) tolerated without affecting the call. Default: 5%.
 #' @return A list of sparse matrices (dgCmatrix), with names ref, alt, freq, and consensus, variants as rows and cells/barcodes as columns.
 #' @keywords vartrix variants matrix ref alt consensus freq frequency
@@ -27,16 +27,16 @@
 #' vartrix_matrices <- ReadVartrix("MyVartrixRef.mtx.gz","MyVartrixAlt.mtx.gz",MyCellBarcodes,MyVariants)
 #' @export
 
-ReadVartrix <- function(ref_matrix,alt_matrix,cell_barcodes,variants,tolerance_pct=5){
+ReadVartrix <- function(ref_matrix,alt_matrix,cell_barcodes=NA,variants=NA,tolerance_pct=5){
   cat("Reading the reference allele count matrix\n")
-  vartrix_ref_matrix <- Matrix::drop0(readMM(ref_matrix))
-  colnames(vartrix_ref_matrix) <- cell_barcodes
-  rownames(vartrix_ref_matrix) <- variants
+  vartrix_ref_matrix <- Matrix::drop0(Matrix::readMM(ref_matrix))
+  if(!is.na(cell_barcodes[1])) colnames(vartrix_ref_matrix) <- cell_barcodes
+  if(!is.na(variants[1]))      rownames(vartrix_ref_matrix) <- variants
 
   cat("Reading the alternative allele count matrix\n")
-  vartrix_alt_matrix <- Matrix::drop0(readMM(alt_matrix))
-  colnames(vartrix_alt_matrix) <- cell_barcodes
-  rownames(vartrix_alt_matrix) <- variants
+  vartrix_alt_matrix <- Matrix::drop0(Matrix::readMM(alt_matrix))
+  if(!is.na(cell_barcodes[1])) colnames(vartrix_alt_matrix) <- cell_barcodes
+  if(!is.na(variants[1]))      rownames(vartrix_alt_matrix) <- variants
 
   cat("Computing the alt frequency matrix (offset by one to distinguish 0 frequency from no data in the sparse matrix) \n")
   tmp <- vartrix_ref_matrix+vartrix_alt_matrix

@@ -4,16 +4,22 @@
 \alias{ReadVartrix}
 \title{Load vartrix data}
 \usage{
-ReadVartrix(ref_matrix, alt_matrix, cell_barcodes, variants, tolerance_pct = 5)
+ReadVartrix(
+  ref_matrix,
+  alt_matrix,
+  cell_barcodes = NA,
+  variants = NA,
+  tolerance_pct = 5
+)
 }
 \arguments{
 \item{ref_matrix}{character(1), the file name for the reference allele count matrix.}
 
 \item{alt_matrix}{character(1), the file name for the alternate allele count matrix.}
 
-\item{cell_barcodes}{character vector, the list of cell barcodes for which vartrix was run, used as column names on the matrices.}
+\item{cell_barcodes}{character vector, the list of cell barcodes for which vartrix was run, used as column names on the matrices. NA for no names. Default: NA.}
 
-\item{variants}{character vector, the list of variants for which vartrix was run, used as row names on the matrices.}
+\item{variants}{character vector, the list of variants for which vartrix was run, used as row names on the matrices.NA for no names. Default: NA.}
 
 \item{tolerance_pct}{numeric(1), the percentage of alt or ref counts not in agreement with the rest on a unique (cell,variant) tolerated without affecting the call. Default: 5\%.}
 }

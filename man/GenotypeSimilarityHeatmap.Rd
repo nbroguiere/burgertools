@@ -9,7 +9,7 @@ GenotypeSimilarityHeatmap(
   key.title = "Fraction of \\nmatching mutations",
   limits = NULL,
   plot_method = "plotly",
-  colors = viridis(n = 256, alpha = 1, begin = 0, end = 1, option = "viridis"),
+  colors = viridis::viridis(n = 256, alpha = 1, begin = 0, end = 1, option = "viridis"),
   ...
 )
 }
