@@ -75,5 +75,5 @@ ReadVcf <- function(file=""){
   meta[no_id_vep_conventions$UNIQUE_ID,"VEP_ID"] <- no_id_vep_conventions$VEP_ID
 
   cat("Returning genotype object\n")
-  return(CreateGenotypeObject(matrix=GT, metadata=meta, variants=meta$UNIQUE_ID))
+  return(GenotypeObject(matrix=GT, metadata=meta, variants=meta$UNIQUE_ID))
 }
