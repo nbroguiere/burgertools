@@ -12,7 +12,8 @@ IdentPlotQC(
   log.scale = TRUE,
   ncol = NA,
   pt.size = 1,
-  interactive = TRUE
+  interactive = TRUE,
+  ...
 )
 }
 \arguments{
