@@ -25,7 +25,7 @@
 #' MySeuratObject <- Classify(MySeuratObject,names(SignatureList),"CellType") # Automatic cell type annotation based on cell type signatures.
 #' IdentPlotQC(MySeuratObject,"celltype")
 
-IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA, pt.size=1, interactive=TRUE){
+IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA, pt.size=1, interactive=TRUE, ...){
   if(sum(is.na(ident))){
     object$tmp <- as.character(Idents(object))
     ident <- "tmp"
@@ -42,9 +42,9 @@ IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", l
         return()
       }else if(length(ident)==1 & interactive){
         if(log.scale){
-          p <- plotly::layout(plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size)), xaxis=list(type="log"), yaxis=list(type="log"))
+          p <- plotly::layout(plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident), ...), mode="markers", marker = list(size=3.5*pt.size)), xaxis=list(type="log"), yaxis=list(type="log"))
         }else{
-          p <- plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size))
+          p <- plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size), ...)
         }
       }else{
         p <- list()
