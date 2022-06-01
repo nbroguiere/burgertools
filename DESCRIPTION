@@ -12,7 +12,9 @@ Description: The package contains various tools facilitating the analysis
     imputation wrappers, signature scoring, cell type classifier based on
     markers (relying on signature scoring and MAGIC imputation to overcome
     dropouts), quality control (QC) by cell type (relying on the previous
-    classifier), cell type aware QC plots.
+    classifier), cell type aware QC plots, cell type classification based 
+    on signatures, interactive clustering and demultiplexing based on mutations,
+    interactive exploration of mutations/variants at the single cell level etc.
 License: GPL (>= 3)
 Encoding: UTF-8
 Language: en
