@@ -32,9 +32,10 @@ Imports:
     plotly,
     readr,
     heatmaply,
-    limma,
-    bigmds (>= 2.0.1)
+    bigmds (>= 2.0.1),
+    R.utils
 URL: https://github.com/nbroguiere/burgertools
 BugReports: https://github.com/nbroguiere/burgertools/issues
 Remotes: 
     github::pachoning/bigmds
+    github::cran/limma
