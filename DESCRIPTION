@@ -37,5 +37,5 @@ Imports:
 URL: https://github.com/nbroguiere/burgertools
 BugReports: https://github.com/nbroguiere/burgertools/issues
 Remotes: 
-    github::pachoning/bigmds
+    github::pachoning/bigmds,
     github::cran/limma
