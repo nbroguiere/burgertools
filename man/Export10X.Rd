@@ -19,6 +19,8 @@ Export10X(
 \arguments{
 \item{object}{Seurat object.}
 
+\item{dir}{character(1). The directory in which the data should be exported. Created if non-existent.}
+
 \item{meta_columns}{character(n). Metadata columns that should be exported from the Seurat Object. NA for all, empty vector c() for none. Default: NA.}
 
 \item{append_reductions}{character(n). Name of the dimensionality reductions that should be included with the metadata. Default: none.}
@@ -37,8 +39,10 @@ Export10X(
 Exports the counts matrix, features and barcodes from a Seurat object in a 10X-like format, with an additional metadata matrix in tsv format, that can be augmented dimensionality reduction coordinates. The exported data is in standard mtx and tsv formats, which facilitates sharing and reuse, and can be re-imported in a Seurat object with Import10X.
 }
 \examples{
-Export10X(SeuratObject) # By default keeping all the metadata columns, and no dimensionality reductions.
-Export10X(SeuratObject,c("nFeature_RNA","mito.content"),c("pca","umap"),gzip=FALSE) # Include only two custom metadata columns, two dimensionality reductions, and do not compress the matrices.
+# By default keeping all the metadata columns, and no dimensionality reductions.
+Export10X(SeuratObject, "MyDir")
+# Include only two custom metadata columns, two dimensionality reductions, and do not compress the matrices.
+Export10X(SeuratObject, "MyDir", c("nFeature_RNA", "mito.content"), c("pca","umap"), gzip=FALSE)
 }
 \keyword{10X}
 \keyword{Reexport}

@@ -3,6 +3,7 @@
 #' Exports the counts matrix, features and barcodes from a Seurat object in a 10X-like format, with an additional metadata matrix in tsv format, that can be augmented dimensionality reduction coordinates. The exported data is in standard mtx and tsv formats, which facilitates sharing and reuse, and can be re-imported in a Seurat object with Import10X.
 #'
 #' @param object Seurat object.
+#' @param dir character(1). The directory in which the data should be exported. Created if non-existent.
 #' @param meta_columns character(n). Metadata columns that should be exported from the Seurat Object. NA for all, empty vector c() for none. Default: NA.
 #' @param append_reductions character(n). Name of the dimensionality reductions that should be included with the metadata. Default: none.
 #' @param gzip logical(1). Should the exported files be compressed. If compressed, the filenames are appended with the extension ".gz". Default: TRUE
@@ -14,9 +15,9 @@
 #' @export
 #' @examples
 #' # By default keeping all the metadata columns, and no dimensionality reductions.
-#' Export10X(SeuratObject)
+#' Export10X(SeuratObject, "MyDir")
 #' # Include only two custom metadata columns, two dimensionality reductions, and do not compress the matrices.
-#' Export10X(SeuratObject,c("nFeature_RNA","mito.content"),c("pca","umap"),gzip=FALSE)
+#' Export10X(SeuratObject, "MyDir", c("nFeature_RNA", "mito.content"), c("pca","umap"), gzip=FALSE)
 
 Export10X <- function(object, dir, meta_columns = NA, append_reductions = c(), gzip=T, rows = "features.tsv", cols = "barcodes.tsv", counts = "matrix.mtx", meta = "metadata.tsv"){
   if(!dir.exists(filtered_counts_export_folder)){dir.create(filtered_counts_export_folder)}
