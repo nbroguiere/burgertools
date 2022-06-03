@@ -20,7 +20,7 @@ In particular, the package includes:
 
 ## Installation
 
-You can install the released version of burgertools from [github](https://github.com/nbroguiere/) with:
+Install from [github](https://github.com/nbroguiere/burgertools) with:
 
 ``` r
 install.packages("devtools")
