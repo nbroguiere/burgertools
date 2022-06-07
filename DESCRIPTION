@@ -29,6 +29,7 @@ Imports:
     Rmagic (>= 2.0.0),
     cowplot,
     Matrix,
+    sparseMatrixStats,
     plotly,
     readr,
     heatmaply,
