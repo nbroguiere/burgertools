@@ -16,6 +16,7 @@ PrefilterVartrix <- function(vartrix_matrices,min.cells=5,barcodes_keep=NA){
   if(!is.na(barcodes_keep[1])){
     vartrix_matrices <- lapply(vartrix_matrices,function(m) return(m[,barcodes_keep]))
   }
+
   coverage <- Matrix::rowSums(vartrix_matrices$consensus>0)
   keep <- coverage>=min.cells
   return(lapply(vartrix_matrices,"[",keep,T))
