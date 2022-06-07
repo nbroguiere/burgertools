@@ -31,8 +31,8 @@ SignaturePlotQC <- function(object, signatures, x= "nFeature_RNA", y="percent.mi
   }
   sign.not.found <- setdiff(sign.names, colnames(object@meta.data))
   if(length(sign.not.found)>0){
-    warning(paste("Signatures not found:",toString(sign.not.found)))
-    warning("Attempt to use these features from imputed or default assay instead.")
+    warning(paste("Signatures not found:",toString(sign.not.found),"\nAttempt to use these features from imputed or default assay instead."))
+    warning()
     sign.names <- intersect(sign.names, colnames(object@meta.data))
   }
   df <- object@meta.data
@@ -44,11 +44,12 @@ SignaturePlotQC <- function(object, signatures, x= "nFeature_RNA", y="percent.mi
   default_use <- intersect(rownames(object),setdiff(sign.not.found,imputed_use))
   if(length(default_use)){
     for(i in default_use)
-      df[,i] <- as.numeric(object[i,])
+      df[,i] <- as.numeric(object[[DefaultAssay(object)]][i,])
   }
+  sign.names <- c(sign.names,imputed_use,default_use)
   if(x %in% colnames(object@meta.data) & y %in% colnames(object@meta.data)){
     p <- list()
-    for(n in c(sign.names,imputed_use,default_use)){
+    for(n in sign.names){
       if(log.scale){
         p[[n]] <- ggplot(df) + geom_point(aes_string(x=x, y=y, color=n), size=pt.size) + scale_x_continuous(trans='log10')+scale_y_continuous(trans='log10') + lims(colour=c(0,NA))
       }else{
@@ -65,7 +66,7 @@ SignaturePlotQC <- function(object, signatures, x= "nFeature_RNA", y="percent.mi
       }else if(length(sign.names)>1){
         ncol <- 2
       }else{
-        warning(paste("Incorrect number of signatures found (",length(sign.name),")."))
+        warning(paste("Incorrect number of signatures found (",length(sign.names),")."))
       }
     }
     p <- cowplot::plot_grid(plotlist = p, ncol= ncol)

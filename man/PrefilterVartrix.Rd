@@ -4,10 +4,12 @@
 \alias{PrefilterVartrix}
 \title{Prefilter variants by coverage}
 \usage{
-PrefilterVartrix(vartrix_matrices, min.cells = 5)
+PrefilterVartrix(vartrix_matrices, min.cells = 5, barcodes_keep = NA)
 }
 \arguments{
 \item{min.cells}{numeric(1) the minimum number of cells for which there should be a genotype call for the variants to be kept.}
+
+\item{barcodes_keep}{character(n) A vector of cell barcodes to keep. NA to keep all. Default:NA.}
 
 \item{vartrix}{list of dgCmatrix, a list of vartrix matrices (containg at least a consensus matrix, named as such, in order to compute coverage).}
 }
@@ -15,9 +17,7 @@ PrefilterVartrix(vartrix_matrices, min.cells = 5)
 A list of vartrix matrices in the same format as the input
 }
 \description{
-Given a list of vartrix matrices, and a minimal number of cells/barcodes for which variant data should be available, returns a list of vartrix matrices with filtered variants.
-}
-\details{
+Given a list of vartrix matrices, and a minimal number of cells/barcodes for which variant data should be available, returns a list of vartrix matrices with filtered variants. If barcodes are given, additionally restrict the matrices to these barcodes.
 The row order and rownames are kept consistent with the input and across all matrices during the subsetting.
 }
 \examples{
