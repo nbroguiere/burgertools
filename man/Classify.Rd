@@ -9,9 +9,9 @@ Classify(object, signatures, expected.values = NA, metadata.name = "celltype")
 \arguments{
 \item{object}{Seurat object. Must contain nFeature_RNA and percent.mito metadata columns, or the x and y plot parameters must be changed accordingly to plot other QC info otherwise.}
 
-\item{signatures}{A vector containing the names of the signatures to use. Must correspond to names of metadata columns. If a named list of signatures is passed, the names of the list will be used.}
+\item{signatures}{character(n). Names of the signatures to use. Must correspond to names of metadata columns. If a named list of signatures is passed, the names of the list will be used.}
 
-\item{expected.values}{Vector/List of expected values for the signatures, used for normalization of the signatures before classifying cells. If NA (Default), normalized to max. If 1, no normalization. If The vector/list is named and the names match the signature names, the names will be used to match each scale factor to the right signature. If no matching names are given, the expected values are assumed to be given in the same order as the signatures.}
+\item{expected.values}{numeric(n). Expected values for the signatures, used for normalization of the signatures before classifying cells. If NA (Default), normalized to max. If 1, no normalization. If The vector/list is named and the names match the signature names, the names will be used to match each scale factor to the right signature. If no matching names are given, the expected values are assumed to be given in the same order as the signatures.}
 
 \item{metadata.name}{The name of the new metadata column where cell type annotations are stored (Default: celltype)}
 }
@@ -29,7 +29,7 @@ Each single cell will be associated to the cell type whose signature is maximal 
 # SignatureList should be a list of character vectors, each containing a series of feature/gene names. In this example, the signatures correspond to cell types, and the name of each signature is the name of the corresponding cell type (e.g. Tcell, Bcell, EpithelialCell, Fibroblasts, etc).
 MySeuratObject <- Impute(MySeuratObject)
 MySeuratObject <- ScoreSignatures(MySeuratObject,SignatureList)
-MySeuratObject <- Classify(MySeuratObject,names(SignatureList),"CellType") # Automatic cell type annotation based on cell type signatures.
+MySeuratObject <- Classify(MySeuratObject,SignatureList) # Automatic annotation based on cell type signatures, stored in metadata column "celltype".
 }
 \keyword{Cell}
 \keyword{Classifier}
