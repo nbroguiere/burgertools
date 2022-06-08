@@ -23,9 +23,9 @@
 \usage{
 \S4method{show}{genotype}(object)
 
-\S4method{[}{genotype,ANY,ANY,ANY}(x, i = TRUE, j = TRUE, drop = F)
+\S4method{[}{genotype,ANY,ANY,ANY}(x, i, j, ..., drop = F)
 
-\S4method{[}{genotype,ANY,ANY,ANY}(x, i = TRUE, j = TRUE) <- value
+\S4method{[}{genotype,ANY,ANY,ANY}(x, i, j, ...) <- value
 
 \S4method{$}{genotype}(x, name)
 
