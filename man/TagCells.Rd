@@ -8,7 +8,8 @@ TagCells(
   object,
   plot = "DimPlot",
   ident.name = "tag",
-  ident.levels = c("Tagged", "Other")
+  ident.levels = c(TRUE, FALSE),
+  ...
 )
 }
 \arguments{
@@ -16,16 +17,19 @@ TagCells(
 
 \item{ident.name}{character(1) The name of the metadata column that will be filled the tag info.}
 
-\item{ident.levels}{character(2). The names of the tagged vs other cells. Default: c("Tagged", "Other")}
+\item{ident.levels}{character(2). The names of the tagged vs other cells. Default: c(TRUE,FALSE)}
+
+\item{...}{Other parameters passed to DimPlot when applicable.}
 }
 \value{
 A Seurat object with an additional metadata column containing the cell type annotations and Idents() set to these annotations.
 }
 \description{
-This function is a CellSelector wrapper that creates a new metadata column with two levels (tagged or not) and sets it as the new identity. Used as a convenience to track groups of cells across plots particularly during QC.
+This function is a CellSelector wrapper that creates a new metadata column with two levels (TRUE and FALSE by default) and sets it as the new identity. Used as a convenience to track groups of cells across plots particularly during QC.
 }
 \examples{
-TagCells(SeuratObject) # By default making a DimPlot.
+TagCells(SeuratObject) # By default, tagging on a DimPlot.
+SO[,SO$tag] # Seurat object restricted to the tagged cells
 TagCells(SeuratObject,FeaturePlot(SeuratObject,"GAPDH")) # Can also pass a custom plot.
 TagCells(SeuratObject,FeaturePlot(SeuratObject,"GAPDH"),ident.name="SelectedCells",ident.levels=c("Yes","no")) # Custom name for the new metadata column and levels.
 }

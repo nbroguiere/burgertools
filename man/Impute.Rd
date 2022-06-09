@@ -42,7 +42,7 @@ Impute(
 Seurat object with an additional slot containing MAGIC imputed data.
 }
 \description{
-This function is a wrapper of the MAGIC imputation function to easily impute Seurat objects containing scRNA-seq data, with more reasonable default parameters.
+This function is a wrapper of the MAGIC imputation function to easily impute Seurat objects containing scRNA-seq data, with reasonable default parameters when used in the context of signature scoring for cell classification: only imputing the most variable genes and additional features of interest, and using only 40 PCs for efficiency, and using a narrow neighborhood to avoid over-smoothing.
 }
 \examples{
 MySeuratObject <- Impute(MySeuratObject)
