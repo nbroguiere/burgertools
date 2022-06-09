@@ -21,10 +21,10 @@
 # Note: currently always using RNA and data assay, could extend to make it more flexible. Also give the choice of the name for the new slot where it ends up being stored.
 Impute <- function(object, features=NULL, append.variable.features=TRUE, npca=40, knn=3, t=2, n.jobs=6, assay.use="RNA", slot.use="data", name="imputed"){
   if(!is.null(features)){
+    missing.features <- setdiff(unique(unlist(features)), rownames(object))
     features <- intersect(unique(unlist(features)), rownames(object))
-    missing.genes <- setdiff(unique(unlist(features)), rownames(object))
-    if(length(missing.genes)>0){
-      warning(paste("The following genes were not found in the Seurat object and were omitted: \n",missing.genes))
+    if(length(missing.features)>0){
+      warning(paste("The following features were not found in the Seurat object and were omitted: \n",paste(missing.features,collapse=" ")))
     }
   }
   if(append.variable.features){
