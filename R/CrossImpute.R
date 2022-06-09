@@ -24,16 +24,20 @@
 CrossImpute <- function(object, impute.assay="default_assay", name="crossimputed", impute.features="all", reference.assay="RNA", reference.features="variable_features", npca=40, knn=3, t=2, n.jobs=6, slot.use="data"){
 
   backup.default.assay <- DefaultAssay(object)
+
   if(impute.assay=="default_assay"){
     impute.assay <- DefaultAssay(object)
+  }
+  if(reference.assay=="default_assay"){
+    reference.assay <- DefaultAssay(object)
   }
 
   if(impute.assay=="metadata"){
     if(sum(impute.features=="all")){
-      warning("Define explicit metadata columns to impute, all is not accepted for metadata imputation.")
+      warning("Define explicit metadata columns to impute, 'all' is not accepted for metadata imputation.")
       return(object)
     }else if(sum(impute.features=="variable_features")){
-      warning("Define explicit metadata columns to impute, variable_features is not accepted for metadata imputation.")
+      warning("Define explicit metadata columns to impute, 'variable_features' is not accepted for metadata imputation.")
       return(object)
     }else{
       missing.features <- setdiff(unique(unlist(impute.features)), colnames(object@metadata))
@@ -85,7 +89,7 @@ CrossImpute <- function(object, impute.assay="default_assay", name="crossimputed
 
   imputed <- Rmagic::magic(data = as.matrix(df), npca=npca, knn=knn, t=t, n.jobs=n.jobs)
   imputed <- t(imputed$result)
-  object[[name]] <- CreateAssayObject(imputed)
+  object[[name]] <- CreateAssayObject(imputed[impute.features,])
 
   DefaultAssay(object) <- backup.default.assay
   return(object)
