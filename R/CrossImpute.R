@@ -19,8 +19,6 @@
 #' @examples
 #' MySeuratObject <- CrossImpute(MySeuratObject,"other_assay_to_impute_based_on_RNA_distances")
 #' MySeuratObject[["crossimputed"]] # Check result
-
-# Note: currently always using RNA and data assay, could extend to make it more flexible. Also give the choice of the name for the new slot where it ends up being stored.
 CrossImpute <- function(object, impute.assay="default_assay", name="crossimputed", impute.features="all", reference.assay="RNA", reference.features="variable_features", npca=40, knn=3, t=2, n.jobs=6, slot.use="data"){
 
   backup.default.assay <- DefaultAssay(object)

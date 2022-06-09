@@ -17,8 +17,6 @@
 #' @examples
 #' MySeuratObject <- Impute(MySeuratObject)
 #' MySeuratObject[["imputed"]]
-
-# Note: currently always using RNA and data assay, could extend to make it more flexible. Also give the choice of the name for the new slot where it ends up being stored.
 Impute <- function(object, features=NULL, append.variable.features=TRUE, npca=40, knn=3, t=2, n.jobs=6, assay.use="RNA", slot.use="data", name="imputed"){
   if(!is.null(features)){
     missing.features <- setdiff(unique(unlist(features)), rownames(object))
