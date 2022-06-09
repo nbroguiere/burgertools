@@ -25,7 +25,7 @@
 #' MySeuratObject <- Classify(MySeuratObject,names(SignatureList),"CellType") # Automatic cell type annotation based on cell type signatures.
 #' IdentPlotQC(MySeuratObject,"celltype")
 
-IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA, pt.size=1, interactive=TRUE){
+IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA, pt.size=1, interactive=TRUE, ...){
   if(sum(is.na(ident))){
     object$tmp <- as.character(Idents(object))
     ident <- "tmp"
@@ -42,17 +42,17 @@ IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", l
         return()
       }else if(length(ident)==1 & interactive){
         if(log.scale){
-          p <- layout(plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size)), xaxis=list(type="log"), yaxis=list(type="log"))
+          p <- plotly::layout(plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident), ...), mode="markers", marker = list(size=3.5*pt.size)), xaxis=list(type="log"), yaxis=list(type="log"))
         }else{
-          p <- plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size))
+          p <- plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size), ...)
         }
       }else{
         p <- list()
         for(n in ident){
           if(log.scale){
-            p[[n]] <- ggplot(object@meta.data) + geom_point(aes_string(x=x, y=y, color=n), size=pt.size) + scale_x_continuous(trans='log10')+scale_y_continuous(trans='log10')
+            p[[n]] <- ggplot2::ggplot(object@meta.data) + geom_point(aes_string(x=x, y=y, color=n), size=pt.size) + scale_x_continuous(trans='log10')+scale_y_continuous(trans='log10')
           }else{
-            p[[n]] <- ggplot(object@meta.data) + geom_point(aes_string(x=x, y=y, color=n), size=pt.size)
+            p[[n]] <- ggplot2::ggplot(object@meta.data) + geom_point(aes_string(x=x, y=y, color=n), size=pt.size)
           }
         }
         if(is.na(ncol)){

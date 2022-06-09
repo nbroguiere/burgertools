@@ -2,7 +2,7 @@
 % Please edit documentation in R/ClassifyManual.R
 \name{ClassifyManual}
 \alias{ClassifyManual}
-\title{Manual cell type classification based on signature gating}
+\title{Manual cell type classification by applying gates}
 \usage{
 ClassifyManual(object, gates, metadata.name = "celltype")
 }
@@ -17,11 +17,13 @@ ClassifyManual(object, gates, metadata.name = "celltype")
 A Seurat object with an additional metadata column containing the cell type annotations and Idents() set to these annotations. Cells which do not validate any gate defined are attributed the celltype "None" and cells which pass several gates are labelled "Multiplet".
 }
 \description{
-This function performs a cell type classification based on signature gating.
+This function performs a cell type classification by gating.
 }
 \details{
 If a list of signatures (sign_a, sign_b...) has been scored with ScoreSignature, cell types (celltype_a, celltype_b...) are defined based on gates (value_xy cutoffs) of the form:
-"celltype_a = sign_a > value_aa & sign_b < value_ab, celltype_b = sign_b > value_ba & sign_a < value_ab"
+"celltype_a = sign_a > value_aa & sign_b < value_ab, celltype_b = sign_b > value_ba & sign_a < value_ab \link{...}"
+
+The signatures can also come from other sources, and simply need to be present as metadata columns, or can also be features of the current default assay. In case they are features, the data slot is used.
 }
 \examples{
 # MySeuratObject should contain an RNA slot with log-normalized data assay.

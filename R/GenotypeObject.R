@@ -72,7 +72,9 @@ setMethod("show","genotype",
 #' @describeIn GenotypeObject Access matrix values in a genotype object.
 #' @export
 setMethod("[","genotype",
-          function(x,i=TRUE,j=TRUE,drop=F){
+          function(x, i, j, ..., drop=F){
+            if(missing(i)) i=T
+            if(missing(j)) j=T
             return(x@matrix[i,j,drop])
           }
 )
@@ -80,7 +82,9 @@ setMethod("[","genotype",
 #' @describeIn GenotypeObject Assign matrix values in a genotype object
 #' @export
 setMethod("[<-","genotype",
-          function(x,i=TRUE,j=TRUE,value){
+          function(x, i, j, ..., value){
+            if(missing(i)) i=T
+            if(missing(j)) j=T
             x@matrix[i,j] <- value
             return(x)
           }

@@ -4,7 +4,7 @@
 #'
 #' This is useful when making scRNA-seq from heterogeneous samples: for example immune cells are small and might be discarded as debris from much larger epithelial cancer cells if one is not aware of the differences in QC parameters occuring between various cell types.
 #' @param object Seurat object. Must contain nFeature_RNA and percent.mito metadata columns, or the x and y plot parameters must be changed accordingly to plot other QC info otherwise.
-#' @param signatures A vector containing the names of the signatures to highlight in color. Must correspond to names of metadata columns. If a named list of signatures is passed, the names of the list will be used.
+#' @param signatures A vector containing the names of the signatures to highlight in color. Must correspond to names of metadata columns. If a named list of signatures is passed, the names of the list will be used. If values are not found in the column, they will be picked from imputed or default assay in this order.
 #' @param x Which parameter to set to the x axis in the QC plot (Default: nFeature_RNA).
 #' @param y Which parameter to set to the y axis in the QC plot (Default: percent.mito).
 #' @param log.scale Whether to plot with log.scale or not (Default: TRUE)
@@ -31,16 +31,29 @@ SignaturePlotQC <- function(object, signatures, x= "nFeature_RNA", y="percent.mi
   }
   sign.not.found <- setdiff(sign.names, colnames(object@meta.data))
   if(length(sign.not.found)>0){
-    warning(paste("Signatures not found:",toString(sign.not.found)))
+    warning(paste("Signatures not found:",toString(sign.not.found),"\nAttempt to use these features from imputed or default assay instead."))
+    warning()
     sign.names <- intersect(sign.names, colnames(object@meta.data))
   }
+  df <- object@meta.data
+  imputed_use <- intersect(rownames(object[["imputed"]]),sign.not.found)
+  if(length(imputed_use)){
+    for(i in imputed_use)
+      df[,i] <- as.numeric(object[["imputed"]][i,])
+  }
+  default_use <- intersect(rownames(object),setdiff(sign.not.found,imputed_use))
+  if(length(default_use)){
+    for(i in default_use)
+      df[,i] <- as.numeric(object[[DefaultAssay(object)]][i,])
+  }
+  sign.names <- c(sign.names,imputed_use,default_use)
   if(x %in% colnames(object@meta.data) & y %in% colnames(object@meta.data)){
     p <- list()
     for(n in sign.names){
       if(log.scale){
-        p[[n]] <- ggplot(object@meta.data) + geom_point(aes_string(x=x, y=y, color=n), size=pt.size) + scale_x_continuous(trans='log10')+scale_y_continuous(trans='log10') + lims(colour=c(0,NA))
+        p[[n]] <- ggplot(df) + geom_point(aes_string(x=x, y=y, color=n), size=pt.size) + scale_x_continuous(trans='log10')+scale_y_continuous(trans='log10') + lims(colour=c(0,NA))
       }else{
-        p[[n]] <- ggplot(object@meta.data) + geom_point(aes_string(x=x, y=y, color=n), size=pt.size) + lims(colour=c(0,NA))
+        p[[n]] <- ggplot(df) + geom_point(aes_string(x=x, y=y, color=n), size=pt.size) + lims(colour=c(0,NA))
       }
     }
     if(is.na(ncol)){
@@ -53,13 +66,18 @@ SignaturePlotQC <- function(object, signatures, x= "nFeature_RNA", y="percent.mi
       }else if(length(sign.names)>1){
         ncol <- 2
       }else{
-        warning(paste("Incorrect number of signatures found (",length(sign.name),")."))
+        warning(paste("Incorrect number of signatures found (",length(sign.names),")."))
       }
     }
     p <- cowplot::plot_grid(plotlist = p, ncol= ncol)
     return(p)
   }else{
-    warning("Columns x or y (default: nFeature_RNA and percent.mito) not present in the object metadata.")
+    if(!x %in% colnames(object@meta.data)){
+      warning(paste0("Column ",x," not found in the object metadata."))
+    }
+    if(!y %in% colnames(object@meta.data)){
+      warning(paste0("Column ",y," not found in the object metadata."))
+    }
   }
 }
 
