@@ -34,7 +34,8 @@ Imports:
     readr,
     heatmaply,
     bigmds (>= 2.0.1),
-    R.utils
+    R.utils, 
+    stats
 URL: https://github.com/nbroguiere/burgertools
 BugReports: https://github.com/nbroguiere/burgertools/issues
 Remotes: 
