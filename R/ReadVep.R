@@ -13,7 +13,7 @@
 #' @export
 
 ReadVEP <- function(file,remove_empty_col=TRUE){
-  vep <- readr::read_tsv(file = file, comment = "##")
+  vep <- readr::read_tsv(file = file, comment = "##",show_col_types = FALSE)
   colnames(vep)[1] <- stringr::str_replace(colnames(vep)[1],pattern = "#",replacement = "")
   if(remove_empty_col){
     num_unique_el <- unlist(lapply(vep,function(x){return(length(unique(x)))}))
