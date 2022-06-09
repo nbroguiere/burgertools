@@ -62,7 +62,7 @@ CrossImpute <- function(object, impute.assay="default_assay", name="crossimputed
       warning("No features to impute available, aborting.")
       return(object)
     }else{
-      df <- t(GetAssayData(object = object, slot = slot.use)[impute.features,,drop=F])
+      df <- t(as.matrix(GetAssayData(object = object, slot = slot.use)[impute.features,,drop=F]))
     }
   }
 
@@ -81,7 +81,7 @@ CrossImpute <- function(object, impute.assay="default_assay", name="crossimputed
       warning("No reference features available, aborting.")
       return(object)
     }else{
-      df <- cbind(df,t(GetAssayData(object = object, slot = slot.use)[reference.features,,drop=F]))
+      df <- cbind(df,t(as.matrix(GetAssayData(object = object, slot = slot.use)[reference.features,,drop=F])))
     }
   }
 
