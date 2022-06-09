@@ -29,6 +29,7 @@ This function is a CellSelector wrapper that creates a new metadata column with 
 }
 \examples{
 TagCells(SeuratObject) # By default, tagging on a DimPlot.
+SO[,SO$tag] # Seurat object restricted to the tagged cells
 TagCells(SeuratObject,FeaturePlot(SeuratObject,"GAPDH")) # Can also pass a custom plot.
 TagCells(SeuratObject,FeaturePlot(SeuratObject,"GAPDH"),ident.name="SelectedCells",ident.levels=c("Yes","no")) # Custom name for the new metadata column and levels.
 }
