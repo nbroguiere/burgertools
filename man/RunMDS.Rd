@@ -42,13 +42,17 @@ RunMDS(
 \item{seed}{numeric(1). Random seed set at the beginning of the run for reproducible results (Default:42).}
 }
 \value{
-A Seurat object
+Returns the Seurat object.
 }
 \description{
 Compute a multidimensional scaling (MDS) dimensionality reduction on a Seurat object, using the provided distance metric. By default, using 30 dimensions in the reduced space, based on the variable features of the current default assay and data slot, with results stored under the name "mds".
 }
 \details{
-Wrapper of the bigmds divide and conquer method, see ?bigmds::divide_conquer_mds for details and references. For usage on variant data in vartrix-like sparse matrix conventions, use the custom distance function ?FractionDifferingVariants in this package. For use on continuous rather than discrete data, typically consider ?stats::dist.
+Wrapper of the bigmds divide and conquer method, see \code{\link[bigmds:divide_conquer_mds]{bigmds::divide_conquer_mds()}} for details and references.
+
+For usage on variant data in vartrix-like sparse matrix conventions, use the custom distance function \code{\link[=FractionDifferingVariants]{FractionDifferingVariants()}}.
+
+For use on continuous rather than discrete data, typically consider \code{\link[stats:dist]{stats::dist()}}.
 }
 \examples{
 DefaultAssay(MySeuratObject) <- "VAR" # variant calls, sparse matrix with values 1,2,3 for ref/alt/heterozygous in vartrix conventions. Assuming VariableFeatures have been set to most informative variants for this assay.

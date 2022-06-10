@@ -2,12 +2,16 @@
 #'
 #' Compute a multidimensional scaling (MDS) dimensionality reduction on a Seurat object, using the provided distance metric. By default, using 30 dimensions in the reduced space, based on the variable features of the current default assay and data slot, with results stored under the name "mds".
 #'
-#' Wrapper of the bigmds divide and conquer method, see ?bigmds::divide_conquer_mds for details and references. For usage on variant data in vartrix-like sparse matrix conventions, use the custom distance function ?FractionDifferingVariants in this package. For use on continuous rather than discrete data, typically consider ?stats::dist.
+#' Wrapper of the bigmds divide and conquer method, see [bigmds::divide_conquer_mds()] for details and references.
+#'
+#' For usage on variant data in vartrix-like sparse matrix conventions, use the custom distance function [FractionDifferingVariants()].
+#'
+#' For use on continuous rather than discrete data, typically consider [stats::dist()].
 #'
 #' @param object Seurat object.
 #' @param distance Distance function, e.g. FractionDifferingVariants or stats::dist()
 #' @param n.dims numeric(1). The number of dimensions in the reduction (Default:30).
-#' @param features.use character(n). The features to use to compute the reduction. NA for VariableFeatures (Default: NA).
+#' @param features.use character(n). The features to use to compute the reduction. NA for VariableFeatures(object) (Default: NA).
 #' @param assay character(1). The assay to use. NA for DefaultAssay (Default:NA).
 #' @param slot character(1). The Seurat object assay slot to use (Default:"data").
 #' @param reduction.name character(1). The name under which the dimensionality reduction will be stored under (Default: "mds").
@@ -15,7 +19,7 @@
 #' @param batch_size numeric(1). The number of cells processed for each batch of the divide and conquer MDS. The batches are then realigned and merged. Smaller batches provide faster runs, larger batches provide more accurate results (Default: 400).
 #' @param n.cores numeric(1). The number of cores to use for parallel processing (Default: 1). Unix only.
 #' @param seed numeric(1). Random seed set at the beginning of the run for reproducible results (Default:42).
-#' @return A Seurat object
+#' @return Returns the Seurat object.
 #' @keywords MDS multidimensional scaling dimensionality reduction dr Seurat wrapper
 #' @export
 #' @examples
