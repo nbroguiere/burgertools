@@ -61,9 +61,7 @@ Classify <- function(object, signatures, expected.values=NA, metadata.name="cell
     }
   }
 
-  # Initialize the cell type filter (start from keep all, to then restrict iteratively for each condition):
-  filters <- matrix(data = TRUE, nrow = dim(object)[2], ncol = length(celltype_names), dimnames = list(rownames(df),celltype_names))
-
+  # Normalize the signatures to their expected values.
   sign.scores <- data.frame(row.names = rownames(df))
   for(n in sign.names){
     sign.scores[,n] <- df[,n]/expected.values[n]
