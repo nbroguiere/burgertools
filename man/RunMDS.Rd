@@ -25,7 +25,7 @@ RunMDS(
 
 \item{n.dims}{numeric(1). The number of dimensions in the reduction (Default:30).}
 
-\item{features.use}{character(n). The features to use to compute the reduction. NA for VariableFeatures (Default: NA).}
+\item{features.use}{character(n). The features to use to compute the reduction. NA for VariableFeatures(object) (Default: NA).}
 
 \item{assay}{character(1). The assay to use. NA for DefaultAssay (Default:NA).}
 

@@ -21,6 +21,7 @@ This function performs a cell type classification by gating.
 }
 \details{
 If a list of signatures (sign_a, sign_b...) has been scored with ScoreSignature, cell types (celltype_a, celltype_b...) are defined based on gates (value_xy cutoffs) of the form:
+
 "celltype_a = sign_a > value_aa & sign_b < value_ab, celltype_b = sign_b > value_ba & sign_a < value_ab \link{...}"
 
 The signatures can also come from other sources, and simply need to be present as metadata columns, or can also be features of the current default assay. In case they are features, the data slot is used.
