@@ -3,6 +3,7 @@
 export(AnnotateWithTCGA)
 export(AnnotateWithVEP)
 export(AnnotatedVariableFeaturePlot)
+export(CellSimilarityToGenotypes)
 export(Classify)
 export(ClassifyManual)
 export(ComputeMitoContent)
