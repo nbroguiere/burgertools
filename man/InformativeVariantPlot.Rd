@@ -5,7 +5,7 @@
 \title{Plot the informative variants with annotations}
 \usage{
 InformativeVariantPlot(
-  genotype,
+  object,
   do.label = T,
   label.column = "variants",
   label.only.informative = T,
@@ -16,15 +16,16 @@ InformativeVariantPlot(
   text.size = 3.5,
   colors.use = c("grey", "blue", "red"),
   log.scale = F,
-  min.entropy = 0.001
+  min.entropy = 0.001,
+  assay = "VAR"
 )
 }
 \arguments{
-\item{genotype}{A genotype object}
+\item{object}{A seurat or genotype object on which FindInformativeVariants() has been computed.}
 
 \item{do.label}{logical(1). Should variants be labeled (Default: TRUE).}
 
-\item{label.column}{character(1). Which metadata column in the genotype object should be used as labels (Default: variants).}
+\item{label.column}{character(1). Which metadata column should be used as labels (Default: variants).}
 
 \item{label.only.informative}{logical(1). Should the labels only be for informative variants (Default: TRUE).}
 
@@ -43,6 +44,8 @@ InformativeVariantPlot(
 \item{log.scale}{logical(1). Should the axis be switched to log scale (Default: FALSE).}
 
 \item{min.entropy}{numeric(1). Minimal excess_entropy value for variants to be represented by a dot in the graph. Values above 0, even small, greatly speed up rendering without noticeably changing the result, if many very low informative variants are present. More critical when using log scale, as low entropy variants are then visible (Default:1e-3).}
+
+\item{assay}{character(1). If the object is a seurat object, which assay contains the consensus variant data (Default: "VAR").}
 }
 \value{
 Returns a ggplot
@@ -51,9 +54,9 @@ Returns a ggplot
 Plots the excess entropy vs coverage of the variants, highlighting in color the informative variants. Optionally, can label all or only informative variants, or the variants having a minimal impact or present in a minimal percent of TCGA patients for the relevant cohort, or a combination thereof.
 }
 \examples{
-InformativeVariantPlot(MyGenotypes,label.column = "summary") # Other labels that can be interesting: symbol, summary, short_description.. see also colnames(MyGenotypes@metadata)
-InformativeVariantPlot(MyGenotypes,label.column = "summary",min.impact = "MODERATE") # Only label the variants that have a predicted impact more than moderate
-InformativeVariantPlot(MyGenotypes,label.column = "summary",min.impact = "MODERATE",min.tcga.percent = 1,label.only.informative=F,log.scale = T) # Add the restriction to only label above a minimal tcga percent. The results are few, so label even non-informative variants, and activate log scale to see better the low coverage variants.
+InformativeVariantPlot(MyObject,label.column = "summary") # Other labels that can be interesting: symbol, summary, short_description.. see also colnames(MyGenotypes@metadata)
+InformativeVariantPlot(MyObject,label.column = "summary",min.impact = "MODERATE") # Only label the variants that have a predicted impact more than moderate
+InformativeVariantPlot(MyObject,label.column = "summary",min.impact = "MODERATE",min.tcga.percent = 1,label.only.informative=F,log.scale = T) # Add the restriction to only label above a minimal tcga percent. The results are few, so label even non-informative variants, and activate log scale to see better the low coverage variants.
 }
 \keyword{annotate}
 \keyword{genotype}

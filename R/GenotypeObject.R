@@ -109,12 +109,20 @@ setMethod("[[","genotype",
           function(x, i, j, ...){
             if(missing(i)) i=T
             if(missing(j)) j=T
-            y <- GenotypeObject(
-              matrix=x@matrix[i,j,drop=F],
-              metadata=x@metadata[i,,drop=F],
-              variants=stats::setNames(x@variants,x@variants)[i],
-              vartrix=x@vartrix
-            )
+            if(!(dim(x)[1] * dim(x)[2])){ # handle the case of a missing matrix slot (pure metadata genotype object, sometimes useful).
+              y <- GenotypeObject(
+                metadata=x@metadata[i,,drop=F],
+                variants=stats::setNames(x@variants,x@variants)[i],
+                vartrix=x@vartrix
+              )
+            }else{
+              y <- GenotypeObject(
+                matrix=x@matrix[i,j,drop=F],
+                metadata=x@metadata[i,,drop=F],
+                variants=stats::setNames(x@variants,x@variants)[i],
+                vartrix=x@vartrix
+              )
+            }
             if(length(x@variants_by_coverage)) y@variants_by_coverage=intersect(x@variants_by_coverage,y@variants)
             if(length(x@variants_by_information)) y@variants_by_information=intersect(x@variants_by_information,y@variants)
             if(length(x@informative_variants)) y@informative_variants=intersect(x@informative_variants,y@variants)
