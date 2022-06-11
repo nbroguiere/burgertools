@@ -60,6 +60,9 @@ FindInformativeVariants <- function(seurat, genotype=NA, n.variants=10000, assay
   excess_entropy <- entropy - minimal_entropy
   names(excess_entropy) <- rownames(vars_matrix)
 
+  # If some variants have a coverage of 0, can lead to entropy NA, fix it to 0:
+  excess_entropy[is.na(excess_entropy)] <- 0
+
   # Add the entropy, coverage and sorted variants in the Seurat object assay/features metadata:
   seurat[[assay]]@meta.features$excess_entropy <- excess_entropy
   seurat[[assay]]@meta.features$coverage <- coverage

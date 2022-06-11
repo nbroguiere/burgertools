@@ -26,12 +26,12 @@ CellSimilarityToGenotypes <- function(seurat, genotype, assay.name="similarity",
       features.use <- genotype@variants
     }
   }
-  if(features.use[1]=="all" & length(features)==1){
+  if(features.use[1]=="all" & length(features.use)==1){
     features.use <- genotype@variants
   }
-  tmp0 <- t(GetAssayData(seurat, assay = assays[1], slot = slot[1])[features.use,])
-  cvg0 <- t(GetAssayData(seurat, assay = assays[2], slot = slot[2])[features.use,]+GetAssayData(seurat, assay = assays[3], slot = slot[3])[features.use,])
-  tmp1 <- t(genotype[features.use,])
+  tmp0 <- Matrix::t(GetAssayData(seurat, assay = assays[1], slot = slots[1])[features.use,])
+  cvg0 <- Matrix::t(GetAssayData(seurat, assay = assays[2], slot = slots[2])[features.use,]+GetAssayData(seurat, assay = assays[3], slot = slots[3])[features.use,])
+  tmp1 <- Matrix::t(genotype[features.use,])
 
   # # Previous simple version - perfect match only:
   # tmp2 <- cbind(tmp0==1,tmp0==2,tmp0==3)
@@ -41,14 +41,15 @@ CellSimilarityToGenotypes <- function(seurat, genotype, assay.name="similarity",
   tmp2 <- Matrix::drop0(cbind(tmp0==1,tmp0==2,tmp0==3 | cvg0==1))
   tmp3 <- Matrix::drop0(cbind(tmp1==1,tmp1==2,tmp1==3))
 
-  matching <- as.matrix(tmp3 %*%  t(tmp2))
-  overlap <- as.matrix((tmp1>0) %*% t(tmp0>0))
-  matching <- t(matching/overlap) # Convert matching to a fraction instead of an absolute count.
+  matching <- as.matrix(tmp3 %*%  Matrix::t(tmp2))
+  overlap <- as.matrix((tmp1>0) %*% Matrix::t(tmp0>0))
+  matching <- Matrix::t(matching/overlap) # Convert matching to a fraction instead of an absolute count.
   matching[is.na(matching)] <- 0 # cells which had zero overlap are set to a shared mutation fraction of 0.
   colnames(matching) <- paste0(prefix, stringr::str_replace(colnames(matching),"_","-"))
   rownames(matching) <- colnames(seurat)
 
-  seurat[[assay.name]] <- CreateAssayObject(counts = t(matching))
+  cat("Storing similarities of single cells to reference genotypes in the assay '",assay.name,"'. \nExample of feature name: ",colnames(matching)[1], sep = "")
+  seurat[[assay.name]] <- CreateAssayObject(counts = Matrix::t(matching))
 
   return(seurat)
 }

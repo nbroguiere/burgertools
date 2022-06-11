@@ -11,7 +11,7 @@
 #' @param object Seurat object.
 #' @param distance Distance function, e.g. FractionDifferingVariants for variants or stats::dist() for common distances applying to continuous data. NA will use FractionDifferingVariants if the assay used is "VAR", euclidean dist otherwise.
 #' @param n.dims numeric(1). The number of dimensions in the reduction (Default:30).
-#' @param features.use character(n). The features to use to compute the reduction. NA for VariableFeatures(object) (Default: NA).
+#' @param features.use character(n). The features to use to compute the reduction. NA for most variable features of assay (Default: NA).
 #' @param assay character(1). The assay to use. NA uses "VAR" if available, otherwise the DefaultAssay (Default:NA).
 #' @param slot character(1). The Seurat object assay slot to use (Default:"data").
 #' @param reduction.name character(1). The name under which the dimensionality reduction will be stored under (Default: "mds").
