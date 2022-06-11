@@ -64,7 +64,7 @@ FindInformativeVariants <- function(genotype, seurat, n.variants=10000, assay="V
   genotype$coverage_frac <- frac
   genotype@variants_by_coverage <- names(sort(-coverage))
   genotype@variants_by_information <- names(sort(-excess_entropy))
-  genotype@informative_variants <- ranked_variants_entropy[1:n.variants]
+  genotype@informative_variants <- genotype@variants_by_information[1:n.variants]
 
   return(genotype)
 }

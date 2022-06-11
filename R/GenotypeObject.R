@@ -67,7 +67,7 @@ setMethod("show","genotype",
             if(length(object@informative_variants)) tmp <- paste0(tmp,"@informative_variants (",length(object@informative_variants),")\n")
             if(length(object@vartrix)) tmp <- paste0(tmp,"@vartrix (",paste0(names(object@vartrix),collapse = ", "),")\n")
             if(tmp!=""){
-              cat("\n\nOther slots populated:\n",tmp)
+              cat(paste0("\n\nOther slots populated:\n",tmp))
             }
           }
 )
