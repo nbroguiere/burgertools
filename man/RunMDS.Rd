@@ -6,7 +6,7 @@
 \usage{
 RunMDS(
   object,
-  distance,
+  distance = NA,
   n.dims = 30,
   features.use = NA,
   assay = NA,
@@ -21,13 +21,13 @@ RunMDS(
 \arguments{
 \item{object}{Seurat object.}
 
-\item{distance}{Distance function, e.g. FractionDifferingVariants or stats::dist()}
+\item{distance}{Distance function, e.g. FractionDifferingVariants for variants or stats::dist() for common distances applying to continuous data. NA will use FractionDifferingVariants if the assay used is "VAR", euclidean dist otherwise.}
 
 \item{n.dims}{numeric(1). The number of dimensions in the reduction (Default:30).}
 
 \item{features.use}{character(n). The features to use to compute the reduction. NA for VariableFeatures(object) (Default: NA).}
 
-\item{assay}{character(1). The assay to use. NA for DefaultAssay (Default:NA).}
+\item{assay}{character(1). The assay to use. NA uses "VAR" if available, otherwise the DefaultAssay (Default:NA).}
 
 \item{slot}{character(1). The Seurat object assay slot to use (Default:"data").}
 
@@ -55,8 +55,8 @@ For usage on variant data in vartrix-like sparse matrix conventions, use the cus
 For use on continuous rather than discrete data, typically consider \code{\link[stats:dist]{stats::dist()}}.
 }
 \examples{
-DefaultAssay(MySeuratObject) <- "VAR" # variant calls, sparse matrix with values 1,2,3 for ref/alt/heterozygous in vartrix conventions. Assuming VariableFeatures have been set to most informative variants for this assay.
-MySeuratObject <- RunMDS(MySeuratObject,FractionDifferingVariants)
+DefaultAssay(MySeuratObject) <- "VAR" # variant calls, sparse matrix with values 1,2,3 for ref/alt/heterozygous in vartrix conventions. Assuming VariableFeatures have been set to most informative variants for this assay. Will also use VAR by default if assay=NA, so no need to explicitely change the default assay.
+MySeuratObject <- RunMDS(MySeuratObject)
 DimPlot(MySeuratObject, reduction="mds")
 MySeuratObject <- RunUMAP(MySeuratObject,reduction="mds",dims=1:30)
 DimPlot(MySeuratObject, reduction="umap")

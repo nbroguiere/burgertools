@@ -15,9 +15,9 @@
 #' DimPlot(MySeuratObject, reduction="umap")
 FractionDifferingVariants <- function(x){
   tmp <- cbind(x==1,x==2,x==3) # Could consider 2 and 3 (both "presence of variant") to be matching, instead of distinguishing heterozygous for variant / homozygous for variant.
-  matching <- as.matrix(tmp %*%  t(tmp))
+  matching <- as.matrix(tmp %*%  Matrix::t(tmp))
   x[x>0] <- 1
-  overlap <- as.matrix(x %*% t(x))
+  overlap <- as.matrix(x %*% Matrix::t(x))
   matching <- matching/overlap # Convert matching to a fraction instead of an absolute count, in place to save memory.
   matching[is.na(matching)] <- 0 # cells which had zero overlap are set to a shared mutation fraction of 0.
   return(stats::as.dist(1-matching))
