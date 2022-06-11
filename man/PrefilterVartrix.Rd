@@ -4,14 +4,14 @@
 \alias{PrefilterVartrix}
 \title{Prefilter variants by coverage in the vartrix matrices}
 \usage{
-PrefilterVartrix(genotype, min.cells = 5, barcodes_keep = NA)
+PrefilterVartrix(genotype, min.cells = 5, barcodes.keep = NA)
 }
 \arguments{
 \item{genotype}{A genotype object, containing vartrix matrices (including a VAR consensus matrix, named as such, used to compute coverage).}
 
 \item{min.cells}{numeric(1) the minimum number of cells for which there should be a genotype call for the variants to be kept.}
 
-\item{barcodes_keep}{character(n) A vector of cell barcodes to keep. NA to keep all. Default:NA.}
+\item{barcodes.keep}{character(n) A vector of cell barcodes to keep. NA to keep all. Default:NA.}
 }
 \value{
 The filtered genotype object

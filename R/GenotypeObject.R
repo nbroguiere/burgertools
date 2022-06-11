@@ -112,15 +112,15 @@ setMethod("[[","genotype",
             y <- GenotypeObject(
               matrix=x@matrix[i,j,drop=F],
               metadata=x@metadata[i,,drop=F],
-              variants=x@variants[i],
+              variants=stats::setNames(x@variants,x@variants)[i],
               vartrix=x@vartrix
             )
             if(length(x@variants_by_coverage)) y@variants_by_coverage=intersect(x@variants_by_coverage,y@variants)
             if(length(x@variants_by_information)) y@variants_by_information=intersect(x@variants_by_information,y@variants)
             if(length(x@informative_variants)) y@informative_variants=intersect(x@informative_variants,y@variants)
             if(length(y@vartrix)){
-              for(i in 1:length(y@vartrix)){
-                y@vartrix[[i]] <- y@vartrix[[i]][y@variants,]
+              for(k in 1:length(y@vartrix)){
+                y@vartrix[[k]] <- y@vartrix[[k]][y@variants,]
               }
             }
             return(y)

@@ -5,21 +5,23 @@
 #'
 #' @param genotype A genotype object, containing vartrix matrices (including a VAR consensus matrix, named as such, used to compute coverage).
 #' @param min.cells numeric(1) the minimum number of cells for which there should be a genotype call for the variants to be kept.
-#' @param barcodes_keep character(n) A vector of cell barcodes to keep. NA to keep all. Default:NA.
+#' @param barcodes.keep character(n) A vector of cell barcodes to keep. NA to keep all. Default:NA.
 #' @return The filtered genotype object
 #' @keywords genotypes variants vcf
 #' @examples
 #' MyFilteredGenotypeObject <- PrefilterVartrix(MyGenotypeObject, min.cells=10)
 #' @export
 
-PrefilterVartrix <- function(genotype, min.cells=5, barcodes_keep=NA){
+PrefilterVartrix <- function(genotype, min.cells=5, barcodes.keep=NA){
   # Subset the barcodes first if applicable:
-  if(!is.na(barcodes_keep[1])){
-    genotype@vartrix <- lapply(genotype@vartrix,function(m) return(m[,barcodes_keep]))
+  if(!is.na(barcodes.keep[1])){
+    genotype@vartrix <- lapply(genotype@vartrix,function(m) return(m[,barcodes.keep]))
   }
 
+  # Compute coverage and determine which variants are kept:
   genotype$coverage <- Matrix::rowSums(genotype@vartrix$VAR>0)
-  keep <- genotype@variants[genotype$coverage>=min.cells]
-  genotype@vartrix <- lapply(genotype@vartrix,"[",keep,T)
-  return(genotype)
+  variants.keep <- genotype@variants[genotype$coverage>=min.cells]
+
+  # Return the filtered genotype object:
+  return(genotype[[variants.keep,]])
 }
