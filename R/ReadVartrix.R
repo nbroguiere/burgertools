@@ -34,7 +34,7 @@ ReadVartrix <- function(genotype, ref, alt, barcodes=c(), tolerance.percent=5, s
   }
   if(length(barcodes)==1){
     cat("Reading barcodes from file.\n")
-    barcodes <- readr::read_tsv(barcodes)[,1,drop=T]
+    barcodes <- readr::read_tsv(barcodes,col_types = "c",show_col_types = F,col_names = F)[,1,drop=T]
     if(strip.suffix){
       tmp <- limma::strsplit2(barcodes,"-")
       if(length(unique(tmp[,2,drop=T]))==1){
@@ -49,6 +49,14 @@ ReadVartrix <- function(genotype, ref, alt, barcodes=c(), tolerance.percent=5, s
 
   cat("Reading the reference allele count matrix\n")
   vartrix_ref <- Matrix::drop0(Matrix::readMM(ref))
+  if(dim(vartrix_ref)[1]!=length(genotype@variants)){
+    warning(paste0("The number of lines in the vartrix reference matrix (",dim(vartrix_ref)[1],") does not match the number of variants in the genotype object (",length(genotype@variants),"). Aborting."))
+    return(genotype)
+  }
+  if(dim(vartrix_ref)[2]!=length(barcodes)){
+    warning(paste0("The number of lines in the vartrix reference matrix (",dim(vartrix_ref)[2],") does not match the number of variants in the genotype object (",length(barcodes),"). Aborting."))
+    return(genotype)
+  }
   if(length(barcodes))          colnames(vartrix_ref) <- barcodes
   if(length(genotype@variants)) rownames(vartrix_ref) <- genotype@variants
 
@@ -81,7 +89,7 @@ ReadVartrix <- function(genotype, ref, alt, barcodes=c(), tolerance.percent=5, s
   vartrix_consensus_matrix_traditional <- 1*(vartrix_ref>0)+2*(vartrix_alt>0)
   cat("Percentage of calls corrected because of the tolerance: ", 100*sum(abs(vartrix_consensus_matrix-vartrix_consensus_matrix_traditional))/sum(abs(vartrix_consensus_matrix)),"%\n")
 
-  genotype@vartrix <- list(list(REF=vartrix_ref, ALT=vartrix_alt, FREQ=vartrix_freq_matrix, VAR=vartrix_consensus_matrix))
+  genotype@vartrix <- list(REF=vartrix_ref, ALT=vartrix_alt, FREQ=vartrix_freq_matrix, VAR=vartrix_consensus_matrix)
   return(genotype)
 }
 
