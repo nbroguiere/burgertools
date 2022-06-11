@@ -5,34 +5,37 @@
 \title{Load vartrix data}
 \usage{
 ReadVartrix(
-  ref_matrix,
-  alt_matrix,
-  cell_barcodes = NA,
-  variants = NA,
-  tolerance_pct = 5
+  genotype,
+  ref,
+  alt,
+  barcodes = c(),
+  tolerance.percent = 5,
+  strip.suffix = TRUE
 )
 }
 \arguments{
-\item{ref_matrix}{character(1), the file name for the reference allele count matrix.}
+\item{genotype}{A genotype object, which contains the reference vcf file used to compute vartrix matrices.}
 
-\item{alt_matrix}{character(1), the file name for the alternate allele count matrix.}
+\item{ref}{character(1), the file name for the reference allele count matrix.}
 
-\item{cell_barcodes}{character vector, the list of cell barcodes for which vartrix was run, used as column names on the matrices. NA for no names. Default: NA.}
+\item{alt}{character(1), the file name for the alternative allele count matrix.}
 
-\item{variants}{character vector, the list of variants for which vartrix was run, used as row names on the matrices.NA for no names. Default: NA.}
+\item{barcodes}{character(n), the file name for the cell barcodes, or the list of cell barcodes for which vartrix was run, used as column names on the matrices. c() for no names. Default: c().}
 
-\item{tolerance_pct}{numeric(1), the percentage of alt or ref counts not in agreement with the rest on a unique (cell,variant) tolerated without affecting the call. Default: 5\%.}
+\item{tolerance.percent}{numeric(1), the percentage of alt or ref counts not in agreement with the rest on a unique (cell,variant) tolerated without affecting the call. Default: 5\%.}
+
+\item{strip.suffix}{logical(1), should the "-X" suffix be striped from the barcodes if constant. Default: TRUE.}
 }
 \value{
-A list of sparse matrices (dgCmatrix), with names ref, alt, freq, and consensus, variants as rows and cells/barcodes as columns.
+Returns the genotype object with a populated vartrix slot, containing a list of sparse matrices (dgCmatrix), with names REF, ALT, FREQ and VAR (=consensus). Variants are the rows and cells/barcodes the columns.
 }
 \description{
-Read the vartrix ref and alt matrices, and computes a frequency and a consensus matrix. Returns all of them as a list of sparse matrices.
+Read the vartrix REF and ALT matrices, and computes frequency (FREQ) and consensus (VAR) matrices. Adds them to a genotype object already containing the reference vcf data.
 }
 \details{
-The frequency sparse matrix is offset by 1 in order to distinguish zero-frequency (value 1) from missing data (value 0, not stored in the sparse matrix).
+The FREQ sparse matrix is offset by 1 in order to efficiently distinguish zero-frequency (value 1) from missing data (value 0, not stored in the sparse matrix).
 
-The consensus matrix makes a call for no data (value 0, not stored in the sparse matrix), ref/ref (value 1), alt/alt (value 2) or alt/ref (value 3) genotypes. Since in scRNA-seq data, there is likely some extracellular RNA from dead cells or debris slightly contaminating the reads of other cells, a tolerance can be set above 0. For example, at a tolerance of 5\%, up to 1 read in 20 can differ from the rest without making the call switch to heterozygous. The behavior of the vartrix consensus matrix calculation corresponds to a tolerance of 0.
+The consensus matrix makes a call for no data (value 0, not stored in the sparse matrix), ref/ref (value 1), alt/alt (value 2) or alt/ref (value 3) genotypes. Since in scRNA-seq data, there is likely some extracellular RNA from dead cells or debris slightly contaminating the reads of other cells, a tolerance can be set above 0. For example, at a tolerance of 5\%, up to 1 read in 20 can differ from the rest without making the call switch to heterozygous. The behavior of the original vartrix consensus matrix calculation corresponds to a tolerance of 0.
 
 Equivalence between vartrix, human, and vcf genotype naming conventions:
 
@@ -45,12 +48,13 @@ Equivalence between vartrix, human, and vcf genotype naming conventions:
 "3" for "ref/alt", "0/1"
 }
 \examples{
-vartrix_matrices <- ReadVartrix("MyVartrixRef.mtx.gz","MyVartrixAlt.mtx.gz",MyCellBarcodes,MyVariants)
+MyGenotypes <- ReadVartrix(MyGenotypes, "vartrix_ref_matrix.mtx.gz", "vartrix_alt_matrix.mtx.gz", barcodes=MyCellBarcodes, tolerance.percent=2)
 }
 \keyword{alt}
 \keyword{consensus}
 \keyword{freq}
 \keyword{frequency}
+\keyword{genotype}
 \keyword{matrix}
 \keyword{ref}
 \keyword{variants}

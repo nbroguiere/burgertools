@@ -19,6 +19,7 @@
 #' @slot matrix A dgCMatrix containing genotype data in vartrix conventions.
 #' @slot metadata A data.frame containing variant metadata.
 #' @slot variants A character vector listing the variants described in the object, in the same order as the rows of the matrix and metadata slots.
+#' @slot vartrix A list of vartrix matrices
 #' @slot variants_by_coverage A character vector listing the variants sorted from max coverage (number of cells in which there is data) to min.
 #' @slot variants_by_information A character vector listing the variants sorted from max information (excess entropy in single cell data) to min.
 #' @slot informative_variants A character vector listing the most informative variants, used for downstream clustering analysis.
@@ -48,21 +49,23 @@ GenotypeObject <- setClass("genotype", slots=list(matrix="dgCMatrix",
                                                         variants="character",
                                                         variants_by_coverage="character",
                                                         variants_by_information="character",
-                                                        informative_variants="character"))
+                                                        informative_variants="character",
+                                                        vartrix="list"))
 
 #' @describeIn GenotypeObject Show a summary of the contents of a genotype object.
 #' @export
 setMethod("show","genotype",
           function(object){
             cat("A genotype S4 object containing ",length(object@variants)," variants (@variant slot) for ",ncol(object@matrix)," unique genotypes (@matrix slot) and ",ncol(object@metadata)," variant annotations (@metadata slot).\n\n")
-            cat("Head of the genotype matrix:\n\n")
+            cat("Head(3) of the genotype matrix:\n\n")
             print(head(object@matrix,3))
-            cat("\n\nHead of the metadata data frame:\n\n")
+            cat("\n\nHead(3) of the metadata data frame:\n\n")
             print(head(object@metadata,3))
             tmp <- ""
             if(length(object@variants_by_coverage)) tmp <- paste0(tmp,"@variants_by_coverage (",length(object@variants_by_coverage),")\n")
             if(length(object@variants_by_information)) tmp <- paste0(tmp,"@variants_by_information (",length(object@variants_by_information),")\n")
             if(length(object@informative_variants)) tmp <- paste0(tmp,"@informative_variants (",length(object@informative_variants),")\n")
+            if(length(object@vartrix)) tmp <- paste0(tmp,"@vartrix (",paste0(names(object@vartrix),collapse = ", "),")\n")
             if(tmp!=""){
               cat("\n\nOther slots populated:\n",tmp)
             }
@@ -75,11 +78,11 @@ setMethod("[","genotype",
           function(x, i, j, ..., drop=F){
             if(missing(i)) i=T
             if(missing(j)) j=T
-            return(x@matrix[i,j,drop])
+            return(x@matrix[i,j, ..., drop])
           }
 )
 
-#' @describeIn GenotypeObject Assign matrix values in a genotype object
+#' @describeIn GenotypeObject Assign genotype matrix values in a genotype object
 #' @export
 setMethod("[<-","genotype",
           function(x, i, j, ..., value){
@@ -103,15 +106,23 @@ setMethod("$","genotype",
 #' @describeIn GenotypeObject Subset a genotype object
 #' @export
 setMethod("[[","genotype",
-          function(x, i=TRUE, j=TRUE){
+          function(x, i, j, ...){
+            if(missing(i)) i=T
+            if(missing(j)) j=T
             y <- GenotypeObject(
               matrix=x@matrix[i,j,drop=F],
               metadata=x@metadata[i,,drop=F],
-              variants=x@variants[i]
+              variants=x@variants[i],
+              vartrix=x@vartrix
             )
             if(length(x@variants_by_coverage)) y@variants_by_coverage=intersect(x@variants_by_coverage,y@variants)
             if(length(x@variants_by_information)) y@variants_by_information=intersect(x@variants_by_information,y@variants)
             if(length(x@informative_variants)) y@informative_variants=intersect(x@informative_variants,y@variants)
+            if(length(y@vartrix)){
+              for(i in 1:length(y@vartrix)){
+                y@vartrix[[i]] <- y@vartrix[[i]][y@variants,]
+              }
+            }
             return(y)
           }
 )
@@ -166,6 +177,11 @@ setMethod("rownames<-","genotype",
             rownames(x@matrix) <- value
             rownames(x@metadata) <- value
             x@variants <- value
+            if(length(x@vartrix)){
+              for(i in 1:length(x@vartrix)){
+                rownames(x@vartrix[[i]]) <- value
+              }
+            }
             return(x)
           }
 )

@@ -20,8 +20,9 @@
 #' Export10X(SeuratObject, "MyDir", c("nFeature_RNA", "mito.content"), c("pca","umap"), gzip=FALSE)
 
 Export10X <- function(object, dir, meta_columns = NA, append_reductions = c(), gzip=T, rows = "features.tsv", cols = "barcodes.tsv", counts = "matrix.mtx", meta = "metadata.tsv"){
-  if(!dir.exists(filtered_counts_export_folder)){dir.create(filtered_counts_export_folder)}
-  setwd(filtered_counts_export_folder)
+  dir.backup <- getwd()
+  if(!dir.exists(dir)){dir.create(dir)}
+  setwd(dir)
   data.tmp <- GetAssayData(object = object, slot = "counts", assay = "RNA")
   write(colnames(data.tmp), file = cols)
   write(rownames(data.tmp), file = rows)
@@ -34,12 +35,13 @@ Export10X <- function(object, dir, meta_columns = NA, append_reductions = c(), g
       meta.tmp <- cbind(meta.tmp,object[[append_reductions[i]]]@cell.embeddings)
     }
   }
-  readr::write_tsv(meta.tmp,"metadata.tsv")
+  readr::write_tsv(meta.tmp,meta)
   Matrix::writeMM(obj = data.tmp, file = counts)
   if(gzip){
-    R.utils::gzip(cols, overwrite=TRUE, remove=TRUE, BFR.SIZE=1e+07)
-    R.utils::gzip(rows, overwrite=TRUE, remove=TRUE, BFR.SIZE=1e+07)
-    R.utils::gzip(counts,   overwrite=TRUE, remove=TRUE, BFR.SIZE=1e+07)
-    R.utils::gzip(meta, overwrite=TRUE, remove=TRUE, BFR.SIZE=1e+07)
+    R.utils::gzip(cols,  overwrite=TRUE, remove=TRUE, BFR.SIZE=1e+07)
+    R.utils::gzip(rows,  overwrite=TRUE, remove=TRUE, BFR.SIZE=1e+07)
+    R.utils::gzip(counts,overwrite=TRUE, remove=TRUE, BFR.SIZE=1e+07)
+    R.utils::gzip(meta,  overwrite=TRUE, remove=TRUE, BFR.SIZE=1e+07)
   }
+  setwd(dir.backup)
 }

@@ -2,26 +2,26 @@
 % Please edit documentation in R/PrefilterVartrix.R
 \name{PrefilterVartrix}
 \alias{PrefilterVartrix}
-\title{Prefilter variants by coverage}
+\title{Prefilter variants by coverage in the vartrix matrices}
 \usage{
-PrefilterVartrix(vartrix_matrices, min.cells = 5, barcodes_keep = NA)
+PrefilterVartrix(genotype, min.cells = 5, barcodes_keep = NA)
 }
 \arguments{
+\item{genotype}{A genotype object, containing vartrix matrices (including a VAR consensus matrix, named as such, used to compute coverage).}
+
 \item{min.cells}{numeric(1) the minimum number of cells for which there should be a genotype call for the variants to be kept.}
 
 \item{barcodes_keep}{character(n) A vector of cell barcodes to keep. NA to keep all. Default:NA.}
-
-\item{vartrix}{list of dgCmatrix, a list of vartrix matrices (containg at least a consensus matrix, named as such, in order to compute coverage).}
 }
 \value{
-A list of vartrix matrices in the same format as the input
+The filtered genotype object
 }
 \description{
-Given a list of vartrix matrices, and a minimal number of cells/barcodes for which variant data should be available, returns a list of vartrix matrices with filtered variants. If barcodes are given, additionally restrict the matrices to these barcodes.
-The row order and rownames are kept consistent with the input and across all matrices during the subsetting.
+Given a genotype object containing a list of vartrix matrices, and a minimal number of cells/barcodes for which variant data should be available, returns a list of vartrix matrices with filtered variants. If barcodes are given, start by restricting the matrices to these barcodes before filtering variants.
+The row order and rownames are kept consistent with the input during the subsetting. The subsetting is also applied to the entire genotype object, including reference genotypes and variant metadata. Stores the coverage information in genotype$coverage.
 }
 \examples{
-MyVartrixMatrices <- PrefilterVartrix(MyVartrixMatrices, min.cells=10)
+MyFilteredGenotypeObject <- PrefilterVartrix(MyGenotypeObject, min.cells=10)
 }
 \keyword{genotypes}
 \keyword{variants}

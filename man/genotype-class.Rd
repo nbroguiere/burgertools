@@ -29,7 +29,7 @@
 
 \S4method{$}{genotype}(x, name)
 
-\S4method{[[}{genotype,ANY,ANY}(x, i = TRUE, j = TRUE)
+\S4method{[[}{genotype,ANY,ANY}(x, i, j, ...)
 
 \S4method{$}{genotype}(x, name) <- value
 
@@ -75,7 +75,7 @@ Standard generic methods can be used on the genotype object. In particular, the 
 
 \item \code{[}: Access matrix values in a genotype object.
 
-\item \code{[<-}: Assign matrix values in a genotype object
+\item \code{[<-}: Assign genotype matrix values in a genotype object
 
 \item \code{$}: Access metadata columns in a genotype object
 
@@ -110,6 +110,8 @@ Standard generic methods can be used on the genotype object. In particular, the 
 \item{\code{metadata}}{A data.frame containing variant metadata.}
 
 \item{\code{variants}}{A character vector listing the variants described in the object, in the same order as the rows of the matrix and metadata slots.}
+
+\item{\code{vartrix}}{A list of vartrix matrices}
 
 \item{\code{variants_by_coverage}}{A character vector listing the variants sorted from max coverage (number of cells in which there is data) to min.}
 
