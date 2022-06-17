@@ -46,7 +46,8 @@ ClassifyManual <- function(object, gates, metadata.name="celltype"){
   signatures.available <- c(colnames(object@meta.data),rownames(object))
   unique.signatures.needed <- unique(unlist(lapply(strsplit(unlist(subgates),"<|>"),"[",1)))
   if(length(intersect(signatures.available,unique.signatures.needed))!=length(unique.signatures.needed)){
-    error(paste0("Some features / signatures were not found in the metadata or current assay:\n",paste0(setdiff(unique.signatures.needed,signatures.available),collapse=" ")))
+    warning(paste0("Some features / signatures were not found in the metadata or current assay:\n",paste0(setdiff(unique.signatures.needed,signatures.available),collapse=" "),"\nAborting."))
+    return(object)
   }
   df <- cbind(object@meta.data[,intersect(colnames(object@meta.data),unique.signatures.needed)],
             t(as.data.frame(object[[DefaultAssay(object)]]@data[setdiff(unique.signatures.needed,colnames(object@meta.data)),])))
