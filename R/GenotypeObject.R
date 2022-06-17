@@ -24,7 +24,7 @@
 #' @slot variants_by_information A character vector listing the variants sorted from max information (excess entropy in single cell data) to min.
 #' @slot informative_variants A character vector listing the most informative variants, used for downstream clustering analysis.
 #' @keywords genotype vcf vep variants
-#' @export
+#' @exportClass
 #' @examples
 #' genotypes <- ReadVcf("Myfolder/MyVcf.vcf")
 #' genotypes # Preview the contents of the genotype object
