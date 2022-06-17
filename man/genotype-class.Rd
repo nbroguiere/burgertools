@@ -61,7 +61,7 @@ For efficient handling, the genotypes are stored as a sparse numeric matrix. Whe
 2 for "alt/alt" or in vcf "1/1"
 3 for "ref/alt" or in vcf "0/1"
 
-The objects can also be created manually typically with: GenotypeObject(matrix, metadata, variants).
+The objects can also be created manually typically with CreateGenotypeObject().
 
 The genotype data is found in the matrix slot, and information concerning the variants is contained in the metadata slot. The list of variants currently in the object is found in the variants slot.
 
