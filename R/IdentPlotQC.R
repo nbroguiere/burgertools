@@ -37,19 +37,21 @@ IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", l
     warning(paste("Idents not found:",toString(ident.not.found)))
     ident <- intersect(ident, colnames(object@meta.data))
   }
+  if(length(ident)==1){
+    if(length(unique(object@meta.data[,ident]))==2 & is.null(colors.use)){
+      colors.use <- c("grey","blue")
+    }
+  }
   if(x %in% colnames(object@meta.data)){
     if(y %in% colnames(object@meta.data)){
       if(length(ident)==0){
         warning("No valid ident found. Abort.")
         return()
       }else if(length(ident)==1 & interactive){
-        if(length(unique(object@meta.data$ident))==2 & is.null(colors.use)){
-          colors.use <- c("grey","blue")
-        }
         if(log.scale){
           p <- plotly::layout(plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size), colors = colors.use, ...), xaxis=list(type="log"), yaxis=list(type="log"))
         }else{
-          p <- plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size), color=colors.use, ...)
+          p <- plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size), colors=colors.use, ...)
         }
       }else{
         p <- list()
