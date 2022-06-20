@@ -27,7 +27,7 @@
 #' IdentPlotQC(MySeuratObject,"celltype")
 
 IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA, pt.size=1, interactive=TRUE, ...){
-  if(missing(colors)){
+  if(!exists(colors)){
     if(length(unique(object@meta.data$ident))==2){
       colors <- c("grey","blue")
     }else{
