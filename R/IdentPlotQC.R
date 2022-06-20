@@ -14,6 +14,7 @@
 #' @param ncol Number of columns (Default = NA, determined from the data)
 #' @param pt.size The point size, passed to ggplot (Default: 1)
 #' @param interactive Enable interactive plot? (Default: TRUE).
+#' @param ... Other arguments passed to plot_ly in the case of interactive plots, for example colors can be set to a colorbrewer2.org palette name (e.g. "YlOrRd" or "Blues"), or a vector of colors to interpolate in hexadecimal "#RRGGBB" format, or a color interpolation function like colorRamp().
 #' @return If one ident is plotted and interactive is enabled, returns interactive plot (plotly). If several, returns a ggplot grid (cowplot).
 #' @keywords QC plot with cell types highlighted.
 #' @export
@@ -26,6 +27,13 @@
 #' IdentPlotQC(MySeuratObject,"celltype")
 
 IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA, pt.size=1, interactive=TRUE, ...){
+  if(missing(colors)){
+    if(length(unique(object@meta.data$ident))==2){
+      colors <- c("grey","blue")
+    }else{
+      colors <- NULL
+    }
+  }
   if(sum(is.na(ident))){
     object$tmp <- as.character(Idents(object))
     ident <- "tmp"
@@ -42,9 +50,9 @@ IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", l
         return()
       }else if(length(ident)==1 & interactive){
         if(log.scale){
-          p <- plotly::layout(plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident), ...), mode="markers", marker = list(size=3.5*pt.size)), xaxis=list(type="log"), yaxis=list(type="log"))
+          p <- plotly::layout(plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size), colors = colors, ...), xaxis=list(type="log"), yaxis=list(type="log"))
         }else{
-          p <- plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size), ...)
+          p <- plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size), color=colors, ...)
         }
       }else{
         p <- list()

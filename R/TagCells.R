@@ -15,7 +15,7 @@
 #' TagCells(SeuratObject,FeaturePlot(SeuratObject,"GAPDH")) # Can also pass a custom plot.
 #' TagCells(SeuratObject,FeaturePlot(SeuratObject,"GAPDH"),ident.name="SelectedCells",ident.levels=c("Yes","no")) # Custom name for the new metadata column and levels.
 TagCells <- function(object, plot="DimPlot", ident.name = "tag", ident.levels = c(TRUE,FALSE), ...){
-  if(plot=="DimPlot"){
+  if(plot[1]=="DimPlot"){
     cells.tmp <- Seurat::CellSelector(Seurat::DimPlot(object, ...))
   }else{
     cells.tmp <- Seurat::CellSelector(plot)

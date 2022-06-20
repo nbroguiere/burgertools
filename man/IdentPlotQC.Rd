@@ -32,6 +32,8 @@ IdentPlotQC(
 \item{pt.size}{The point size, passed to ggplot (Default: 1)}
 
 \item{interactive}{Enable interactive plot? (Default: TRUE).}
+
+\item{...}{Other arguments passed to plot_ly in the case of interactive plots, for example colors can be set to a colorbrewer2.org palette name (e.g. "YlOrRd" or "Blues"), or a vector of colors to interpolate in hexadecimal "#RRGGBB" format, or a color interpolation function like colorRamp().}
 }
 \value{
 If one ident is plotted and interactive is enabled, returns interactive plot (plotly). If several, returns a ggplot grid (cowplot).
