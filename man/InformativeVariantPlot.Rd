@@ -14,7 +14,7 @@ InformativeVariantPlot(
   check.overlap = T,
   pt.size = 1,
   text.size = 3.5,
-  colors.use = c("grey", "blue", "red"),
+  colors.use = c("grey", "#8888FF", "red"),
   log.scale = F,
   min.entropy = 0.001,
   assay = "VAR"
@@ -39,7 +39,7 @@ InformativeVariantPlot(
 
 \item{text.size}{numeric(1). The text size (Default:3.5).}
 
-\item{colors.use}{character(3). The colors for other variants, informative variants, and high impact / high tcga percent variants, in this order (Default: c("grey","blue","red")).}
+\item{colors.use}{character(3). The colors for other variants, informative variants, and high impact / high tcga percent variants, in this order (Default: c("grey","#8888FF","red")).}
 
 \item{log.scale}{logical(1). Should the axis be switched to log scale (Default: FALSE).}
 
