@@ -11,7 +11,7 @@
 #' @param check.overlap logical(1). Should overlapping labels be omitted (Default: TRUE).
 #' @param pt.size numeric(1). The point size (Default: 1).
 #' @param text.size numeric(1). The text size (Default:3.5).
-#' @param colors.use character(3). The colors for other variants, informative variants, and high impact / high tcga percent variants, in this order (Default: c("grey","blue","red")).
+#' @param colors.use character(3). The colors for other variants, informative variants, and high impact / high tcga percent variants, in this order (Default: c("grey","#8888FF","red")).
 #' @param log.scale logical(1). Should the axis be switched to log scale (Default: FALSE).
 #' @param min.entropy numeric(1). Minimal excess_entropy value for variants to be represented by a dot in the graph. Values above 0, even small, greatly speed up rendering without noticeably changing the result, if many very low informative variants are present. More critical when using log scale, as low entropy variants are then visible (Default:1e-3).
 #' @param assay character(1). If the object is a seurat object, which assay contains the consensus variant data (Default: "VAR").
@@ -22,7 +22,7 @@
 #' InformativeVariantPlot(MyObject,label.column = "summary",min.impact = "MODERATE") # Only label the variants that have a predicted impact more than moderate
 #' InformativeVariantPlot(MyObject,label.column = "summary",min.impact = "MODERATE",min.tcga.percent = 1,label.only.informative=F,log.scale = T) # Add the restriction to only label above a minimal tcga percent. The results are few, so label even non-informative variants, and activate log scale to see better the low coverage variants.
 #' @export
-InformativeVariantPlot <- function(object, do.label=T, label.column="variants", label.only.informative=T, min.impact=NA, min.tcga.percent=NA, check.overlap=T, pt.size=1, text.size=3.5, colors.use=c("grey","blue","red"),log.scale=F,min.entropy=1e-3,assay="VAR"){
+InformativeVariantPlot <- function(object, do.label=T, label.column="variants", label.only.informative=T, min.impact=NA, min.tcga.percent=NA, check.overlap=T, pt.size=1, text.size=3.5, colors.use=c("grey","#8888FF","red"),log.scale=F,min.entropy=1e-3,assay="VAR"){
   # If input is a Seurat object, convert to genotype object:
   if(class(object)=="Seurat"){
     object <- GenotypeObject(metadata = object[[assay]]@meta.features, variants = rownames(object[[assay]]), informative_variants = object[[assay]]@var.features)

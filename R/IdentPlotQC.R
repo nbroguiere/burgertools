@@ -14,6 +14,8 @@
 #' @param ncol Number of columns (Default = NA, determined from the data)
 #' @param pt.size The point size, passed to ggplot (Default: 1)
 #' @param interactive Enable interactive plot? (Default: TRUE).
+#' @param colors.use For interactive plots, a colorbrewer2.org palette name (e.g. "YlOrRd" or "Blues"), or a vector of colors to interpolate in hexadecimal "#RRGGBB" format, or a color interpolation function like colorRamp(). For non-interactive plots, a vector of colors passed to ggplot2 scale_color_manual. If the vector is named, the values will be matched based on names.
+#' @param ... Other arguments passed to plot_ly in the case of interactive plots.
 #' @return If one ident is plotted and interactive is enabled, returns interactive plot (plotly). If several, returns a ggplot grid (cowplot).
 #' @keywords QC plot with cell types highlighted.
 #' @export
@@ -25,7 +27,7 @@
 #' MySeuratObject <- Classify(MySeuratObject,names(SignatureList),"CellType") # Automatic cell type annotation based on cell type signatures.
 #' IdentPlotQC(MySeuratObject,"celltype")
 
-IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA, pt.size=1, interactive=TRUE, ...){
+IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA, pt.size=1, interactive=TRUE, colors.use=NULL, ...){
   if(sum(is.na(ident))){
     object$tmp <- as.character(Idents(object))
     ident <- "tmp"
@@ -35,6 +37,11 @@ IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", l
     warning(paste("Idents not found:",toString(ident.not.found)))
     ident <- intersect(ident, colnames(object@meta.data))
   }
+  if(length(ident)==1){
+    if(length(unique(object@meta.data[,ident]))==2 & is.null(colors.use)){
+      colors.use <- c("grey","#4444FF")
+    }
+  }
   if(x %in% colnames(object@meta.data)){
     if(y %in% colnames(object@meta.data)){
       if(length(ident)==0){
@@ -42,9 +49,9 @@ IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", l
         return()
       }else if(length(ident)==1 & interactive){
         if(log.scale){
-          p <- plotly::layout(plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident), ...), mode="markers", marker = list(size=3.5*pt.size)), xaxis=list(type="log"), yaxis=list(type="log"))
+          p <- plotly::layout(plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size), colors = colors.use, ...), xaxis=list(type="log"), yaxis=list(type="log"))
         }else{
-          p <- plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size), ...)
+          p <- plotly::plot_ly(data = object@meta.data,type = "scatter", x=as.formula(paste0("~",x)), y=as.formula(paste0("~",y)), color=as.formula(paste0("~",ident)), mode="markers", marker = list(size=3.5*pt.size), colors=colors.use, ...)
         }
       }else{
         p <- list()
@@ -53,6 +60,9 @@ IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", l
             p[[n]] <- ggplot2::ggplot(object@meta.data) + geom_point(aes_string(x=x, y=y, color=n), size=pt.size) + scale_x_continuous(trans='log10')+scale_y_continuous(trans='log10')
           }else{
             p[[n]] <- ggplot2::ggplot(object@meta.data) + geom_point(aes_string(x=x, y=y, color=n), size=pt.size)
+          }
+          if(!is.null(colors.use)){
+            p[[n]] <- p[[n]] + ggplot2::scale_color_manual(values = colors.use)
           }
         }
         if(is.na(ncol)){

@@ -60,7 +60,7 @@ ReadVartrix <- function(genotype, ref, alt, barcodes=c(), tolerance.percent=5, s
   if(length(barcodes))          colnames(vartrix_ref) <- barcodes
   if(length(genotype@variants)) rownames(vartrix_ref) <- genotype@variants
 
-  cat("Reading the alternative allele count matrix\n")
+  cat("Reading the alternate allele count matrix\n")
   vartrix_alt <- Matrix::drop0(Matrix::readMM(alt))
   if(length(barcodes))          colnames(vartrix_alt) <- barcodes
   if(length(genotype@variants)) rownames(vartrix_alt) <- genotype@variants
