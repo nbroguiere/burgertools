@@ -4,16 +4,24 @@
 \alias{Classify}
 \title{Automatic cell type classification based on signatures}
 \usage{
-Classify(object, signatures, expected.values = NA, metadata.name = "celltype")
+Classify(
+  object,
+  signatures,
+  expected.values = NA,
+  metadata.name = "celltype",
+  cell.names = NA
+)
 }
 \arguments{
 \item{object}{Seurat object. Must contain nFeature_RNA and percent.mito metadata columns, or the x and y plot parameters must be changed accordingly to plot other QC info otherwise.}
 
-\item{signatures}{character(n) or named list(n). Names of the signatures to use. Must correspond to names of metadata columns or features is the current default assay. If a named list of signatures is passed, the names of the list will be used.}
+\item{signatures}{character(n) or named list(n). Names of the signatures to use. Must correspond to names of metadata columns or features is the current default assay. If a named list of signatures is passed, the names of the list will be used and the content ignored.}
 
 \item{expected.values}{numeric(n). Expected values for the signatures, used for normalization of the signatures before classifying cells. If NA (Default), normalized to max. If 1, no normalization. If The vector/list is named and the names match the signature names, the names will be used to match each scale factor to the right signature. If no matching names are given, the expected values are assumed to be given in the same order as the signatures.}
 
 \item{metadata.name}{character(1). The name of the new metadata column where cell type annotations are stored (Default: celltype)}
+
+\item{cell.names}{character(n). Give only if the signature names should not be used as celltypes names, but rather be replaced by these cell names.}
 }
 \value{
 A Seurat object with an additional metadata column containing the cell type annotations and Idents() set to these annotations.

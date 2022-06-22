@@ -6,7 +6,7 @@
 \usage{
 GenotypeSimilarityHeatmap(
   genotypes,
-  key.title = "Fraction of \\nmatching mutations",
+  key.title = "Fraction of \\nmatching variants",
   limits = NULL,
   plot_method = "plotly",
   colors = viridis::viridis(n = 256, alpha = 1, begin = 0, end = 1, option = "viridis"),
@@ -16,7 +16,7 @@ GenotypeSimilarityHeatmap(
 \arguments{
 \item{genotypes}{genotype object, contains several genotypes to be compared on the heatmap.}
 
-\item{key.title}{character(1), the legend/key. Default: "Fraction of matching mutations"}
+\item{key.title}{character(1), the legend/key. Default: "Fraction of matching variants"}
 
 \item{limits}{numeric(2), the limits of the color scale (typically c(0,1), which are the extremes values similarities could take), or NULL for min/max in current data.}
 

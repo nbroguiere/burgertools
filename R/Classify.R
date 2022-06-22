@@ -5,9 +5,10 @@
 #' Each single cell will be associated to the cell type whose signature is maximal on the cell. A list of expected values for the signatures is optional (typically obtained by checking the typical signature score for cells of known identity beforehand). If given, expected values are used to normalize signature scores before classifying cells to the signature having maximal score. It is strongly recommended to use imputed data to score cell type signatures, to avoid misclassifications due to dropouts.
 #'
 #' @param object Seurat object. Must contain nFeature_RNA and percent.mito metadata columns, or the x and y plot parameters must be changed accordingly to plot other QC info otherwise.
-#' @param signatures character(n) or named list(n). Names of the signatures to use. Must correspond to names of metadata columns or features is the current default assay. If a named list of signatures is passed, the names of the list will be used.
+#' @param signatures character(n) or named list(n). Names of the signatures to use. Must correspond to names of metadata columns or features is the current default assay. If a named list of signatures is passed, the names of the list will be used and the content ignored.
 #' @param expected.values numeric(n). Expected values for the signatures, used for normalization of the signatures before classifying cells. If NA (Default), normalized to max. If 1, no normalization. If The vector/list is named and the names match the signature names, the names will be used to match each scale factor to the right signature. If no matching names are given, the expected values are assumed to be given in the same order as the signatures.
 #' @param metadata.name character(1). The name of the new metadata column where cell type annotations are stored (Default: celltype)
+#' @param cell.names character(n). Give only if the signature names should not be used as celltypes names, but rather be replaced by these cell names.
 #' @return A Seurat object with an additional metadata column containing the cell type annotations and Idents() set to these annotations.
 #' @keywords Cell type classification celltype Classifier
 #' @export
@@ -18,7 +19,7 @@
 #' MySeuratObject <- ScoreSignatures(MySeuratObject,SignatureList)
 #' MySeuratObject <- Classify(MySeuratObject,SignatureList) # Automatic annotation based on cell type signatures, stored in metadata column "celltype".
 
-Classify <- function(object, signatures, expected.values=NA, metadata.name="celltype"){
+Classify <- function(object, signatures, expected.values=NA, metadata.name="celltype", cell.names=NA){
   if(is.list(signatures)){
     sign.names <- names(signatures)
   }else if(is.vector(signatures, mode="character")){
@@ -66,7 +67,17 @@ Classify <- function(object, signatures, expected.values=NA, metadata.name="cell
   for(n in sign.names){
     sign.scores[,n] <- df[,n]/expected.values[n]
   }
+
+  # Classify to max signature
   object[[metadata.name]] <- colnames(sign.scores)[max.col(m = sign.scores)]
+
+  # Rename the cells if cell.names is defined:
+  if(!is.na(cell.names[1])){
+    cell.names <- setNames(cell.names,sign.names)
+    object[[metadata.name]] <- cell.names[object[[metadata.name,drop=T]]]
+  }
+
+  # Set it as current identities.
   Idents(object) <- object[[metadata.name]]
   return(object)
 }
