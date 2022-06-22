@@ -4,7 +4,14 @@
 \alias{SignatureScatterPlot}
 \title{Scatter plots of signature scores on single cells}
 \usage{
-SignatureScatterPlot(object, sign1, sign2, pt.size = 0.8, n.rows = NA)
+SignatureScatterPlot(
+  object,
+  sign1,
+  sign2,
+  pt.size = 0.8,
+  n.rows = NA,
+  color.by = Idents(object)
+)
 }
 \arguments{
 \item{object}{Seurat object.}
@@ -21,7 +28,7 @@ SignatureScatterPlot(object, sign1, sign2, pt.size = 0.8, n.rows = NA)
 A plotly grid of plots
 }
 \description{
-Plots various signature scores against another signature score, in order to help define gates for a cell type. In the scatter plot, each point represents a cell in the Seurat object.
+Plots various signature scores (or features) against another signature score, in an interactive plot, in order to help define gates. In the scatter plot, each point represents a cell in the Seurat object. The points can be colored either by identity or according to a feature. Generalizes FeatureScatter() in that several scatter plots can be done at once, features and signatures can be pulled from several assays as well as from the metadata simultaneously, coloring can be done according to a feature instead of Idents(), and hovering can be used to get coordinates.
 }
 \examples{
 SignatureNames <- names(MySignatureList)

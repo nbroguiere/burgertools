@@ -14,7 +14,7 @@ Impute(
   n.jobs = 6,
   assay.use = "RNA",
   slot.use = "data",
-  name = "imputed"
+  name = paste0("imputed.", assay.use)
 )
 }
 \arguments{
@@ -36,7 +36,7 @@ Impute(
 
 \item{slot.use}{Name of the slot to impute (Default: "data").}
 
-\item{name}{Name of the assay storing the imputed data (Default: "imputed").}
+\item{name}{Name of the slot in which the imputed assay is stored (Default: paste0("imputed.",assay.use)).}
 }
 \value{
 Seurat object with an additional slot containing MAGIC imputed data.
@@ -46,7 +46,7 @@ This function is a wrapper of the MAGIC imputation function to easily impute Seu
 }
 \examples{
 MySeuratObject <- Impute(MySeuratObject)
-MySeuratObject[["imputed"]]
+MySeuratObject[["imputed.RNA"]]
 }
 \keyword{MAGIC}
 \keyword{Rmagic}

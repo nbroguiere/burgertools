@@ -1,6 +1,6 @@
 #' Automatic cell type classification based on signatures
 #'
-#' This function performs a simple automatic cell type classification based on signatures or other scores stored in the metadata or features in the current active assay, data slot. Useful for automating the simple first broad classification of cell types before a cell-type aware QC (for example, taking into account that immune cells have less detected genes/transcripts, and fibroblast less mitochondrial content, than epithelial/cancer cells).
+#' This function performs a simple automatic cell type classification based on signatures or other scores stored in the metadata or features (unique name or with in the format assay_feature). Useful for automating the simple first broad classification of cell types before a cell-type aware QC (for example, taking into account that immune cells have less detected genes/transcripts, and fibroblast less mitochondrial content, than epithelial/cancer cells).
 #'
 #' Each single cell will be associated to the cell type whose signature is maximal on the cell. A list of expected values for the signatures is optional (typically obtained by checking the typical signature score for cells of known identity beforehand). If given, expected values are used to normalize signature scores before classifying cells to the signature having maximal score. It is strongly recommended to use imputed data to score cell type signatures, to avoid misclassifications due to dropouts.
 #'
@@ -9,6 +9,7 @@
 #' @param expected.values numeric(n). Expected values for the signatures, used for normalization of the signatures before classifying cells. If NA (Default), normalized to max. If 1, no normalization. If The vector/list is named and the names match the signature names, the names will be used to match each scale factor to the right signature. If no matching names are given, the expected values are assumed to be given in the same order as the signatures.
 #' @param metadata.name character(1). The name of the new metadata column where cell type annotations are stored (Default: celltype)
 #' @param cell.names character(n). Give only if the signature names should not be used as celltypes names, but rather be replaced by these cell names.
+#' @param slot character(1). If some signatures are stored as features, which slot should be used (Default: "data").
 #' @return A Seurat object with an additional metadata column containing the cell type annotations and Idents() set to these annotations.
 #' @keywords Cell type classification celltype Classifier
 #' @export
@@ -19,7 +20,7 @@
 #' MySeuratObject <- ScoreSignatures(MySeuratObject,SignatureList)
 #' MySeuratObject <- Classify(MySeuratObject,SignatureList) # Automatic annotation based on cell type signatures, stored in metadata column "celltype".
 
-Classify <- function(object, signatures, expected.values=NA, metadata.name="celltype", cell.names=NA){
+Classify <- function(object, signatures, expected.values=NA, metadata.name="celltype", cell.names=NA, slot="data"){
   if(is.list(signatures)){
     sign.names <- names(signatures)
   }else if(is.vector(signatures, mode="character")){
@@ -28,16 +29,9 @@ Classify <- function(object, signatures, expected.values=NA, metadata.name="cell
     warning("The format of the 'signatures' argument (i.e. ",typeof(signatures),") is not supported. Provide a vector of metadata column / current assay feature names, or a named signature list.")
     return(object)
   }
-  sign.available <- c(colnames(object@meta.data),rownames(object))
-  sign.not.found <- setdiff(sign.names, sign.available)
-  if(length(sign.not.found)>0){
-    warning(paste("Signatures/features not found, proceeding without them:",toString(sign.not.found)))
-    sign.names <- intersect(sign.names, colnames(object@meta.data))
-  }
 
   # Create a df with the signatures and features to be used:
-  df <- cbind(object@meta.data[,intersect(sign.names,colnames(object@meta.data))],
-              t(as.data.frame(object[[DefaultAssay(object)]]@data[setdiff(sign.names,colnames(object@meta.data)),])))
+  df <- GatherFeatures(object, sign.names, slot=slot)
 
   if(sum(is.na(expected.values))){
     print("expected.values=NA - Normalizing the signatures to their max.")
@@ -77,7 +71,7 @@ Classify <- function(object, signatures, expected.values=NA, metadata.name="cell
     object[[metadata.name]] <- cell.names[object[[metadata.name,drop=T]]]
   }
 
-  # Set it as current identities.
+  # Make it the default Idents and return
   Idents(object) <- object[[metadata.name]]
   return(object)
 }

@@ -41,6 +41,9 @@ IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", l
     if(length(unique(object@meta.data[,ident]))==2 & is.null(colors.use)){
       colors.use <- c("grey","#4444FF")
     }
+    if(length(unique(object@meta.data[,ident]))==1 & is.null(colors.use)){
+      colors.use <- c("#4444FF")
+    }
   }
   if(x %in% colnames(object@meta.data)){
     if(y %in% colnames(object@meta.data)){

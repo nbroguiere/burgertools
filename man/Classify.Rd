@@ -9,7 +9,8 @@ Classify(
   signatures,
   expected.values = NA,
   metadata.name = "celltype",
-  cell.names = NA
+  cell.names = NA,
+  slot = "data"
 )
 }
 \arguments{
@@ -22,12 +23,14 @@ Classify(
 \item{metadata.name}{character(1). The name of the new metadata column where cell type annotations are stored (Default: celltype)}
 
 \item{cell.names}{character(n). Give only if the signature names should not be used as celltypes names, but rather be replaced by these cell names.}
+
+\item{slot}{character(1). If some signatures are stored as features, which slot should be used (Default: "data").}
 }
 \value{
 A Seurat object with an additional metadata column containing the cell type annotations and Idents() set to these annotations.
 }
 \description{
-This function performs a simple automatic cell type classification based on signatures or other scores stored in the metadata or features in the current active assay, data slot. Useful for automating the simple first broad classification of cell types before a cell-type aware QC (for example, taking into account that immune cells have less detected genes/transcripts, and fibroblast less mitochondrial content, than epithelial/cancer cells).
+This function performs a simple automatic cell type classification based on signatures or other scores stored in the metadata or features (unique name or with in the format assay_feature). Useful for automating the simple first broad classification of cell types before a cell-type aware QC (for example, taking into account that immune cells have less detected genes/transcripts, and fibroblast less mitochondrial content, than epithelial/cancer cells).
 }
 \details{
 Each single cell will be associated to the cell type whose signature is maximal on the cell. A list of expected values for the signatures is optional (typically obtained by checking the typical signature score for cells of known identity beforehand). If given, expected values are used to normalize signature scores before classifying cells to the signature having maximal score. It is strongly recommended to use imputed data to score cell type signatures, to avoid misclassifications due to dropouts.

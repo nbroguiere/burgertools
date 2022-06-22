@@ -21,14 +21,14 @@
 ScoreSignature <- function(object, features, name = "Signature", assay.use=NA, slot.use="data"){
   print(paste0("Scoring the signature: ",name))
   if(is.na(assay.use)){
-    if("imputed" %in% names(object@assays)){
-      assay.use <- "imputed"
-      print("Using the imputed assay.")
+    if("imputed.RNA" %in% names(object@assays)){
+      assay.use <- "imputed.RNA"
+      print("Using the imputed.RNA assay.")
     }else if("RNA" %in% names(object@assays)){
       assay.use <- "RNA"
       print("Using the RNA assay.")
     }else{
-      warning("No imputed or RNA assay found in the Seurat object. Provide an assay.")
+      warning("No imputed.RNA or RNA assay found in the Seurat object. Explicitely provide an assay.")
     }
   }
   features.use <- intersect(features,rownames(slot(object[[assay.use]],slot.use)))

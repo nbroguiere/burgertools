@@ -6,8 +6,8 @@
 \usage{
 CrossImpute(
   object,
-  impute.assay = "default_assay",
-  name = "crossimputed",
+  impute.assay = DefaultAssay(object),
+  name = paste0("imputed.", impute.assay),
   impute.features = "all",
   reference.assay = "RNA",
   reference.features = "variable_features",
@@ -21,13 +21,13 @@ CrossImpute(
 \arguments{
 \item{object}{Seurat object.}
 
-\item{impute.assay}{character(1). The name of the assay which should be imputed, or "metadata", or "default_assay" (Default: "default_assay").}
+\item{impute.assay}{character(1). The name of the assay which should be imputed, or "metadata" (Default: DefaultAssay(object)).}
 
-\item{name}{character(1). The name under which the resulting imputed assay is stored in the Seurat object (Default: "crossimputed")}
+\item{name}{character(1). The name under which the resulting imputed assay is stored in the Seurat object (Default: paste0("imputed_",impute.assay))}
 
 \item{impute.features}{character(n). Features on which to run the imputation in the impute.assay, or "all" for all features in the impute.assay, or "variable_features" for the variable features in the impute.assay (Default:"all").}
 
-\item{reference.assay}{character(1). The name of the assay which is appended to the impute.assay to guide imputation distances.}
+\item{reference.assay}{character(1). The name of the assay which is appended to the impute.assay to guide imputation distances (Default: "RNA").}
 
 \item{reference.features}{character(n). Features from the reference.assay to use to guide the imputation of the impute.assay, or "all" for all features in the reference.assay, or "variable_features" for the variable features in the reference.assay (Default:"variable_features").}
 
@@ -49,7 +49,7 @@ This function imputes features in an assay based on (the merger with) another as
 }
 \examples{
 MySeuratObject <- CrossImpute(MySeuratObject,"other_assay_to_impute_based_on_RNA_distances")
-MySeuratObject[["crossimputed"]] # Check result
+MySeuratObject[["imputed-RNA"]] # Check result
 }
 \keyword{MAGIC}
 \keyword{Rmagic}

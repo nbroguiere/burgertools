@@ -11,13 +11,14 @@
 #' @param name Name of the assay storing the imputed data (Default: "imputed").
 #' @param assay.use Name of the assay to impute (Default: "RNA").
 #' @param slot.use Name of the slot to impute (Default: "data").
+#' @param name Name of the slot in which the imputed assay is stored (Default: paste0("imputed.",assay.use)).
 #' @return Seurat object with an additional slot containing MAGIC imputed data.
 #' @keywords MAGIC Rmagic imputation
 #' @export
 #' @examples
 #' MySeuratObject <- Impute(MySeuratObject)
-#' MySeuratObject[["imputed"]]
-Impute <- function(object, features=NULL, append.variable.features=TRUE, npca=40, knn=3, t=2, n.jobs=6, assay.use="RNA", slot.use="data", name="imputed"){
+#' MySeuratObject[["imputed.RNA"]]
+Impute <- function(object, features=NULL, append.variable.features=TRUE, npca=40, knn=3, t=2, n.jobs=6, assay.use="RNA", slot.use="data", name=paste0("imputed.",assay.use)){
   if(!is.null(features)){
     missing.features <- setdiff(unique(unlist(features)), rownames(object))
     features <- intersect(unique(unlist(features)), rownames(object))
