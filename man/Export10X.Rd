@@ -7,7 +7,7 @@
 Export10X(
   object,
   dir,
-  meta_columns = NA,
+  meta_columns = "all",
   append_reductions = c(),
   gzip = T,
   rows = "features.tsv",
@@ -21,7 +21,7 @@ Export10X(
 
 \item{dir}{character(1). The directory in which the data should be exported. Created if non-existent.}
 
-\item{meta_columns}{character(n). Metadata columns that should be exported from the Seurat Object. NA for all, empty vector c() for none. Default: NA.}
+\item{meta_columns}{character(n). Metadata columns that should be exported from the Seurat Object. Can also be "all", or empty vector c() for none. Default: "all".}
 
 \item{append_reductions}{character(n). Name of the dimensionality reductions that should be included with the metadata. Default: none.}
 
