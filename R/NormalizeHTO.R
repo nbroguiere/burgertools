@@ -7,15 +7,14 @@
 #' @param normalize.cells numeric(1). The value to which each cell should be normalized. 0 for no cell-normalization. Default: 100.
 #' @param assay character(1). The name of the assay which should be normalized. Default: "HTO".
 #' @param q numeric(1). Only used if scale.HTO="quantile". The quantile used for normalization.
-#' @param knn numeric(1). Only used if scale.HTO="imputed_max". Passed to CrossImpute.
-#' @param t numeric(1). Only used if scale.HTO="imputed_max". Passed to CrossImpute.
+#' @param imputed.assay character(1). Only used if scale.HTO="imputed_max". The name of the assay that contains imputed HTO data.
 #' @return Returns a Seurat object with normalized HTO data in the data slot.
 #' @keywords HTO normalization
 #' @export
 #' @examples
 #' MySeuratObject <- NormalizeHTO(MySeuratObject)
 
-NormalizeHTO <- function(object, scale.HTO = "stdev", normalize.cells = 100, assay="HTO", q = 0.9, knn = 50, t = 10){
+NormalizeHTO <- function(object, scale.HTO = "stdev", normalize.cells = 100, assay="HTO", q = 0.9, imputed.assay="imputed.HTO"){
   HTO_counts <- GetAssayData(object,"counts",assay)
   if(scale.HTO == "stdev" | scale.HTO==TRUE){
     HTO_counts <- sweep(HTO_counts, 1, matrixStats::rowSds(as.matrix(HTO_counts)), FUN = '/')   # Scale each row (HTO) to its stdev.
@@ -25,8 +24,10 @@ NormalizeHTO <- function(object, scale.HTO = "stdev", normalize.cells = 100, ass
       quantiles[i] <- quantile(HTO_counts[i,], q)
     }
   }else if(scale.HTO == "imputed_max"){
-    object <- CrossImpute(object = object, impute.assay = "HTO", knn = knn, t=t)
-    HTO_counts <- sweep(HTO_counts, 1, matrixStats::rowMaxs(as.matrix(object[["imputed.HTO"]]@data)), FUN = '/')   # Scale each row (HTO) to its max after imputation.
+    if(!imputed.assay %in% Assays(seurat)){
+      stop(imputed.assay," is not present in the Seurat object.")
+    }
+    HTO_counts <- sweep(HTO_counts, 1, matrixStats::rowMaxs(as.matrix(object[[imputed.assay]]@data)), FUN = '/')   # Scale each row (HTO) to its max after imputation.
   }else if(scale.HTO == "no" | scale.HTO == "No" | scale.HTO==FALSE){
   }else{
     stop("Invalid value of scale.HTO. Options are stdev/TRUE/T, quantile, imputed_max, or No/no/FALSE/F.")

@@ -10,8 +10,7 @@ NormalizeHTO(
   normalize.cells = 100,
   assay = "HTO",
   q = 0.9,
-  knn = 50,
-  t = 10
+  imputed.assay = "imputed.HTO"
 )
 }
 \arguments{
@@ -25,9 +24,7 @@ NormalizeHTO(
 
 \item{q}{numeric(1). Only used if scale.HTO="quantile". The quantile used for normalization.}
 
-\item{knn}{numeric(1). Only used if scale.HTO="imputed_max". Passed to CrossImpute.}
-
-\item{t}{numeric(1). Only used if scale.HTO="imputed_max". Passed to CrossImpute.}
+\item{imputed.assay}{character(1). Only used if scale.HTO="imputed_max". The name of the assay that contains imputed HTO data.}
 }
 \value{
 Returns a Seurat object with normalized HTO data in the data slot.

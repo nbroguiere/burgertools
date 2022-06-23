@@ -24,14 +24,13 @@ GenerateGates <- function(signatures, min.main.value=40, max.other.value=25, pop
       signatures <- names(signatures)
     }
   }else if(!is.vector(signatures, mode="character")){
-    warning("The format of the 'signatures' argument (i.e. ",typeof(signatures),") is not supported. Provide a vector of metadata column names, or a list of names, or a named signature list.")
-    return(object)
+    stop("The format of the 'signatures' argument (i.e. ",typeof(signatures),") is not supported. Provide a vector of metadata column names, or a list of names, or a named signature list.")
   }
   if(is.na(population.names[1])){
     population.names <- signatures
   }else{
     if(length(population.names)!=length(signatures)){
-      error("The number of signatures given does not match the number of population names.")
+      stop("The number of signatures given does not match the number of population names.")
     }
   }
   gates <- list()

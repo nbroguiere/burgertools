@@ -7,6 +7,7 @@
 #' @param sign2 character(n). The name of the signature(s) to plot on the y axis.
 #' @param pt.size numeric(1).The point size. Default: 0.8.
 #' @param n.rows numeric(1).The number of rows in the plot grid. NA for automatic smart choice. Default: NA.
+#' @param color.by character(n). The name of a metadata or feature column or a vector of idents or values to be used for point colors.
 #'
 #' @return A plotly grid of plots
 #' @keywords Signature Scatter Plot
@@ -24,19 +25,24 @@ SignatureScatterPlot <- function(object,sign1,sign2,pt.size=0.8,n.rows=NA,color.
   sign2 <- unlist(sign2)
   n <- length(sign2)
 
-  # If the colors are only a column name rather than a vector of cell idents, pick up the column in the metadata:
-  if(length(color.by)==1){
-    color.by <- object@meta.data[,color.by,drop=T]
-  }
 
   # Gather the signatures and features to plot:
   df <- GatherFeatures(object,c(sign1,sign2))
+
+  # Add the color information to the data frame:
+  if(length(color.by)==1){
+    color.by_name <- color.by
+    color.by <- GatherFeatures(SO,color.by)[,1]
+  }else{
+    color.by_name <- "legend"
+  }
   df <- cbind(df,color.by=color.by)
+  colnames(df)[ncol(df)] <- color.by_name
 
   # Plot
   p <- list()
   for(i in 1:n){
-    p[[i]] <- plotly::ggplotly(ggplot2::ggplot(df)+ggplot2::geom_point(aes_string(paste0("`",sign1,"`"),paste0("`",sign2[i],"`"),color="color.by"),size=pt.size)+ggplot2::ylab(label = sign2[i]))
+    p[[i]] <- plotly::ggplotly(ggplot2::ggplot(df)+ggplot2::geom_point(aes_string(paste0("`",sign1,"`"),paste0("`",sign2[i],"`"),color=paste0("`",color.by_name,"`")),size=pt.size)+ggplot2::ylab(label = sign2[i]))
     p[[i]] <- plotly::add_annotations(p[[i]], text = paste0(sign2[i]," vs ",sign1), x = 0.5, y = 1, yref = "paper", xref = "paper", xanchor = "middle", yanchor = "top", showarrow = FALSE, font = list(size = 15))
 
     if(i>1){

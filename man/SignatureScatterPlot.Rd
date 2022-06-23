@@ -23,6 +23,8 @@ SignatureScatterPlot(
 \item{pt.size}{numeric(1).The point size. Default: 0.8.}
 
 \item{n.rows}{numeric(1).The number of rows in the plot grid. NA for automatic smart choice. Default: NA.}
+
+\item{color.by}{character(n). The name of a metadata or feature column or a vector of idents or values to be used for point colors.}
 }
 \value{
 A plotly grid of plots

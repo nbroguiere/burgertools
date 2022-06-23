@@ -6,7 +6,7 @@
 \usage{
 TagCells(
   object,
-  plot = "DimPlot",
+  plot.use = NULL,
   ident.name = "tag",
   ident.levels = c(TRUE, FALSE),
   ...
