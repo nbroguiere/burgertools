@@ -81,7 +81,11 @@ IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", l
             warning(paste("Incorrect number of signatures found (",length(sign.name),")."))
           }
         }
-        p <- cowplot::plot_grid(plotlist = p, ncol= ncol)
+        if(length(p)==1){
+          p <- p[[1]]
+        }else{
+          p <- cowplot::plot_grid(plotlist = p, ncol= ncol)
+        }
       }
       return(p)
     }else{
