@@ -22,11 +22,14 @@ A Seurat object with an additional metadata column containing the cell type anno
 This function performs a cell type classification by gating.
 }
 \details{
-If a list of signatures (sign_a, sign_b...) has been scored with ScoreSignature, cell types (celltype_a, celltype_b...) are defined based on gates (value_xy cutoffs) of the form:
+Based on cell scores (sign_x, which can be signatures from ScoreSignatures, genetic similarities to reference genotypes, normalized hashtag oligo (HTO) values, gene expression, QC parameters etc), cell types (celltype_a, celltype_b...) are defined based on gates (value_xy cutoffs) of the form:
 
-"celltype_a = sign_a > value_aa & sign_b < value_ab, celltype_b = sign_b > value_ba & sign_a < value_ab \link{...}"
+"celltype_a = sign_a > value_aa & sign_b < value_ab,
+celltype_b = sign_b > value_ba & sign_a < value_ab \link{...etc...}"
 
-The signatures can also come from other sources, and simply need to be present either as metadata columns or as features in any assay. In case they are features, the data slot is used.
+Scores are taken from the metadata in priority, otherwise from assays. If found in several assays, the assay to use should be defined by prefixing the feature name with "assay_".
+
+Since single cell data tends to be noisy and have a significant amount of dropouts, imputation is usually a great combination with gating strategies, in a similar fashion to gaussian filtering needed before thresholding in most image analysis workflows. For this, see Impute() and CrossImpute().
 }
 \examples{
 # MySeuratObject should contain an RNA slot with log-normalized data assay.
