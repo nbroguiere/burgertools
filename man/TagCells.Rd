@@ -28,10 +28,10 @@ A Seurat object with an additional metadata column containing the cell type anno
 This function is a CellSelector wrapper that creates a new metadata column with two levels (TRUE and FALSE by default) and sets it as the new identity. Used as a convenience to track groups of cells across plots particularly during QC.
 }
 \examples{
-TagCells(SeuratObject) # By default, tagging on a DimPlot.
-SO[,SO$tag] # Seurat object restricted to the tagged cells
-TagCells(SeuratObject,FeaturePlot(SeuratObject,"GAPDH")) # Can also pass a custom plot.
-TagCells(SeuratObject,FeaturePlot(SeuratObject,"GAPDH"),ident.name="SelectedCells",ident.levels=c("Yes","no")) # Custom name for the new metadata column and levels.
+SeuratObject <- TagCells(SeuratObject) # By default, tagging on a DimPlot.
+SeuratObject[,SO$tag] # Seurat object restricted to the tagged cells
+SeuratObject <- TagCells(SeuratObject,FeaturePlot(SeuratObject,"GAPDH")) # Can also pass a custom plot.
+SeuratObject <- TagCells(SeuratObject,FeaturePlot(SeuratObject,"GAPDH"),ident.name="SelectedCells",ident.levels=c("Yes","no")) # Custom name for the new metadata column and levels.
 }
 \keyword{Cell}
 \keyword{Classifier}
