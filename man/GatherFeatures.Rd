@@ -9,13 +9,13 @@ GatherFeatures(object, features, slot = "data")
 \arguments{
 \item{object}{Seurat object.}
 
-\item{features}{character(n). Metadata columns and/or feature names.}
+\item{features}{character(n). Metadata columns and/or feature names, or assay feature pairs in the form assay_feature.}
 }
 \value{
 Returns a data frame with features or signatures / metadata columns as columns and cells as rows, in the same order as the cells/barcodes in the Seurat object.
 }
 \description{
-Gather into a dataframe several metadata columns and features scattered in various assays of a Seurat object. Accepts the format assay_feature to define a feature that is present in several assays non-ambiguously.
+Gather into a dataframe several metadata columns and features scattered in various assays of a Seurat object. Accepts the format assay_feature to define a feature that is present in several assays non-ambiguously. Otherwise, will pick the features in priority from the default assay, or if not possible return an error.
 }
 \examples{
 df <- GatherFeatures(MySeuratObject,c("nFeature_RNA","RNA_GAPDH"))
