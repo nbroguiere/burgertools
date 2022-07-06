@@ -32,7 +32,7 @@ SignatureScatterPlot <- function(object,sign1,sign2,pt.size=0.8,n.rows=NA,color.
   # Add the color information to the data frame:
   if(length(color.by)==1){
     color.by_name <- color.by
-    color.by <- GatherFeatures(SO,color.by)[,1]
+    color.by <- GatherFeatures(object,color.by)[,1]
   }else{
     color.by_name <- "legend"
   }
