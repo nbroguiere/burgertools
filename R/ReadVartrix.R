@@ -54,7 +54,7 @@ ReadVartrix <- function(genotype, ref, alt, barcodes=c(), tolerance.percent=5, s
     return(genotype)
   }
   if(dim(vartrix_ref)[2]!=length(barcodes)){
-    warning(paste0("The number of lines in the vartrix reference matrix (",dim(vartrix_ref)[2],") does not match the number of variants in the genotype object (",length(barcodes),"). Aborting."))
+    warning(paste0("The number of columns in the vartrix reference matrix (",dim(vartrix_ref)[2],") does not match the number of barcodes (",length(barcodes),"). Aborting."))
     return(genotype)
   }
   if(length(barcodes))          colnames(vartrix_ref) <- barcodes

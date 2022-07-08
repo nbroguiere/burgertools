@@ -7,7 +7,7 @@
 CreateGenotypeObject(
   matrix = NULL,
   metadata = NULL,
-  vartrix = NULL,
+  vartrix = list(),
   variants = NULL,
   ...
 )

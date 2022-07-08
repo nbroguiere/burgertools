@@ -26,16 +26,16 @@
 #' @return Returns a genotype object.
 #' @keywords genotype vcf vep variants
 #' @export
-CreateGenotypeObject <- function(matrix=NULL, metadata=NULL, vartrix=NULL, variants=NULL, ...){
+CreateGenotypeObject <- function(matrix=NULL, metadata=NULL, vartrix=list(), variants=NULL, ...){
   if(is.null(variants)){
-    if(rownames(matrix)!=rownames(metadata)){
+    if(!dplyr::setequal(rownames(matrix),rownames(metadata))){
       warning("The row names in the matrix and metadata do not match, and list of variants is not given. Aborting.")
     }else{
       variants <- rownames(matrix)
     }
   }
-  rownames(matrix) <- variants
-  rownames(metadata) <- variants
-  rownames(vartrix) <- variants
+  if(!is.null(matrix)) rownames(matrix) <- variants
+  if(!is.null(metadata)) rownames(metadata) <- variants
+  if(length(vartrix)) rownames(vartrix) <- variants
   return(GenotypeObject(matrix=matrix,metadata=metadata,vartrix=vartrix,variants=variants))
 }
