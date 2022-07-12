@@ -43,6 +43,9 @@ FindDifferentVariants <- function(object, ident.1, ident.2=NULL, min.cells=15, s
   tmp1 <- Matrix::rowSums((variants_ident_1_ref+variants_ident_1_alt)>0)
   tmp2 <- Matrix::rowSums((variants_ident_2_ref+variants_ident_2_alt)>0)
   keep <- tmp1>min.cells & tmp2>min.cells
+  if(!sum(keep)){
+    stop("No variants are present in the minimum requested number of cells in both populations, aborting.")
+  }
   variant.names <- rownames(variants_ident_1_ref)[keep]
   variants_ident_1_ref <- Matrix::rowSums(variants_ident_1_ref[keep,])
   variants_ident_1_alt <- Matrix::rowSums(variants_ident_1_alt[keep,])
