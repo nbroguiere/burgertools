@@ -4,7 +4,7 @@
 #'
 #' This is useful when making scRNA-seq from heterogeneous samples: for example immune cells are small and might be discarded as debris from much larger epithelial cancer cells if one is not aware of the differences in QC parameters occuring between various cell types.
 #' @param object Seurat object. Must contain nFeature_RNA and percent.mito metadata columns, or the x and y plot parameters must be changed accordingly to plot other QC info otherwise.
-#' @param signatures A vector containing the names of the signatures to highlight in color. Must correspond to names of metadata columns. If a named list of signatures is passed, the names of the list will be used. If values are not found in the column, they will be picked from imputed or default assay in this order.
+#' @param signatures A vector containing the names of the signatures to highlight in color. Must correspond to names of metadata columns. If a named list of signatures is passed, the names of the list will be used. If values are not found in the metadata, they will be picked from imputed.RNA or DefaultAssay(SO) in this order.
 #' @param x Which parameter to set to the x axis in the QC plot (Default: nFeature_RNA).
 #' @param y Which parameter to set to the y axis in the QC plot (Default: percent.mito).
 #' @param log.scale Whether to plot with log.scale or not (Default: TRUE)
@@ -26,8 +26,7 @@ SignaturePlotQC <- function(object, signatures, x= "nFeature_RNA", y="percent.mi
   }else if(is.vector(signatures, mode="character")){
     sign.names <- signatures
   }else{
-    warning("The format of the 'signatures' argument (i.e. ",typeof(signatures),") is not supported. Provide a vector of metadata column names, or a named signature list.")
-    return(ggplot())
+    stop("The format of the 'signatures' argument (i.e. ",typeof(signatures),") is not supported. Provide a vector of metadata column names, or a named signature list.")
   }
   sign.not.found <- setdiff(sign.names, colnames(object@meta.data))
   if(length(sign.not.found)>0){
@@ -36,10 +35,10 @@ SignaturePlotQC <- function(object, signatures, x= "nFeature_RNA", y="percent.mi
     sign.names <- intersect(sign.names, colnames(object@meta.data))
   }
   df <- object@meta.data
-  imputed_use <- intersect(rownames(object[["imputed"]]),sign.not.found)
+  imputed_use <- intersect(rownames(object[["imputed.RNA"]]),sign.not.found)
   if(length(imputed_use)){
     for(i in imputed_use)
-      df[,i] <- as.numeric(object[["imputed"]][i,])
+      df[,i] <- as.numeric(object[["imputed.RNA"]][i,])
   }
   default_use <- intersect(rownames(object),setdiff(sign.not.found,imputed_use))
   if(length(default_use)){

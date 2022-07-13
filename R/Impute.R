@@ -23,7 +23,7 @@ Impute <- function(object, features=NULL, append.variable.features=TRUE, npca=40
     missing.features <- setdiff(unique(unlist(features)), rownames(object))
     features <- intersect(unique(unlist(features)), rownames(object))
     if(length(missing.features)>0){
-      warning(paste("The following features were not found in the Seurat object and were omitted: \n",paste(missing.features,collapse=" ")))
+      cat(paste("The following features were not found in the Seurat object and were omitted: \n",paste(missing.features,collapse=" "),"\n\n"))
     }
   }
   if(append.variable.features){

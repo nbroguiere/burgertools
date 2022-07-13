@@ -4,13 +4,15 @@
 \alias{ReadSignatures}
 \title{Read signatures in .gmt format}
 \usage{
-ReadSignatures(file)
+ReadSignatures(file, discard.comments)
 }
 \arguments{
-\item{file}{The address/name of the file from which signatures are read.}
+\item{file}{character(1). The address/name of the file from which signatures are read.}
+
+\item{discard.comments}{logical(1).  Whether the comment column of the gmt file should be discarded. Default: TRUE.}
 }
 \value{
-Named list of chr vectors, in which the names of the list elements are the signature names, and the chr vectors are the corresponding gene collections.
+Returns a mamed list of chr vectors, in which the names of the list elements are the signature names, and the chr vectors are the corresponding gene collections. If discard comments=FALSE, will return a list of two in which the first element are the signatures, and the second element the comments.
 }
 \description{
 This function reads signatures in the \href{https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29}{.gmt format} and returns them as a named list.
@@ -25,6 +27,8 @@ signature.list[["CAF"]]<- c("LOXL2","TAGLN","COL6A1","ITGA1","MMP1","MMP3","ACTA
 signature.list[["EC"]] <- c("CD34","PECAM1","LYVE1","PLVAP","RAMP2","VWF","ESM1","FLT1","PODXL","GNG11","ENG","SLC9A3R2","HSPG2")
 WriteSignatures(signature.list,"MyFile.gmt")
 signature.list2 <- ReadSignatures("MyFile.gmt")
+library(zeallot)
+c(signature.list2,comments) \%<-\% ReadSignatures("MyFile.gmt",discard.comments=F)
 }
 \keyword{.gmt}
 \keyword{gene}
