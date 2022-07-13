@@ -21,6 +21,7 @@
 #' MySeuratObject <- Classify(MySeuratObject,SignatureList) # Automatic annotation based on cell type signatures, stored in metadata column "celltype".
 
 Classify <- function(object, signatures, expected.values=NA, metadata.name="celltype", cell.names=NA, slot="data"){
+
   if(is.list(signatures)){
     sign.names <- names(signatures)
   }else if(is.vector(signatures, mode="character")){
@@ -32,7 +33,8 @@ Classify <- function(object, signatures, expected.values=NA, metadata.name="cell
 
   # Create a df with the signatures and features to be used:
   df <- GatherFeatures(object, sign.names, slot=slot)
-
+print(df)
+print(expected.values)
   if(sum(is.na(expected.values))){
     print("expected.values=NA - Normalizing the signatures to their max.")
     expected.values = MatrixGenerics::colMaxs(as.matrix(df))

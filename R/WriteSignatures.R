@@ -1,8 +1,10 @@
 #' Write signatures in .gmt format
 #'
 #' This function writes signature lists in the [.gmt format](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29).
-#' @param signatures Named list of chr vectors, in which the names of the list elements are the signature names, and the chr vectors are the corresponding gene collections.
-#' @param file The address/name of the file from which signatures are read.
+#' @param signatures Named list of character vectors, in which the names of the list elements are the signature names, and the chr vectors are the corresponding gene collections.
+#' @param file character(1). The address/name of the file from which signatures are read.
+#' @param comment character(n). What should be written in the comment second column in the gmt file. Recycled circularly if less than the number of signatures. Default: "cell type gene signature".
+#' @param append logical(1). Should the signatures be appended to an existing file rather than overwrite. Default: FALSE.
 #' @keywords write signatures gmt .gmt gene matrix transpose
 #' @export
 #' @examples
@@ -16,8 +18,12 @@
 #' WriteSignatures(signature.list,"MyFile.gmt")
 #' signature.list2 <- ReadSignatures("MyFile.gmt")
 
-WriteSignatures <- function(signature.list,file,comment="cell type gene signatures"){
+WriteSignatures <- function(signature.list,file,comment="cell type gene signature",append=F){
+  if(length(comment)<length(signature.list)){
+    comment <- rep(comment, length(signature.list))
+  }
   for(i in 1:length(signature.list)){
-    readr::write_tsv(as.data.frame(t(as.matrix(c(names(signature.list)[i],comment,signature.list[[i]])))),file,append = T,col_names = F)
+    readr::write_tsv(as.data.frame(t(as.matrix(c(names(signature.list)[i],comment[i],signature.list[[i]])))),file,append = append,col_names = F)
+    append <- T
   }
 }

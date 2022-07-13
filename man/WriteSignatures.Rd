@@ -4,12 +4,21 @@
 \alias{WriteSignatures}
 \title{Write signatures in .gmt format}
 \usage{
-WriteSignatures(signature.list, file, comment = "cell type gene signatures")
+WriteSignatures(
+  signature.list,
+  file,
+  comment = "cell type gene signature",
+  append = F
+)
 }
 \arguments{
-\item{file}{The address/name of the file from which signatures are read.}
+\item{file}{character(1). The address/name of the file from which signatures are read.}
 
-\item{signatures}{Named list of chr vectors, in which the names of the list elements are the signature names, and the chr vectors are the corresponding gene collections.}
+\item{comment}{character(n). What should be written in the comment second column in the gmt file. Recycled circularly if less than the number of signatures. Default: "cell type gene signature".}
+
+\item{append}{logical(1). Should the signatures be appended to an existing file rather than overwrite. Default: FALSE.}
+
+\item{signatures}{Named list of character vectors, in which the names of the list elements are the signature names, and the chr vectors are the corresponding gene collections.}
 }
 \description{
 This function writes signature lists in the \href{https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29}{.gmt format}.

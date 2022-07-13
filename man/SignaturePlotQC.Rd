@@ -18,7 +18,11 @@ SignaturePlotQC(
 \arguments{
 \item{object}{Seurat object. Must contain nFeature_RNA and percent.mito metadata columns, or the x and y plot parameters must be changed accordingly to plot other QC info otherwise.}
 
+<<<<<<< HEAD
+\item{signatures}{A vector containing the names of the signatures to highlight in color. Must correspond to names of metadata columns. If a named list of signatures is passed, the names of the list will be used. If values are not found in the metadata, they will be picked from imputed.RNA or DefaultAssay(SO) in this order.}
+=======
 \item{signatures}{character(n) or list(character(1)) or named list(n) vector containing the names of the signatures to highlight in color. Can be metadata columns or assay features. If a named list of signatures is passed, the names of the list will be used. If values are not found in the metadata, they will be picked from assay features. If the feature is found in several assays, it should be further defined with an underscore separator, in the form "assay_feature".}
+>>>>>>> b74197b72d80fdabde7232d91afca07e61b2a795
 
 \item{x}{Which parameter to set to the x axis in the QC plot (Default: nFeature_RNA).}
 
