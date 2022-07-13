@@ -11,13 +11,18 @@ SignaturePlotQC(
   y = "percent.mito",
   log.scale = TRUE,
   ncol = NA,
-  pt.size = 1
+  pt.size = 1,
+  slot = "data"
 )
 }
 \arguments{
 \item{object}{Seurat object. Must contain nFeature_RNA and percent.mito metadata columns, or the x and y plot parameters must be changed accordingly to plot other QC info otherwise.}
 
+<<<<<<< HEAD
 \item{signatures}{A vector containing the names of the signatures to highlight in color. Must correspond to names of metadata columns. If a named list of signatures is passed, the names of the list will be used. If values are not found in the metadata, they will be picked from imputed.RNA or DefaultAssay(SO) in this order.}
+=======
+\item{signatures}{character(n) or list(character(1)) or named list(n) vector containing the names of the signatures to highlight in color. Can be metadata columns or assay features. If a named list of signatures is passed, the names of the list will be used. If values are not found in the metadata, they will be picked from assay features. If the feature is found in several assays, it should be further defined with an underscore separator, in the form "assay_feature".}
+>>>>>>> b74197b72d80fdabde7232d91afca07e61b2a795
 
 \item{x}{Which parameter to set to the x axis in the QC plot (Default: nFeature_RNA).}
 
@@ -28,15 +33,17 @@ SignaturePlotQC(
 \item{ncol}{Number of columns (Default = NA, determined from the data)}
 
 \item{pt.size}{The point size, passed to ggplot (Default: 1)}
+
+\item{slot}{If some values to highlight are features rather than metadata columns, the slot from which they should be pulled (Default: "data").}
 }
 \value{
-A ggplot/cowplot grid object.
+Returns a ggplot/cowplot grid object.
 }
 \description{
 This function makes quality control (QC) plots from a Seurat object, by default percent.mito vs nFeature_RNA, while highlighting signature scores in color.
 }
 \details{
-This is useful when making scRNA-seq from heterogeneous samples: for example immune cells are small and might be discarded as debris from much larger epithelial cancer cells if one is not aware of the differences in QC parameters occuring between various cell types.
+This is useful when making scRNA-seq from heterogeneous samples: for example immune cells are small and might be discarded as debris from much larger epithelial cancer cells if one is not aware of the differences in QC parameters occurring between various cell types.
 }
 \examples{
 # After MySeuratObject has been log-normalized in order to contain an RNA>data assay>slot and been augmented with a percent.mito metadata column:

@@ -59,6 +59,12 @@ RunMDS <- function(object, distance=NA, n.dims = 30, features.use = NA, assay=NA
     }
   }
 
+  # There's a bug if the batch size is close to the matrix size or smaller. Give a warning and choose a value that works.
+  if(batch_size>ncol(object)/2){
+    warning("The batch size is bigger than half the total number of cells in the Seurat object. Proceeding with one batch only.")
+    batch_size <- ncol(object)
+  }
+
   # MDS with divide and conquer method:
   mds <- bigmds::divide_conquer_mds(x = Matrix::t(GetAssayData(object, assay = assay, slot = slot)[features.use,]), l = batch_size, c_points = 2*n.dims, r = n.dims, n_cores = n.cores, dist_fn = distance)
   object[[reduction.name]] <- CreateDimReducObject(key = key, stdev = mds$eigen, assay = assay, embeddings = matrix(data = mds$points, nrow = nrow(mds$points), ncol = ncol(mds$points), dimnames = list(colnames(object),paste0(key,1:n.dims))))

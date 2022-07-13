@@ -18,7 +18,7 @@ PseudoBulkGenotypes <- function(object, ident=Idents(object), tolerance.pct=5, a
     print("No cluster identity given, using default Idents(object)")
     idents <- Idents(object)
   }else{
-    if(is.na(ident[1]) | ident==Idents(object)){
+    if(is.na(ident[1])){
       print("Using the levels of Idents(object) for pseudo-bulk genotype aggregation.")
       idents <- Idents(object)
     }else{
@@ -31,8 +31,13 @@ PseudoBulkGenotypes <- function(object, ident=Idents(object), tolerance.pct=5, a
           object <- object[,ident]
           Idents(object) <- "GT"
         }else if(length(ident)==ncol(object)){
-          print("Using the levels of the identities given to define the clusters aggregated into genotypes.")
-          idents <- ident
+          if(sum(ident==Idents(object))==length(ident)){
+            print("Using the levels of Idents(object) for pseudo-bulk genotype aggregation.")
+            idents <- ident
+          }else{
+            print("Using the levels of the identities given to define the clusters aggregated into genotypes.")
+            idents <- ident
+          }
         }else{
           warning("Could not make sense of the ident given as input. Give a vector of cell names, a metadata column, a set of identities of the same length as ncol(object), or NA/NULL to use current Idents(object). Aborting.")
           return()
@@ -47,7 +52,7 @@ PseudoBulkGenotypes <- function(object, ident=Idents(object), tolerance.pct=5, a
   meta <- object[[assays[1]]]@meta.features
 
   # Prepare a genotype sparse matrix to receive the data (vartrix conventions):
-  m <- Matrix::Matrix(data = 0, nrow = nrow(object), ncol = length(gt.names), dimnames = list(rownames(object),gt.names))
+  m <- Matrix::Matrix(data = 0, nrow = nrow(object[[assays[1]]]), ncol = length(gt.names), dimnames = list(rownames(object[[assays[1]]]),gt.names))
   m <- methods::as(m,"dgCMatrix")
 
   # Go through the clusters, pick up the data, aggregate, compute coverage, frequency, and make a genotype call:

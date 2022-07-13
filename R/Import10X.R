@@ -21,6 +21,9 @@
 #' NewSeuratObject <- Import10X("MyDir","MyProject","mRNA3p")
 
 Import10X <- function(dir, project_name="", assay="RNA", gene.column=1, cell.column=1, unique.features=T, strip.suffix=T){
+  dir_backup <- getwd()
+  setwd(dir)
+
   counts <- Read10X(dir,gene.column=gene.column, cell.column=cell.column, unique.features = unique.features, strip.suffix = strip.suffix)
 
   if("metadata.tsv.gz" %in% list.files(dir) | "metadata.tsv" %in% list.files(dir)){
@@ -82,5 +85,7 @@ Import10X <- function(dir, project_name="", assay="RNA", gene.column=1, cell.col
     cat("Note that no metadata was found.")
     object <- CreateSeuratObject(counts = counts, project = project_name, assay = assay, min.cells = 0,min.features = 0)
   }
+
+  setwd(dir_backup)
   return(object)
 }
