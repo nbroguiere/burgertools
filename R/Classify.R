@@ -33,8 +33,7 @@ Classify <- function(object, signatures, expected.values=NA, metadata.name="cell
 
   # Create a df with the signatures and features to be used:
   df <- GatherFeatures(object, sign.names, slot=slot)
-print(df)
-print(expected.values)
+
   if(sum(is.na(expected.values))){
     print("expected.values=NA - Normalizing the signatures to their max.")
     expected.values = MatrixGenerics::colMaxs(as.matrix(df))
