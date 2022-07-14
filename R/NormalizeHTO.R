@@ -24,7 +24,7 @@ NormalizeHTO <- function(object, scale.HTO = "stdev", normalize.cells = 100, ass
       quantiles[i] <- quantile(HTO_counts[i,], q)
     }
   }else if(scale.HTO == "imputed_max"){
-    if(!imputed.assay %in% Assays(seurat)){
+    if(!imputed.assay %in% Assays(object)){
       stop(imputed.assay," is not present in the Seurat object.")
     }
     HTO_counts <- sweep(HTO_counts, 1, matrixStats::rowMaxs(as.matrix(object[[imputed.assay]]@data)), FUN = '/')   # Scale each row (HTO) to its max after imputation.

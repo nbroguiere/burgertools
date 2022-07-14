@@ -35,7 +35,7 @@ Impute <- function(object, features=NULL, append.variable.features=TRUE, npca=40
     }
   }
   if(length(features)>0){
-    imputed <- Rmagic::magic(data = t(as.matrix(GetAssayData(object[features,], assay=assay.use, slot=slot.use))), npca=npca, knn=knn, t=t, n.jobs=n.jobs)
+    imputed <- Rmagic::magic(data = t(as.matrix(slot(object@assays[[assay.use]],slot.use)[features,])), npca=npca, knn=knn, t=t, n.jobs=n.jobs)
     imputed <- t(imputed$result)
     object[[name]] <- CreateAssayObject(imputed)
     return(object)

@@ -34,25 +34,24 @@ SignaturePlotQC <- function(object, signatures, x= "nFeature_RNA", y="percent.mi
   }else{
     stop("The format of the 'signatures' argument (i.e. ",typeof(signatures),") is not supported. Provide a vector of metadata column names, or a named signature list.")
   }
-  sign.not.found <- setdiff(sign.names, colnames(object@meta.data))
-  if(length(sign.not.found)>0){
-    warning(paste("Signatures not found:",toString(sign.not.found),"\nAttempt to use these features from imputed or default assay instead."))
-    warning()
-    sign.names <- intersect(sign.names, colnames(object@meta.data))
-  }
-  df <- object@meta.data
-  imputed_use <- intersect(rownames(object[["imputed.RNA"]]),sign.not.found)
-  if(length(imputed_use)){
-    for(i in imputed_use)
-      df[,i] <- as.numeric(object[["imputed.RNA"]][i,])
-  }
-  default_use <- intersect(rownames(object),setdiff(sign.not.found,imputed_use))
-  if(length(default_use)){
-    for(i in default_use)
-      df[,i] <- as.numeric(object[[DefaultAssay(object)]][i,])
-    warning("The format of the 'signatures' argument (i.e. ",typeof(signatures),") is not supported. Provide a vector of metadata/feature/signature names, or a named signature list.")
-    return()
-  }
+  # sign.not.found <- setdiff(sign.names, colnames(object@meta.data))
+  # if(length(sign.not.found)>0){
+  #   cat(paste("Signatures not found:",toString(sign.not.found),"\nAttempt to use these features from imputed or default assay instead.\n"))
+  #   sign.names <- intersect(sign.names, colnames(object@meta.data))
+  # }
+  # df <- object@meta.data
+  # imputed_use <- intersect(rownames(object[["imputed.RNA"]]),sign.not.found)
+  # if(length(imputed_use)){
+  #   for(i in imputed_use)
+  #     df[,i] <- as.numeric(object[["imputed.RNA"]][i,])
+  # }
+  # default_use <- intersect(rownames(object),setdiff(sign.not.found,imputed_use))
+  # if(length(default_use)){
+  #   for(i in default_use)
+  #     df[,i] <- as.numeric(object[[DefaultAssay(object)]][i,])
+  #   warning("The format of the 'signatures' argument (i.e. ",typeof(signatures),") is not supported. Provide a vector of metadata/feature/signature names, or a named signature list.")
+  #   return()
+  # }
   df <- GatherFeatures(object,c(x,y,sign.names),slot=slot)
   if(x %in% colnames(object@meta.data) & y %in% colnames(object@meta.data)){
     p <- list()
