@@ -20,7 +20,7 @@ Impute(
 \arguments{
 \item{object}{Seurat object. Must contain an RNA assay with a data slot that will be used for imputation.}
 
-\item{features}{A subset of features/genes on which to run the imputation. Can be a list of signatures (Default: NULL/none, i.e. only impute all variable features if append.variable.features=TRUE as set by default).}
+\item{features}{A subset of features/genes on which to run the imputation. Can be a list of signatures in which the features in the list will be added, or can be "all" (Default: NULL/none, i.e. only impute all variable features if append.variable.features is TRUE, as set by default).}
 
 \item{append.variable.features}{Whether to append the variable features of the active assay in the Seurat object to the list of features to impute (Default: TRUE)}
 
