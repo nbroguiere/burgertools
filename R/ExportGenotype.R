@@ -25,8 +25,9 @@ ExportGenotype <- function(genotype, dir, meta_columns = "all", append_genotypes
   if(!dir.exists(dir)){dir.create(dir)}
   setwd(dir)
 
-  write(colnames(genotype@vartrix$REF), file = cols)
-  write(rownames(genotype@vartrix$REF), file = rows)
+  write_tsv(x = as.data.frame(colnames(genotype@vartrix$REF)), file = cols, col_names = F)
+  write_tsv(x = as.data.frame(rownames(genotype@vartrix$REF)), file = rows, col_names = F)
+
   if(length(meta_columns)){
     if(meta_columns[1]=="all"){
       meta_columns <- colnames(genotype@metadata)
