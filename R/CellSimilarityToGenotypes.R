@@ -6,7 +6,7 @@
 #' @param genotype A genotype object
 #' @param assay.name character(1). The name under which the similarities are stored in the seurat object (Default: "similarity").
 #' @param prefix character(1). A prefix appended to the genotype names to generate the feature names in the similarity assay (Default: "Similarity-").
-#' @param features.use character(n). The features (i.e. variants) to be used for the similarity calculations. Can be a vector of variants by name, or NA to use informative variants if available, all variants otherwise. "all" for all variants (Default: "all").
+#' @param features.use character(n). The features (i.e. variants) to be used for the similarity calculations. Can be a vector of variants by name, or NA to use informative variants if available, or "all" (Default: "all").
 #' @param assays character(3). The name of the assays within the Seurat object that contain the variant calls (sparse matrix with values 1,2,3 in vartrix conventions), and counts of reference and alt alleles (Default: c("VAR","REF","ALT")).
 #' @param slots. The slots to use within the assays above (Default: c("data","data","data")).
 #' @return Returns the Seurat object
@@ -19,15 +19,27 @@
 CellSimilarityToGenotypes <- function(seurat, genotype, assay.name="similarity", prefix="Similarity-", features.use="all", assays=c("VAR","REF","ALT"), slots=c("data","data","data")){
   # Choose the features on which the similarity is computed (default: informative variants. If not present, all variants)
   if(is.na(features.use[1])){
-    if(length(genotype@informative_variants)){
+    if(length(VariableFeatures(seurat[[assays[1]]]))){
+      cat("Using the variable features from the Seurat object.")
+      features.use <- VariableFeatures(seurat[[assays[1]]])
+    }else if(length(genotype@informative_variants)){
+      cat("Using the variable features from the Genotype object.")
       features.use <- genotype@informative_variants
     }else{
-      warning("No informative variants found. Using all variants.")
+      warning("No informative variants / variable features found. Using all variants.")
       features.use <- genotype@variants
     }
   }
   if(features.use[1]=="all" & length(features.use)==1){
+    cat("Using all variants present in the genotype object.")
     features.use <- genotype@variants
+  }
+  tmp <- setdiff(features.use,rownames(seurat))
+  if(length(tmp)){
+    warning("Some variants present in the genotype object are missing from the Seurat object, excluding them.")
+    warning("Number of missing variants:",length(tmp))
+    features.use <- intersect(features.use,rownames(seurat))
+    warning("Number of variants remaining:",length(features.use))
   }
   tmp0 <- Matrix::t(GetAssayData(seurat, assay = assays[1], slot = slots[1])[features.use,])
   cvg0 <- Matrix::t(GetAssayData(seurat, assay = assays[2], slot = slots[2])[features.use,]+GetAssayData(seurat, assay = assays[3], slot = slots[3])[features.use,])

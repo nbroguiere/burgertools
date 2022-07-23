@@ -23,7 +23,7 @@ CellSimilarityToGenotypes(
 
 \item{prefix}{character(1). A prefix appended to the genotype names to generate the feature names in the similarity assay (Default: "Similarity-").}
 
-\item{features.use}{character(n). The features (i.e. variants) to be used for the similarity calculations. Can be a vector of variants by name, or NA to use informative variants if available, all variants otherwise. "all" for all variants (Default: "all").}
+\item{features.use}{character(n). The features (i.e. variants) to be used for the similarity calculations. Can be a vector of variants by name, or NA to use informative variants if available, or "all" (Default: "all").}
 
 \item{assays}{character(3). The name of the assays within the Seurat object that contain the variant calls (sparse matrix with values 1,2,3 in vartrix conventions), and counts of reference and alt alleles (Default: c("VAR","REF","ALT")).}
 
