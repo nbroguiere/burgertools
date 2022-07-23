@@ -20,26 +20,26 @@ CellSimilarityToGenotypes <- function(seurat, genotype, assay.name="similarity",
   # Choose the features on which the similarity is computed (default: informative variants. If not present, all variants)
   if(is.na(features.use[1])){
     if(length(VariableFeatures(seurat[[assays[1]]]))){
-      cat("Using the variable features from the Seurat object.")
+      cat("Using the variable features from the Seurat object.\n")
       features.use <- VariableFeatures(seurat[[assays[1]]])
     }else if(length(genotype@informative_variants)){
-      cat("Using the variable features from the Genotype object.")
+      cat("Using the variable features from the Genotype object.\n")
       features.use <- genotype@informative_variants
     }else{
-      warning("No informative variants / variable features found. Using all variants.")
+      warning("No informative variants / variable features found. Using all variants.\n")
       features.use <- genotype@variants
     }
   }
   if(features.use[1]=="all" & length(features.use)==1){
-    cat("Using all variants present in the genotype object.")
+    cat("Using all variants present in the genotype object.\n")
     features.use <- genotype@variants
   }
   tmp <- setdiff(features.use,rownames(seurat))
   if(length(tmp)){
-    warning("Some variants present in the genotype object are missing from the Seurat object, excluding them.")
-    warning("Number of missing variants:",length(tmp))
+    cat("Some variants present in the genotype object are missing from the Seurat object, excluding them.\n")
+    cat("Number of missing variants:",length(tmp),"\n")
     features.use <- intersect(features.use,rownames(seurat))
-    warning("Number of variants remaining:",length(features.use))
+    cat("Number of variants remaining:",length(features.use),"\n")
   }
   tmp0 <- Matrix::t(GetAssayData(seurat, assay = assays[1], slot = slots[1])[features.use,])
   cvg0 <- Matrix::t(GetAssayData(seurat, assay = assays[2], slot = slots[2])[features.use,]+GetAssayData(seurat, assay = assays[3], slot = slots[3])[features.use,])
@@ -60,7 +60,7 @@ CellSimilarityToGenotypes <- function(seurat, genotype, assay.name="similarity",
   colnames(matching) <- paste0(prefix, stringr::str_replace(colnames(matching),"_","-"))
   rownames(matching) <- colnames(seurat)
 
-  cat("Storing similarities of single cells to reference genotypes in the assay '",assay.name,"'. \nExample of feature name: ",colnames(matching)[1], sep = "")
+  cat("Storing similarities of single cells to reference genotypes in the assay '",assay.name,"'. \nExample of feature name: ",colnames(matching)[1], "\n", sep = "")
   seurat[[assay.name]] <- CreateAssayObject(counts = Matrix::t(matching))
 
   return(seurat)
