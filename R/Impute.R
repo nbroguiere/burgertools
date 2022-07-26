@@ -4,10 +4,10 @@
 #' @param object Seurat object. Must contain an RNA assay with a data slot that will be used for imputation.
 #' @param features A subset of features/genes on which to run the imputation. Can be a list of signatures in which the features in the list will be added, or can be "all" (Default: NULL/none, i.e. only impute all variable features if append.variable.features is TRUE, as set by default).
 #' @param append.variable.features Whether to append the variable features of the active assay in the Seurat object to the list of features to impute (Default: TRUE)
-#' @param npca Number of principal components to use for imputation.
-#' @param knn Number of nearest neighbors on which to compute bandiwth imputation.
-#' @param t Diffusion parameter passed to MAGIC.
-#' @param n.jobs Number of threads on which to run the imputation. Defaults to 6.
+#' @param npca Number of principal components to use for imputation (Default: 40).
+#' @param knn Number of nearest neighbors on which to compute bandiwth imputation (Default: 3).
+#' @param t Diffusion parameter passed to MAGIC (Default:2).
+#' @param n.jobs Number of threads on which to run the imputation (Default: 6).
 #' @param name Name of the assay storing the imputed data (Default: "imputed").
 #' @param assay.use Name of the assay to impute (Default: "RNA").
 #' @param slot.use Name of the slot to impute (Default: "data").
@@ -27,12 +27,12 @@ Impute <- function(object, features=NULL, append.variable.features=TRUE, npca=40
     cat("Beware that the imputed assay is RNA, even though the default assay is currently ",DefaultAssay(object),"\n")
   }
 
-  if(features[1]=="all"){
-    cat("Imputing all features.\n")
-    features <- rownames(object)
-  }
-
   if(!is.null(features)){
+    if(features[1]=="all"){
+      cat("Imputing all features.\n")
+      features <- rownames(object)
+    }
+
     missing.features <- setdiff(unique(unlist(features)), rownames(object))
     features <- intersect(unique(unlist(features)), rownames(object))
     if(length(missing.features)>0){
