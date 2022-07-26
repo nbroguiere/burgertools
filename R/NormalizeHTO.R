@@ -30,7 +30,7 @@ NormalizeHTO <- function(object, scale.HTO = "stdev", normalize.cells = 100, ass
     HTO_counts <- sweep(HTO_counts, 1, matrixStats::rowMaxs(as.matrix(object[[imputed.assay]]@data)), FUN = '/')   # Scale each row (HTO) to its max after imputation.
   }else if(scale.HTO == "no" | scale.HTO == "No" | scale.HTO==FALSE){
   }else{
-    stop("Invalid value of scale.HTO. Options are stdev/TRUE/T, quantile, imputed_max, or No/no/FALSE/F.")
+    stop("Invalid value of scale.HTO. Valid options are stdev/TRUE/T, quantile, imputed_max, or No/no/FALSE/F.")
   }
   if(normalize.cells){
     HTO_counts <- sweep(HTO_counts, 2, matrixStats::colSums2(as.matrix(HTO_counts)), FUN = '/') # Scale each col (cbc) to its sum.
