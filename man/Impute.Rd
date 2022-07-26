@@ -24,13 +24,13 @@ Impute(
 
 \item{append.variable.features}{Whether to append the variable features of the active assay in the Seurat object to the list of features to impute (Default: TRUE)}
 
-\item{npca}{Number of principal components to use for imputation.}
+\item{npca}{Number of principal components to use for imputation (Default: 40).}
 
-\item{knn}{Number of nearest neighbors on which to compute bandiwth imputation.}
+\item{knn}{Number of nearest neighbors on which to compute bandiwth imputation (Default: 3).}
 
-\item{t}{Diffusion parameter passed to MAGIC.}
+\item{t}{Diffusion parameter passed to MAGIC (Default:2).}
 
-\item{n.jobs}{Number of threads on which to run the imputation. Defaults to 6.}
+\item{n.jobs}{Number of threads on which to run the imputation (Default: 6).}
 
 \item{assay.use}{Name of the assay to impute (Default: "RNA").}
 
