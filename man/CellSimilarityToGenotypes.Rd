@@ -35,6 +35,9 @@ Returns the Seurat object
 \description{
 Computes the fraction of matching variants between single cells in a Seurat object and the reference genotypes in a genotype object. Store this similarity measure in a new assay within the Seurat object.
 }
+\details{
+The similarity is defined as the fraction of variants which have an identical call (i.e. ref/ref, alt/alt, or ref/alt) in individual cells compared to the reference genotype. Variants which are not covered by any read at the single cell level are ignored and do not contribute to the similarity value. Variants which are covered by only one read are always considered a match with a heterozygous reference genotype.
+}
 \examples{
 MySeuratObject <- CellSimilarityToGenotypes(MySeuratObject,MyGenotypes)
 DefaultAssay(MySeuratObject) <- "similarity"
