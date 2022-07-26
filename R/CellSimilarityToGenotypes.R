@@ -2,6 +2,8 @@
 #'
 #' Computes the fraction of matching variants between single cells in a Seurat object and the reference genotypes in a genotype object. Store this similarity measure in a new assay within the Seurat object.
 #'
+#' The similarity is defined as the fraction of variants which have an identical call (i.e. ref/ref, alt/alt, or ref/alt) in individual cells compared to the reference genotype. Variants which are not covered by any read at the single cell level are ignored and do not contribute to the similarity value. Variants which are covered by only one read are always considered a match with a heterozygous reference genotype.
+#'
 #' @param seurat A seurat object
 #' @param genotype A genotype object
 #' @param assay.name character(1). The name under which the similarities are stored in the seurat object (Default: "similarity").
@@ -34,11 +36,11 @@ CellSimilarityToGenotypes <- function(seurat, genotype, assay.name="similarity",
     cat("Using all variants present in the genotype object.\n")
     features.use <- genotype@variants
   }
-  tmp <- setdiff(features.use,rownames(seurat))
+  tmp <- setdiff(features.use,rownames(seurat[[assays[1]]]))
   if(length(tmp)){
     cat("Some variants present in the genotype object are missing from the Seurat object, excluding them.\n")
     cat("Number of missing variants:",length(tmp),"\n")
-    features.use <- intersect(features.use,rownames(seurat))
+    features.use <- intersect(features.use,rownames(seurat[[assays[1]]]))
     cat("Number of variants remaining:",length(features.use),"\n")
   }
   tmp0 <- Matrix::t(GetAssayData(seurat, assay = assays[1], slot = slots[1])[features.use,])
