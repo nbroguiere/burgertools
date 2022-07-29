@@ -16,7 +16,7 @@ NormalizeHTO(
 \arguments{
 \item{object}{Seurat object.}
 
-\item{scale.HTO}{character(1) or logical(1). "stdev"/TRUE/T to scale each HTO to standard deviation across cells, No/no/FALSE/F for no scaling, "quantile" to scale to a quantile of values, and "imputed_max" to scale to the max after smoothing by imputation to avoid outliers. Default: "stdev".}
+\item{scale.HTO}{character(1) or logical(1). "stdev"/TRUE/T to scale each HTO to standard deviation across cells, No/no/FALSE/F for no scaling, "quantile" to scale to a quantile of values, "background" to scale to the average background value, and "imputed_max" to scale to the max after smoothing by imputation to avoid outliers. Default: "stdev".}
 
 \item{normalize.cells}{numeric(1). The value to which each cell should be normalized. 0 for no cell-normalization. Default: 100.}
 
@@ -30,7 +30,10 @@ NormalizeHTO(
 Returns a Seurat object with normalized HTO data in the data slot.
 }
 \description{
-Normalizes hashtag oligo (HTO) data. By default, first scales each HTO to its standard deviation to account for difference of intensity for the various labels, then scales each cell so that HTO are reported as a percentage. Alternatively, can scale the HTOs to a quantile of their values, or to their max after imputation.
+Normalizes hashtag oligo (HTO) data. By default, first scales each HTO to its standard deviation to account for difference of intensity for the various labels, then scales each cell so that HTO are reported as a percentage. Alternatively, can scale the HTOs to a quantile of their values, to the background value, or to their max after imputation.
+}
+\details{
+When normalizing to the background value, a k-means clustering with k=2 is used to define a positive and a negative population, and the average of the negative population is used for scaling (i.e. set to 1).
 }
 \examples{
 MySeuratObject <- NormalizeHTO(MySeuratObject)
