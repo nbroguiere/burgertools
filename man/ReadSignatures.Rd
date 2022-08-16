@@ -4,7 +4,7 @@
 \alias{ReadSignatures}
 \title{Read signatures in .gmt format}
 \usage{
-ReadSignatures(file, discard.comments)
+ReadSignatures(file, discard.comments = TRUE)
 }
 \arguments{
 \item{file}{character(1). The address/name of the file from which signatures are read.}

@@ -19,7 +19,7 @@
 #' library(zeallot)
 #' c(signature.list2,comments) %<-% ReadSignatures("MyFile.gmt",discard.comments=F)
 
-ReadSignatures <- function(file, discard.comments){
+ReadSignatures <- function(file, discard.comments=TRUE){
   rawsign <- readLines(con = file)
   rawsign <- strsplit(rawsign,split = "\t")
   signnames <- list()
