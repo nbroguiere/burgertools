@@ -22,11 +22,10 @@ LazyData: TRUE
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 Depends: 
-    Seurat (>= 4.0.1)
+    Seurat (>= 4.0.1),
+    ggplot2
 Imports: 
-    ggplot2,
     dplyr,
-    Rmagic (>= 2.0.0),
     cowplot,
     Matrix,
     sparseMatrixStats,

@@ -21,6 +21,14 @@
 #' MySeuratObject[["imputed-RNA"]] # Check result
 CrossImpute <- function(object, impute.assay=DefaultAssay(object), name=paste0("imputed.",impute.assay), impute.features="all", reference.assay="RNA", reference.features="variable_features", npca=40, knn=3, t=2, n.jobs=6, slot.use="data"){
 
+  if(!"Rmagic" %in% rownames(installed.packages())){
+    stop('Rmagic is not installed, but needed for imputations. Consider running: devtools::install_github("cran/Rmagic"). The python version magic-impute is also needed, see install instructions at https://github.com/cran/Rmagic.')
+  }
+
+  if(!Rmagic::pymagic_is_available()){
+    stop("Rmagic is installed, but pymagic is not available. Make sure Rmagic, reticulate, and pymagic are functional. Can be tested with Rmagic::pymagic_is_available().")
+  }
+
   backup.default.assay <- DefaultAssay(object)
 
   if(impute.assay=="metadata"){

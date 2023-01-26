@@ -20,6 +20,14 @@
 #' MySeuratObject[["imputed.RNA"]]
 Impute <- function(object, features=NULL, append.variable.features=TRUE, npca=40, knn=3, t=2, n.jobs=6, assay.use="RNA", slot.use="data", name=paste0("imputed.",assay.use)){
 
+  if(!"Rmagic" %in% rownames(installed.packages())){
+    stop('Rmagic is not installed, but needed for imputations. Consider running: devtools::install_github("cran/Rmagic"). The python version magic-impute is also needed, see install instructions at https://github.com/cran/Rmagic.')
+  }
+
+  if(!Rmagic::pymagic_is_available()){
+    stop("Rmagic is installed, but pymagic is not available. Make sure Rmagic, reticulate, and pymagic are functional. Can be tested with Rmagic::pymagic_is_available().")
+  }
+
   backup_default_assay <- DefaultAssay(object)
   DefaultAssay(object) <- assay.use
 
