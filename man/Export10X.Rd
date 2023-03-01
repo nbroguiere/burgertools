@@ -8,12 +8,14 @@ Export10X(
   object,
   dir,
   meta_columns = "all",
-  append_reductions = c(),
+  append_reductions = "all",
   gzip = T,
   rows = "features.tsv",
   cols = "barcodes.tsv",
   counts = "matrix.mtx",
-  meta = "metadata.tsv"
+  meta = "metadata.tsv",
+  slot = "counts",
+  assay = "RNA"
 )
 }
 \arguments{
@@ -23,7 +25,7 @@ Export10X(
 
 \item{meta_columns}{character(n). Metadata columns that should be exported from the Seurat Object. Can also be "all", or empty vector c() for none. Default: "all".}
 
-\item{append_reductions}{character(n). Name of the dimensionality reductions that should be included with the metadata. Default: none.}
+\item{append_reductions}{character(n). Name of the dimensionality reductions that should be included with the metadata. Default: "all".}
 
 \item{gzip}{logical(1). Should the exported files be compressed. If compressed, the filenames are appended with the extension ".gz". Default: TRUE}
 
@@ -34,15 +36,21 @@ Export10X(
 \item{counts}{character(1). Name of the exported file that contains the sparse raw count matrix. Default: matrix.mtx}
 
 \item{meta}{character(1). Name of the exported file that contains the metadata. Default: metadata.tsv}
+
+\item{slot}{character(1). Name of the slot in the Seurat object from which the count matrix is exported. Default: counts}
+
+\item{assay}{character(1). Name of the assay in the Seurat object from which the count matrix is exported. Default: RNA}
 }
 \description{
-Exports the counts matrix, features and barcodes from a Seurat object in a 10X-like format, with an additional metadata matrix in tsv format, that can be augmented dimensionality reduction coordinates. The exported data is in standard mtx and tsv formats, which facilitates sharing and reuse, and can be re-imported in a Seurat object with Import10X.
+Exports the counts matrix, features and barcodes from a Seurat object in a 10X-like format, with an additional metadata matrix in tsv format, that can be augmented with dimensionality reduction coordinates. The exported data is in standard mtx and tsv formats (sparse matrix matrix market format and tab separated values respectively), which facilitates sharing and reuse, and can be re-imported in a Seurat object with Import10X, or directly in matrices/data frames with e.g. Matrix::readMM and readr::read_tsv.
 }
 \examples{
-# By default keeping all the metadata columns, and no dimensionality reductions.
+# By default keeping all the metadata columns, and all dimensionality reductions.
 Export10X(SeuratObject, "MyDir")
 # Include only two custom metadata columns, two dimensionality reductions, and do not compress the matrices.
 Export10X(SeuratObject, "MyDir", c("nFeature_RNA", "mito.content"), c("pca","umap"), gzip=FALSE)
+# Export normalized CiteSeq data rather than raw RNA counts, and no metadata:
+Export10X(SeuratObject, "MyDir", meta_columns = c(), slot="data", assay="CiteSeq")
 }
 \keyword{10X}
 \keyword{Reexport}
