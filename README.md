@@ -26,3 +26,5 @@ Install from [github](https://github.com/nbroguiere/burgertools) with:
 install.packages("devtools")
 devtools::install_github("nbroguiere/burgertools")
 ```
+
+To use the imputation wrappers, further install python MAGIC following the [instructions from the authors](https://github.com/cran/Rmagic), and then Rmagic with devtools::install_github("cran/rmagic").
