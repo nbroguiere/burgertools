@@ -71,37 +71,37 @@ Standard generic methods can be used on the genotype object. In particular, the 
 }
 \section{Methods (by generic)}{
 \itemize{
-\item \code{show}: Show a summary of the contents of a genotype object.
+\item \code{show(genotype)}: Show a summary of the contents of a genotype object.
 
-\item \code{[}: Access matrix values in a genotype object.
+\item \code{x[i}: Access matrix values in a genotype object.
 
-\item \code{[<-}: Assign genotype matrix values in a genotype object
+\item \code{`[`(x = genotype, i = ANY, j = ANY) <- value}: Assign genotype matrix values in a genotype object
 
 \item \code{$}: Access metadata columns in a genotype object
 
-\item \code{[[}: Subset a genotype object
+\item \code{x[[i}: Subset a genotype object
 
-\item \code{$<-}: Assign values to genotype object metadata columns
+\item \code{`$`(genotype) <- value}: Assign values to genotype object metadata columns
 
-\item \code{colnames}: Retrieve column names (i.e. genotype names) from a genotype object.
+\item \code{colnames(genotype)}: Retrieve column names (i.e. genotype names) from a genotype object.
 
-\item \code{colnames<-}: Assign column names (i.e. genotype names) to a genotype object.
+\item \code{colnames(genotype) <- value}: Assign column names (i.e. genotype names) to a genotype object.
 
-\item \code{rownames}: Retrieve row names (i.e. variant names) from a genotype object.
+\item \code{rownames(genotype)}: Retrieve row names (i.e. variant names) from a genotype object.
 
-\item \code{rownames<-}: Assign row names (i.e. variant names) from a genotype object.
+\item \code{rownames(genotype) <- value}: Assign row names (i.e. variant names) from a genotype object.
 
-\item \code{nrow}: Retrieve the number of rows (i.e. number of variants) from a genotype object.
+\item \code{nrow(genotype)}: Retrieve the number of rows (i.e. number of variants) from a genotype object.
 
-\item \code{ncol}: Retrieve the number of columns (i.e. number of genotypes) from a genotype object.
+\item \code{ncol(genotype)}: Retrieve the number of columns (i.e. number of genotypes) from a genotype object.
 
-\item \code{dim}: Retrieve the dimension, i.e. number of variants and samples, from a genotype object.
+\item \code{dim(genotype)}: Retrieve the dimension, i.e. number of variants and samples, from a genotype object.
 
-\item \code{rowSums}: Compute the number of genotypes which cover a given variant, from a genotype object.
+\item \code{rowSums(genotype)}: Compute the number of genotypes which cover a given variant, from a genotype object.
 
-\item \code{colSums}: Compute the number of variants covered in each genotype, from a genotype object.
+\item \code{colSums(genotype)}: Compute the number of variants covered in each genotype, from a genotype object.
+
 }}
-
 \section{Slots}{
 
 \describe{
