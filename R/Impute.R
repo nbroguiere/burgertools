@@ -18,6 +18,10 @@
 #' @examples
 #' MySeuratObject <- Impute(MySeuratObject)
 #' MySeuratObject[["imputed.RNA"]]
+#' SL <- list(CD8TC=c("CD3","CD8","-CD4"), 
+#'            Fibro=c("VIM","COL1A1","-EPCAM"))
+#' MySeuratObject <- Impute(MySeuratObject, features=SL, append.variable.features=TRUE, knn=4, t=3, npca=30, n.jobs=36, assay.use="RNA", slot.use="scale.data", name="custom.imputation")
+#' MySeuratObject[["imputed.RNA"]]
 Impute <- function(object, features=NULL, append.variable.features=TRUE, npca=40, knn=3, t=2, n.jobs=6, assay.use="RNA", slot.use="data", name=paste0("imputed.",assay.use)){
 
   if(!"Rmagic" %in% rownames(installed.packages())){
@@ -41,8 +45,9 @@ Impute <- function(object, features=NULL, append.variable.features=TRUE, npca=40
       features <- rownames(object)
     }
 
-    missing.features <- setdiff(unique(unlist(features)), rownames(object))
-    features <- intersect(unique(unlist(features)), rownames(object))
+    requested.features <- GetAllSignatureGenes(features)
+    missing.features <- setdiff(requested.features, rownames(object))
+    features <- intersect(requested.features, rownames(object))
     if(length(missing.features)>0){
       cat(paste("The following features were not found in the Seurat object and were omitted: \n",paste(missing.features,collapse=" "),"\n\n"))
     }
