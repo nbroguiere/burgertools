@@ -47,6 +47,10 @@ This function is a wrapper of the MAGIC imputation function to easily impute Seu
 \examples{
 MySeuratObject <- Impute(MySeuratObject)
 MySeuratObject[["imputed.RNA"]]
+SL <- list(CD8TC=c("CD3","CD8","-CD4"), 
+           Fibro=c("VIM","COL1A1","-EPCAM"))
+MySeuratObject <- Impute(MySeuratObject, features=SL, append.variable.features=TRUE, knn=4, t=3, npca=30, n.jobs=36, assay.use="RNA", slot.use="scale.data", name="custom.imputation")
+MySeuratObject[["imputed.RNA"]]
 }
 \keyword{MAGIC}
 \keyword{Rmagic}

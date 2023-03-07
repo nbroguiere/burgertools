@@ -15,7 +15,7 @@ ScoreSignature(
 \arguments{
 \item{object}{Seurat object.}
 
-\item{features}{The signature, typically a gene list (character vector).}
+\item{features}{The signature, typically a gene list (character vector). Negative features are prefixed by a minus sign as in "-EPCAM".}
 
 \item{name}{The name of the signature (character). The single cell scores are added to the Seurat object metadata in a column with this name, and can be accessed as object$name or displayed with FeaturePlot(object,name).}
 
@@ -28,11 +28,13 @@ Seurat object with an additional metadata slot containing the signature score.
 }
 \description{
 This function scores a signature at the single cell level on Seurat objects (sum of the expression for each cell).
-The signature is a list of features (character vector).
-By default, the score is computed as the average log-normalized expression of the features (i.e. using the "data" slot).
-If imputed data is available (assay "imputed"), the imputed data will be used. Otherwise, data from the RNA assay will be used. This can be overrun by setting the assay parameter.
+The signature must be a list of features (character vector).
+Any feature can be set as a negative marker in the scoring by prefixing it with a minus sign, e.g. "-EPCAM".
+By default, the score is computed as the average expression of the features as normalized in the "data" slot (i.e. log-normalized typically). Can be overrun by setting the slot.use parameter.
+If imputed data is available (assay "imputed.RNA"), the imputed data will be used. Otherwise, data from the RNA assay will be used. This can be overrun by setting the assay.use parameter.
 }
 \examples{
+#Scoring a single signature
 MySeuratObject <- Impute(MySeuratObject)
 MySeuratObject <- ScoreSignature(MySeuratObject,c("EPCAM","CDH1","ITGA6"),"EpithelialSignature")
 head(MySeuratObject$EpithelialSignature)

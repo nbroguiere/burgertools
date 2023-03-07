@@ -24,9 +24,8 @@ By default, the score is computed as the average of the log-normalized expressio
 If imputed data is available (assay "imputed"), the imputed data will be used. Otherwise, data from the RNA assay will be used. This can be overrun by setting the assay paramter.
 }
 \examples{
-MySeuratObject <- Impute(MySeuratObject)
-signature.list <- list(c("EPCAM","CDH1","ITGA6"),c("VIM","COL1A1","ITGA1"))
-names(signature.list) <- c("EpithelialSignature","FibroSignature")
+signature.list <- list(EpithelialSignature=c("EPCAM","CDH1","ITGA6"), FibroSignature=c("VIM","COL1A1","ITGA1","-EPCAM"))
+MySeuratObject <- Impute(MySeuratObject,signature.list)
 MySeuratObject <- ScoreSignatures(MySeuratObject,signature.list)
 head(MySeuratObject$EpithelialSignature)
 head(MySeuratObject$FibroSignature)
