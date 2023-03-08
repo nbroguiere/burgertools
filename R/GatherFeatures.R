@@ -4,12 +4,24 @@
 #'
 #' @param object Seurat object.
 #' @param features character(n). Metadata columns and/or feature names, or assay feature pairs in the form assay_feature.
+#' @param assay character(1). From which assay should features be pulled from in priority. Default: DefaultAssay. Other typical options depending on the Seurat object: "RNA", "imputed.RNA", "CiteSeq", "HTO" etc. 
+#' @param slot character(1). From which slot should features be pulled from. Default: "data". Other typical options: "counts", "scale.data".
 #' @return Returns a data frame with features or signatures / metadata columns as columns and cells as rows, in the same order as the cells/barcodes in the Seurat object.
 #' @export
 #' @examples
 #' df <- GatherFeatures(MySeuratObject,c("nFeature_RNA","RNA_GAPDH"))
 
-GatherFeatures <- function(object, features, slot="data"){
+GatherFeatures <- function(object, features, assay=DefaultAssay(object), slot="data"){
+  # Verify the assay and slot are present in the Seurat object
+  if(!assay %in% Assays(object)){
+    warning("Assay not found in the Seurat object, reverting to default assay")
+    assay <- DefaultAssay(object)
+  }
+  if(!slot %in% slotNames(object[[assay]])){
+    warning("Slot not found in the Seurat object, reverting to data")
+    slot <- "data"
+  }
+  
   # First pick up anything that can be picked up in the metadata:
   df <- object@meta.data[intersect(features,colnames(object@meta.data))]
   signatures_not_in_metadata <- setdiff(features,colnames(object@meta.data))
@@ -19,12 +31,12 @@ GatherFeatures <- function(object, features, slot="data"){
   signatures_without_assay_defined <- setdiff(signatures_not_in_metadata,signatures_with_assay_defined)
 
   # Subdivide further the signatures without assay defined between those present in the DefaultAssay (picked in priority) and others:
-  signatures_default_assay <- intersect(signatures_without_assay_defined,rownames(object[[DefaultAssay(object)]]))
+  signatures_default_assay <- intersect(signatures_without_assay_defined,rownames(object[[assay]]))
   signatures_without_assay_defined <- setdiff(signatures_without_assay_defined,signatures_default_assay)
 
   # Gather the features in the default assay:
   if(length(signatures_default_assay)){
-    df <- cbind(df,t(as.matrix(GetAssayData(object = object, assay = DefaultAssay(object), slot = slot)[signatures_default_assay,,drop=F])))
+    df <- cbind(df,t(as.matrix(GetAssayData(object = object, assay = assay, slot = slot)[signatures_default_assay,,drop=F])))
   }
 
   # Gather the features only given by name and not in the default assay:
@@ -49,7 +61,7 @@ GatherFeatures <- function(object, features, slot="data"){
 
   # Check features are unique:
   if(length(colnames(df))!=length(unique(colnames(df)))){
-    stop("Some signatures/features were not found were found in the metadata nor the default assay, and were present in more than 1 assay: \n", paste0(unique(colnames(df)[duplicated(colnames(df))]),collapse = " "),"\n",
+    stop("Some signatures/features were not found were found in the metadata nor the requested assay, and were present in more than 1 other assays: \n", paste0(unique(colnames(df)[duplicated(colnames(df))]),collapse = " "),"\n",
          "Define them in a unique way declaring the assay from which they should be pulled with an underscore separator, as in: assay_feature. For example, RNA_GAPDH.")
   }
 

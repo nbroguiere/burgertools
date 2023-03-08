@@ -4,12 +4,16 @@
 \alias{GatherFeatures}
 \title{Gather features}
 \usage{
-GatherFeatures(object, features, slot = "data")
+GatherFeatures(object, features, assay = DefaultAssay(object), slot = "data")
 }
 \arguments{
 \item{object}{Seurat object.}
 
 \item{features}{character(n). Metadata columns and/or feature names, or assay feature pairs in the form assay_feature.}
+
+\item{assay}{character(1). From which assay should features be pulled from in priority. Default: DefaultAssay. Other typical options depending on the Seurat object: "RNA", "imputed.RNA", "CiteSeq", "HTO" etc.}
+
+\item{slot}{character(1). From which slot should features be pulled from. Default: "data". Other typical options: "counts", "scale.data".}
 }
 \value{
 Returns a data frame with features or signatures / metadata columns as columns and cells as rows, in the same order as the cells/barcodes in the Seurat object.
