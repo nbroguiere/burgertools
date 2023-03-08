@@ -91,6 +91,10 @@ ClassifyManual <- function(object, gates, metadata.name="celltype", assay=Defaul
   unique.signatures.needed <- unique(unlist(lapply(strsplit(unlist(subgates),"<|>"),"[",1)))
   df <- GatherFeatures(object, unique.signatures.needed, assay=assay, slot=slot)
   df <- df[cells.use,,drop=F]
+  if(!ncol(df)){
+    warning("None of the requested features/signatures were found. Did you forget to run Impute and/or ScoreSignatures?")
+    return(object)
+  }
   
   # Initialize the cell type filter (start from keep all, to then restrict iteratively for each condition):
   filters <- matrix(data = TRUE, nrow = n.cells, ncol = length(celltype_names), dimnames = list(cells.use,celltype_names))
