@@ -25,9 +25,9 @@ ClassifyManual(
 
 \item{slot}{character(1). If some signatures used for classification are stored as assay features, which slot should be used (Default: "data").}
 
-\item{restrict.ident}{character(1). The name of a metadata column containing celltype annotations, which will be used to define the subset of cells that should be classified.}
+\item{restrict.ident}{character(1). The name of a metadata column containing celltype annotations, which will be used to define the subset of cells that should be classified. Default: current Idents(object).}
 
-\item{restrict.to}{character(n). Which celltypes (as defined in the restrict.ident metadata column) should be classified.}
+\item{restrict.to}{character(n). Which celltypes (as defined in the restrict.ident metadata column) should be classified. Default: All cells.}
 }
 \value{
 A Seurat object with an additional metadata column containing the cell type annotations and Idents() set to these annotations. Cells which do not validate any gate defined are attributed the celltype "None" and cells which pass several gates are labelled "Multiplet".
@@ -57,7 +57,7 @@ MySeuratObject <- ScoreSignatures(MySeuratObject,signature.list)
 gates <- "TC = TCsign > 1.2 & EPsign < 0.2,
           EP = EPsign > 1.1 & TCsign < 0.3"
 MySeuratObject <- ClassifyManual(MySeuratObject,gates)
-DimPlot(MySeuratObject) # Plot the current Idents, set to "celltype".
+DimPlot(MySeuratObject) # Plot the current Idents, which were set to "celltype".
 # Subclassify T cells, and store the results in the metadata column "TC_subcelltype" (Could also be used to overwrite the idents of TC in an existing metadata column without altering the identities of other cells).
 gates <- "CD8 = CD8A > 0.5 & CD4 < 0.5, CD4 = CD4 > 0.5 & CD8A < 0.5, DoublePositive = CD8A > 0.5 & CD4 > 0.5"
 MySeuratObject <- ClassifyManual(MySeuratObject, gates, "TC_subcelltype", restrict.ident="celltype", restrict.to="TC")

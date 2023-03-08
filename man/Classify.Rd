@@ -10,7 +10,10 @@ Classify(
   expected.values = NA,
   metadata.name = "celltype",
   cell.names = NA,
-  slot = "data"
+  assay = DefaultAssay(object),
+  slot = "data",
+  restrict.ident = "Default",
+  restrict.to = as.character(unique(Idents(object)))
 )
 }
 \arguments{
@@ -24,7 +27,13 @@ Classify(
 
 \item{cell.names}{character(n). Give only if the signature names should not be used as celltypes names, but rather be replaced by these cell names.}
 
-\item{slot}{character(1). If some signatures are stored as features, which slot should be used (Default: "data").}
+\item{assay}{character(1). If some signatures used for classification are stored as assay features, which assay should be used in priority (Default: DefaultAssay(object)).}
+
+\item{slot}{character(1). If some signatures used for classification are stored as assay features, which slot should be used (Default: "data").}
+
+\item{restrict.ident}{character(1). The name of a metadata column containing celltype annotations, which will be used to define the subset of cells that should be classified. Default: current Idents(object).}
+
+\item{restrict.to}{character(n). Which celltypes (as defined in the restrict.ident metadata column) should be classified. Default: All cells.}
 }
 \value{
 A Seurat object with an additional metadata column containing the cell type annotations and Idents() set to these annotations.
