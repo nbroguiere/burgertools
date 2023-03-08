@@ -40,12 +40,20 @@ ScoreSignature <- function(object, features, name = "Signature", assay.use=NA, s
   if(length(missing.features)>0){
     print(paste("Missing features assumed null:",toString(missing.features)))
   }
-  scores.positive <- Matrix::colSums(rbind(slot(object[[assay.use]],slot.use)[features.positive,],0))/length(features) # Concatenate a line of zeros because colSums doesn't deal with one-line matrices.
-  scores.negative <- Matrix::colSums(rbind(slot(object[[assay.use]],slot.use)[features.negative,],0))/length(features)
-  
+  if(length(features.positive)){
+    scores.positive <- Matrix::colSums(rbind(slot(object[[assay.use]],slot.use)[features.positive,],0))/length(features) # Concatenate a line of zeros because colSums doesn't deal with one-line matrices.
+  }else{
+    scores.positive <- 0
+  }
+  if(length(features.negative)){
+    scores.negative <- Matrix::colSums(rbind(slot(object[[assay.use]],slot.use)[features.negative,],0))/length(features)
+  }else{
+    scores.negative <- 0
+  }
   object <- AddMetaData(object = object, metadata = scores.positive-scores.negative, col.name = name)
   return(object)
 }
+
 
 #' Multiple signature scoring on Seurat objects
 #'
