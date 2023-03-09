@@ -36,7 +36,7 @@ If imputed data is available (assay "imputed.RNA"), the imputed data will be use
 \examples{
 #Scoring a single signature
 MySeuratObject <- Impute(MySeuratObject)
-MySeuratObject <- ScoreSignature(MySeuratObject,c("EPCAM","CDH1","ITGA6"),"EpithelialSignature")
+MySeuratObject <- ScoreSignature(MySeuratObject,c("EPCAM","CDH1","ITGA6","-COL1A1"),"EpithelialSignature")
 head(MySeuratObject$EpithelialSignature)
 FeaturePlot(MySeuratObject,"EpithelialSignature")
 }

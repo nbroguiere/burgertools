@@ -15,7 +15,7 @@
 #' @examples
 #' #Scoring a single signature
 #' MySeuratObject <- Impute(MySeuratObject)
-#' MySeuratObject <- ScoreSignature(MySeuratObject,c("EPCAM","CDH1","ITGA6"),"EpithelialSignature")
+#' MySeuratObject <- ScoreSignature(MySeuratObject,c("EPCAM","CDH1","ITGA6","-COL1A1"),"EpithelialSignature")
 #' head(MySeuratObject$EpithelialSignature)
 #' FeaturePlot(MySeuratObject,"EpithelialSignature")
 #' @export
@@ -58,7 +58,8 @@ ScoreSignature <- function(object, features, name = "Signature", assay.use=NA, s
 #' Multiple signature scoring on Seurat objects
 #'
 #' This function scores multiple signatures at the single cell level on a Seurat object (sum of the expression for each cell and signature).
-#' By default, the score is computed as the average of the log-normalized expression of the features (i.e. using the "data" slot).
+#' By default, the score is computed as the average expression of the features as normalized in the "data" slot (i.e. log-normalized typically). Can be overrun by setting the slot.use parameter. 
+#' Any feature can be set as a negative marker in the scoring by prefixing it with a minus sign, e.g. "-EPCAM". 
 #' If imputed data is available (assay "imputed"), the imputed data will be used. Otherwise, data from the RNA assay will be used. This can be overrun by setting the assay paramter.
 #' @param object Seurat object.
 #' @param signature.list The named list of signatures. Each element of the list is a signature (character vector), the names of the elements in the list will be used as signature names.

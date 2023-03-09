@@ -20,7 +20,8 @@ Seurat object with additional metadata slots containing signature scores.
 }
 \description{
 This function scores multiple signatures at the single cell level on a Seurat object (sum of the expression for each cell and signature).
-By default, the score is computed as the average of the log-normalized expression of the features (i.e. using the "data" slot).
+By default, the score is computed as the average expression of the features as normalized in the "data" slot (i.e. log-normalized typically). Can be overrun by setting the slot.use parameter.
+Any feature can be set as a negative marker in the scoring by prefixing it with a minus sign, e.g. "-EPCAM".
 If imputed data is available (assay "imputed"), the imputed data will be used. Otherwise, data from the RNA assay will be used. This can be overrun by setting the assay paramter.
 }
 \examples{
