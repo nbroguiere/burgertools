@@ -13,7 +13,8 @@ Classify(
   assay = DefaultAssay(object),
   slot = "data",
   restrict.ident = "Default",
-  restrict.to = as.character(unique(Idents(object)))
+  restrict.to = as.character(unique(Idents(object))),
+  by.clusters = NULL
 )
 }
 \arguments{
@@ -31,18 +32,22 @@ Classify(
 
 \item{slot}{character(1). If some signatures used for classification are stored as assay features, which slot should be used (Default: "data").}
 
-\item{restrict.ident}{character(1). The name of a metadata column containing celltype annotations, which will be used to define the subset of cells that should be classified. Default: current Idents(object).}
+\item{restrict.ident}{character(1). The name of a metadata column containing celltype annotations, which will be used to define the subset of cells that should be classified. Default: "Default", which uses current default, i.e. Idents(object).}
 
 \item{restrict.to}{character(n). Which celltypes (as defined in the restrict.ident metadata column) should be classified. Default: All cells.}
+
+\item{by.clusters}{character(1) or character(n) or factor(n). If not NULL, clusters instead of single cells will be classified. The parameter should indicate the name of a metadata column containing the clusters to consider (e.g. "seurat_clusters"), or the actual cluster info (e.g. object$seurat_clusters).}
 }
 \value{
 A Seurat object with an additional metadata column containing the cell type annotations and Idents() set to these annotations.
 }
 \description{
-This function performs a simple automatic cell type classification based on signatures or other scores stored in the metadata or features (unique name or with in the format assay_feature). Useful for automating the simple first broad classification of cell types before a cell-type aware QC (for example, taking into account that immune cells have less detected genes/transcripts, and fibroblast less mitochondrial content, than epithelial/cancer cells).
+This function performs a simple automatic cell type classification based on signatures or other scores stored in the metadata or features (features names should be unique accross assays, or in the format assay_feature). Useful for automating the simple first broad classification of cell types before a cell-type aware QC (for example, taking into account that immune cells have less detected genes/transcripts, and fibroblast less mitochondrial content, than epithelial/cancer cells). Also useful in general for classifying cells to their most likely identity, while not attempting to remove any multiplet or cell with no good identity match (for example to look for subcategories such as polarities within a previously identified celltype).
 }
 \details{
 Each single cell will be associated to the cell type whose signature is maximal on the cell. A list of expected values for the signatures is optional (typically obtained by checking the typical signature score for cells of known identity beforehand). If given, expected values are used to normalize signature scores before classifying cells to the signature having maximal score. It is strongly recommended to use imputed data to score cell type signatures, to avoid misclassifications due to dropouts.
+
+If the by.clusters parameter is set to some identities or metadata column containing identities, the classification will be done on clusters rather than single cells. This can help to overcome strong noise, or to take into account some prior knowledge such as dataset alignment in the classification.
 }
 \examples{
 # After MySeuratObject has been log-normalized in order to contain an RNA>data assay>slot and been augmented with a percent.mito metadata column:
