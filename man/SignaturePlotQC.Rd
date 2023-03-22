@@ -12,6 +12,7 @@ SignaturePlotQC(
   log.scale = TRUE,
   ncol = NA,
   pt.size = 1,
+  assay = DefaultAssay(object),
   slot = "data"
 )
 }
@@ -24,13 +25,15 @@ SignaturePlotQC(
 
 \item{y}{Which parameter to set to the y axis in the QC plot (Default: percent.mito).}
 
-\item{log.scale}{Whether to plot with log.scale or not (Default: TRUE)}
+\item{log.scale}{logical(1). Whether to plot with log.scale or not (Default: TRUE)}
 
-\item{ncol}{Number of columns (Default = NA, determined from the data)}
+\item{ncol}{num(1). Number of columns (Default = NA, determined from the data)}
 
-\item{pt.size}{The point size, passed to ggplot (Default: 1)}
+\item{pt.size}{num(1). The point size, passed to ggplot (Default: 1)}
 
-\item{slot}{If some values to highlight are features rather than metadata columns, the slot from which they should be pulled (Default: "data").}
+\item{assay}{character(1). If some values to highlight are features rather than metadata columns, the assay from which they should be pulled in priority (Default: DefaultAssay(object)).}
+
+\item{slot}{character(1). If some values to highlight are features rather than metadata columns, the slot from which they should be pulled (Default: "data").}
 }
 \value{
 Returns a ggplot/cowplot grid object.
@@ -39,6 +42,8 @@ Returns a ggplot/cowplot grid object.
 This function makes quality control (QC) plots from a Seurat object, by default percent.mito vs nFeature_RNA, while highlighting signature scores in color.
 }
 \details{
+Can also be used in general as a combination of scatter plot and feature plot, as any metadata/signature/feature can be used for x and y axis as well as for color.
+
 This is useful when making scRNA-seq from heterogeneous samples: for example immune cells are small and might be discarded as debris from much larger epithelial cancer cells if one is not aware of the differences in QC parameters occurring between various cell types.
 }
 \examples{
@@ -47,6 +52,7 @@ This is useful when making scRNA-seq from heterogeneous samples: for example imm
 MySeuratObject <- Impute(MySeuratObject)
 MySeuratObject <- ScoreSignatures(MySeuratObject,SignatureList)
 SignaturePlotQC(MySeuratObject,names(SignatureList))
+SignaturePlotQC(MySeuratObject,x="MKI67",y="PCNA",log.scale=FALSE,pt.size=1.5,)
 }
 \keyword{QC}
 \keyword{highlight}
