@@ -11,7 +11,9 @@ ClassifyManual(
   assay = DefaultAssay(object),
   slot = "data",
   restrict.ident = "Default",
-  restrict.to = as.character(unique(Idents(object)))
+  restrict.to = as.character(unique(Idents(object))),
+  unclassified.name = "None",
+  naming.mode = "replace"
 )
 }
 \arguments{
@@ -28,6 +30,10 @@ ClassifyManual(
 \item{restrict.ident}{character(1). The name of a metadata column containing celltype annotations, which will be used to define the subset of cells that should be classified. Default: current Idents(object).}
 
 \item{restrict.to}{character(n). Which celltypes (as defined in the restrict.ident metadata column) should be classified. Default: All cells.}
+
+\item{unclassified.name}{character(1). Which name should be given to the cells which do not pass any gate. Can be set to "keep" to keep the existing names for cells which don't pass any gate. Default: "None".}
+
+\item{naming.mode}{character(1). Should the cell type names be added as a suffix or prefix to existing cell names instead of replacing them? Possible values: "replace", "prefix", "suffix". Default: "replace". When adding as a suffix or prefix, unclassified.name typically needs to be set to empty string "".}
 }
 \value{
 A Seurat object with an additional metadata column containing the cell type annotations and Idents() set to these annotations. Cells which do not validate any gate defined are attributed the celltype "None" and cells which pass several gates are labelled "Multiplet".
@@ -41,7 +47,9 @@ Based on cell scores (sign_x, which can be signatures from ScoreSignatures, gene
 "celltype_a = sign_a > value_aa & sign_b < value_ab,
 celltype_b = sign_b > value_ba & sign_a < value_ab \link{...etc...}"
 
-Scores are taken from the metadata in priority, otherwise from assays. If found in several assays, the assay to use should be defined by prefixing the feature name with "assay_".
+The gating can be done iteratively by restricting to one or several cell types from a given identity (restrict.to and restrict.ident respectively). The gates can also keep existing celltype names and add a suffix or prefix.
+
+Scores are taken from the metadata in priority, otherwise from assays. If found in several assays, define which assay to use in priority with the assay parameter, or to combine several assays prefix the feature name with the name of the assay separated by underscore, as in "assay_feature".
 
 Since single cell data tends to be noisy and have a significant amount of dropouts, imputation is usually a great combination with gating strategies, in a similar fashion to gaussian filtering needed before thresholding in most image analysis workflows. For this, see Impute() and CrossImpute().
 }
@@ -61,6 +69,8 @@ DimPlot(MySeuratObject) # Plot the current Idents, which were set to "celltype".
 # Subclassify T cells, and store the results in the metadata column "TC_subcelltype" (Could also be used to overwrite the idents of TC in an existing metadata column without altering the identities of other cells).
 gates <- "CD8 = CD8A > 0.5 & CD4 < 0.5, CD4 = CD4 > 0.5 & CD8A < 0.5, DoublePositive = CD8A > 0.5 & CD4 > 0.5"
 MySeuratObject <- ClassifyManual(MySeuratObject, gates, "TC_subcelltype", restrict.ident="celltype", restrict.to="TC")
+# Mark dividing cells by adding a suffix to their cell names:
+MySeuratObject <- ClassifyManual(MySeuratObject, gates="Dividing = PCNA > 1 & MKI67 > 1", naming.mode = "suffix", unclassified.name="")
 }
 \keyword{Cell}
 \keyword{Classifier}

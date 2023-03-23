@@ -7,7 +7,9 @@
 #' "celltype_a = sign_a > value_aa & sign_b < value_ab,
 #'  celltype_b = sign_b > value_ba & sign_a < value_ab [...etc...]"
 #'
-#' Scores are taken from the metadata in priority, otherwise from assays. If found in several assays, the assay to use should be defined by prefixing the feature name with "assay_".
+#' The gating can be done iteratively by restricting to one or several cell types from a given identity (restrict.to and restrict.ident respectively). The gates can also keep existing celltype names and add a suffix or prefix. 
+#'
+#' Scores are taken from the metadata in priority, otherwise from assays. If found in several assays, define which assay to use in priority with the assay parameter, or to combine several assays prefix the feature name with the name of the assay separated by underscore, as in "assay_feature".
 #'
 #' Since single cell data tends to be noisy and have a significant amount of dropouts, imputation is usually a great combination with gating strategies, in a similar fashion to gaussian filtering needed before thresholding in most image analysis workflows. For this, see Impute() and CrossImpute().
 #'
@@ -18,6 +20,8 @@
 #' @param slot character(1). If some signatures used for classification are stored as assay features, which slot should be used (Default: "data").
 #' @param restrict.ident character(1). The name of a metadata column containing celltype annotations, which will be used to define the subset of cells that should be classified. Default: current Idents(object). 
 #' @param restrict.to character(n). Which celltypes (as defined in the restrict.ident metadata column) should be classified. Default: All cells. 
+#' @param unclassified.name character(1). Which name should be given to the cells which do not pass any gate. Can be set to "keep" to keep the existing names for cells which don't pass any gate. Default: "None". 
+#' @param naming.mode character(1). Should the cell type names be added as a suffix or prefix to existing cell names instead of replacing them? Possible values: "replace", "prefix", "suffix". Default: "replace". When adding as a suffix or prefix, unclassified.name typically needs to be set to empty string "". 
 #' @return A Seurat object with an additional metadata column containing the cell type annotations and Idents() set to these annotations. Cells which do not validate any gate defined are attributed the celltype "None" and cells which pass several gates are labelled "Multiplet".
 #' @keywords Cell type classification celltype Classifier manual gates gating
 #' @export
@@ -37,8 +41,10 @@
 #' # Subclassify T cells, and store the results in the metadata column "TC_subcelltype" (Could also be used to overwrite the idents of TC in an existing metadata column without altering the identities of other cells).
 #' gates <- "CD8 = CD8A > 0.5 & CD4 < 0.5, CD4 = CD4 > 0.5 & CD8A < 0.5, DoublePositive = CD8A > 0.5 & CD4 > 0.5"
 #' MySeuratObject <- ClassifyManual(MySeuratObject, gates, "TC_subcelltype", restrict.ident="celltype", restrict.to="TC")
+#' # Mark dividing cells by adding a suffix to their cell names:
+#' MySeuratObject <- ClassifyManual(MySeuratObject, gates="Dividing = PCNA > 1 & MKI67 > 1", naming.mode = "suffix", unclassified.name="")
 
-ClassifyManual <- function(object, gates, metadata.name="celltype", assay=DefaultAssay(object), slot="data", restrict.ident="Default", restrict.to=as.character(unique(Idents(object)))){
+ClassifyManual <- function(object, gates, metadata.name="celltype", assay=DefaultAssay(object), slot="data", restrict.ident="Default", restrict.to=as.character(unique(Idents(object))), unclassified.name="None", naming.mode="replace"){
   
   # Check that the requested Idents to use are correct
   if(!length(restrict.ident)){
@@ -118,13 +124,25 @@ ClassifyManual <- function(object, gates, metadata.name="celltype", assay=Defaul
   
   # Combine the filters to define unique cell types vs None vs Multiplets:
   n_cell_types <- rowSums(filters)
-  celltype <- as.vector(matrix("None",nrow = n.cells,ncol = 1))
+  if(unclassified.name=="keep"){
+    celltype <- object@meta.data[cells.use, metadata.name, drop=T]
+  }else{
+    celltype <- as.vector(matrix(unclassified.name,nrow = n.cells,ncol = 1))
+  }
   for(i in 1:ncol(filters)){
     celltype[as.vector(filters[,i])] <- celltype_names[i]
   }
   celltype[n_cell_types>1] <- "Multiplet"
   
-  object@meta.data[cells.use, metadata.name] <- celltype
+  if(naming.mode=="replace"){
+    object@meta.data[cells.use, metadata.name] <- celltype
+  }else if(naming.mode=="suffix"){
+    object@meta.data[cells.use, metadata.name] <- paste0(object@meta.data[cells.use, metadata.name],celltype)
+  }else if(naming.mode=="prefix"){
+    object@meta.data[cells.use, metadata.name] <- paste0(celltype,object@meta.data[cells.use, metadata.name])
+  }else{
+    stop("The parameter naming.mode should be set to replace, suffix, or prefix.")
+  }
   
   # Make it the default Idents and return
   Idents(object) <- object[[metadata.name]]
