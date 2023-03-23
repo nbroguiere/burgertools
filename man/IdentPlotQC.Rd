@@ -14,6 +14,8 @@ IdentPlotQC(
   pt.size = 1,
   interactive = TRUE,
   colors.use = NULL,
+  assay = DefaultAssay(object),
+  slot = "data",
   ...
 )
 }
@@ -36,13 +38,17 @@ IdentPlotQC(
 
 \item{colors.use}{For interactive plots, a colorbrewer2.org palette name (e.g. "YlOrRd" or "Blues"), or a vector of colors to interpolate in hexadecimal "#RRGGBB" format, or a color interpolation function like colorRamp(). For non-interactive plots, a vector of colors passed to ggplot2 scale_color_manual. If the vector is named, the values will be matched based on names.}
 
+\item{assay}{character(1). If axes are features rather than metadata columns, the assay from which they should be pulled in priority (Default: DefaultAssay(object)).}
+
+\item{slot}{character(1). If axes are features rather than metadata columns, the slot from which they should be pulled (Default: "data").}
+
 \item{...}{Other arguments passed to plot_ly in the case of interactive plots.}
 }
 \value{
 If one ident is plotted and interactive is enabled, returns interactive plot (plotly). If several, returns a ggplot grid (cowplot).
 }
 \description{
-This function makes interactive quality control (QC) plots from a Seurat object, by default percent.mito vs nFeature_RNA, while color-coding various cell types.
+This function makes interactive quality control (QC) plots from a Seurat object, by default percent.mito vs nFeature_RNA, while color-coding various cell types. Any metadata column, signature, or feature can be also be used for the x/y axis. To pick from a particular assay, use an underscore separator, as in "assay_feature" or set the assay parameter. Features are picked up from the data slot by default, set slot to change.
 }
 \details{
 Plotly interactions: click on legend categories to toggle the display on/off, double click to isolate one cell type/category/ident.
