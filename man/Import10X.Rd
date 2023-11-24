@@ -25,7 +25,7 @@ Import10X(
 
 \item{unique.features}{logical(1). Should the feature names be made unique. Passed to Read10X. Default: TRUE}
 
-\item{strip.suffix}{logical(1). Should the constant suffix such as -1 be stripped from the barcodes. Passed to Read10X. Default: TRUE}
+\item{strip.suffix}{logical(1). Should a constant suffix such as "-1" be stripped from the barcodes. Passed to Read10X. Default: TRUE}
 
 \item{object}{Seurat object.}
 }
@@ -33,7 +33,7 @@ Import10X(
 A Seurat object.
 }
 \description{
-Wrapper for Read10X that imports data in the 10X format (mtx raw count matrix, cells in columns, with features and barcodes tsv files, compressed or not) directly into a Seurat object. Additionally looks for a file named metadata.tsv or metadata.tsv.gz and imports it as metadata of the Seurat object. If some columns of the form PC_i, UMAP_i, TSNE_i, CC_i, or HARMONY_i are found in the metadata, they are directly imported as dimensionality reductions (pca, umap, tsne, cca, and harmony respectively) in the Seurat object. The function in particular combines well with Export10X, to easily save and re-import 10X data that has been filtered using Seurat objects, using simple, universal, reusable, sharable formats.
+Wrapper for Read10X that imports data in the 10X format (mtx raw count matrix, cells in columns, with features.tsv(.gz) and barcodes.tsv(.gz) files) directly into a Seurat object. Additionally looks for metadata.tsv(.gz) in the same folder and imports it as metadata of the Seurat object. If some columns of the form PC_i, UMAP_i, TSNE_i, CC_i, or HARMONY_i are found in the metadata, they are directly imported as dimensionality reductions (pca, umap, tsne, cca, and harmony respectively) in the Seurat object. The function combines well with Export10X in particular, to easily save and re-import 10X data that has been filtered using Seurat objects, and is helpful as well to share exported data in simple language-agnostic formats.
 }
 \examples{
 # No project name, assay is RNA:
