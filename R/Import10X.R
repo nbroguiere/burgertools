@@ -23,8 +23,8 @@
 Import10X <- function(dir, project_name="", assay="RNA", gene.column=1, cell.column=1, unique.features=T, strip.suffix=T){
   
   # Get rid of terminal slash to be a bit more robust to folder input style. 
-  if(substr(dir,nchar(dir),nchar(dir))=="/"){
-    dir <- substr(dir, 1, nchar(dir-1))
+  if(substr(dir, nchar(dir), nchar(dir))=="/"){
+    dir <- substr(dir, 1, nchar(dir)-1)
   }
   
   # Wrap the existing function for simple expression matrix without metadata:
