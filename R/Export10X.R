@@ -36,7 +36,7 @@ Export10X <- function(object, dir, meta_columns = "all", append_reductions = "al
   }
   meta.tmp <- object@meta.data[,meta_columns,drop=F]
   if(length(append_reductions)){
-    if(append_reductions=="all"){
+    if(append_reductions[1]=="all"){
       append_reductions <- Reductions(object)
     }
     for(i in 1:length(append_reductions)){
