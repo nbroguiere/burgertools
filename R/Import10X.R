@@ -20,7 +20,7 @@
 #' Export10X(SeuratObject, "MyDir", c("nFeature_RNA", "mito.content"), c("pca","umap"), gzip=FALSE)
 #' NewSeuratObject <- Import10X("MyDir","MyProject","mRNA3p")
 
-Import10X <- function(dir, project_name="", assay="RNA", gene.column=1, cell.column=1, unique.features=T, strip.suffix=T){
+Import10X <- function(dir, project_name="Project", assay="RNA", gene.column=1, cell.column=1, unique.features=T, strip.suffix=T){
   
   # Get rid of terminal slash to be a bit more robust to folder input style. 
   if(substr(dir, nchar(dir), nchar(dir))=="/"){
