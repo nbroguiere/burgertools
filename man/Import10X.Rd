@@ -6,7 +6,7 @@
 \usage{
 Import10X(
   dir,
-  project_name = "",
+  project_name = "Project",
   assay = "RNA",
   gene.column = 1,
   cell.column = 1,
