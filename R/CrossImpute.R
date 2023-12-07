@@ -12,14 +12,14 @@
 #' @param knn integer(1). Number of nearest neighbors on which to compute bandiwth imputation.
 #' @param t integer(1). Diffusion parameter passed to MAGIC.
 #' @param n.jobs integer(1). Number of threads on which to run the imputation (Default: 6).
-#' @param slot.use character(1). Name of the slot to impute (Default: "data").
-#' @return Seurat object with an additional slot containing MAGIC cross-imputed data.
+#' @param layer.use character(1). Name of the layer to impute (Default: "data").
+#' @return Seurat object with an additional layer containing MAGIC cross-imputed data.
 #' @keywords MAGIC Rmagic imputation crossimputation cross-imputation
 #' @export
 #' @examples
 #' MySeuratObject <- CrossImpute(MySeuratObject,"other_assay_to_impute_based_on_RNA_distances")
 #' MySeuratObject[["imputed-RNA"]] # Check result
-CrossImpute <- function(object, impute.assay=DefaultAssay(object), name=paste0("imputed.",impute.assay), impute.features="all", reference.assay="RNA", reference.features="variable_features", npca=40, knn=3, t=2, n.jobs=6, slot.use="data"){
+CrossImpute <- function(object, impute.assay=DefaultAssay(object), name=paste0("imputed.",impute.assay), impute.features="all", reference.assay="RNA", reference.features="variable_features", npca=40, knn=3, t=2, n.jobs=6, layer.use="data"){
 
   if(!"Rmagic" %in% rownames(installed.packages())){
     stop('Rmagic is not installed, but needed for imputations. Consider running: devtools::install_github("cran/Rmagic"). The python version magic-impute is also needed, see install instructions at https://github.com/cran/Rmagic.')
@@ -63,7 +63,7 @@ CrossImpute <- function(object, impute.assay=DefaultAssay(object), name=paste0("
       warning("No features to impute available, aborting.")
       return(object)
     }else{
-      df <- t(as.matrix(GetAssayData(object = object, slot = slot.use)[impute.features,,drop=F]))
+      df <- t(as.matrix(GetAssayData(object = object, layer = layer.use)[impute.features,,drop=F]))
     }
   }
 
@@ -83,7 +83,7 @@ CrossImpute <- function(object, impute.assay=DefaultAssay(object), name=paste0("
     warning("No reference features available, aborting.")
     return(object)
   }else{
-    df <- cbind(df,t(as.matrix(GetAssayData(object = object, slot = slot.use)[reference.features,,drop=F])))
+    df <- cbind(df,t(as.matrix(GetAssayData(object = object, layer = layer.use)[reference.features,,drop=F])))
   }
 
   imputed <- Rmagic::magic(data = as.matrix(df), npca=npca, knn=knn, t=t, n.jobs=n.jobs)

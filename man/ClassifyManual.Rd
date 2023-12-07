@@ -9,7 +9,7 @@ ClassifyManual(
   gates,
   metadata.name = "celltype",
   assay = DefaultAssay(object),
-  slot = "data",
+  layer = "data",
   restrict.ident = "Default",
   restrict.to = as.character(unique(Idents(object))),
   unclassified.name = "None",
@@ -25,7 +25,7 @@ ClassifyManual(
 
 \item{assay}{character(1). If some signatures used for classification are stored as assay features, which assay should be used in priority (Default: DefaultAssay(object)).}
 
-\item{slot}{character(1). If some signatures used for classification are stored as assay features, which slot should be used (Default: "data").}
+\item{layer}{character(1). If some signatures used for classification are stored as assay features, which layer should be used (Default: "data").}
 
 \item{restrict.ident}{character(1). The name of a metadata column containing celltype annotations, which will be used to define the subset of cells that should be classified. Default: current Idents(object).}
 
@@ -54,7 +54,7 @@ Scores are taken from the metadata in priority, otherwise from assays. If found 
 Since single cell data tends to be noisy and have a significant amount of dropouts, imputation is usually a great combination with gating strategies, in a similar fashion to gaussian filtering needed before thresholding in most image analysis workflows. For this, see Impute() and CrossImpute().
 }
 \examples{
-# MySeuratObject should contain an RNA slot with log-normalized data assay.
+# MySeuratObject should contain an RNA layer with log-normalized data assay.
 # In this example cells are classified as T cells (TC) or Epithelial cells (EP) based on manual signatures.
 # Note that cells that validate no gate will have cell type "None", and cells which validate several will be classified as "Multiplets".
 # It's recommended to first do a signature scatter plot in order to choose threshold values for the gates.

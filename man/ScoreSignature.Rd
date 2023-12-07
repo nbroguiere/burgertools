@@ -9,7 +9,7 @@ ScoreSignature(
   features,
   name = "Signature",
   assay.use = NA,
-  slot.use = "data"
+  layer.use = "data"
 )
 }
 \arguments{
@@ -21,16 +21,16 @@ ScoreSignature(
 
 \item{assay.use}{The assay within the Seurat object to use for signature scoring. If NA (default), it will use the "imputed" assay if it is present, or the "RNA" assay otherwise.}
 
-\item{slot.use}{The slot to use within the assay to get data for signature scoring. By default, using the "data" assay.}
+\item{layer.use}{The layer to use within the assay to get data for signature scoring. By default, using the "data" assay.}
 }
 \value{
-Seurat object with an additional metadata slot containing the signature score.
+Seurat object with an additional metadata column containing the signature score.
 }
 \description{
 This function scores a signature at the single cell level on Seurat objects (sum of the expression for each cell).
 The signature must be a list of features (character vector).
 Any feature can be set as a negative marker in the scoring by prefixing it with a minus sign, e.g. "-EPCAM".
-By default, the score is computed as the average expression of the features as normalized in the "data" slot (i.e. log-normalized typically). Can be overrun by setting the slot.use parameter.
+By default, the score is computed as the average expression of the features as normalized in the "data" layer (i.e. log-normalized typically). Can be overrun by setting the layer.use parameter.
 If imputed data is available (assay "imputed.RNA"), the imputed data will be used. Otherwise, data from the RNA assay will be used. This can be overrun by setting the assay.use parameter.
 }
 \examples{

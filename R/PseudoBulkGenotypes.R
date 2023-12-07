@@ -6,13 +6,13 @@
 #' @param ident character(n). The name of a metadata column, or a vector listing the individual identities of cells, or a list of cells. Defines the groups of cells that are aggregated in pseudo-bulk genotypes. Default: Idents(object).
 #' @param tolerance.pct numeric(1). The percentage of counts not matching the rest tolerated to keep a homozygous call.
 #' @param assays character(3). The name of the assays in which the consensus matrix (expected to also contain variant metadata), reference allele count and alt allele count are stored in the seurat object. Default: c("VAR","REF","ALT").
-#' @param slot character(1). The assay slot that should be used in the Seurat object. Default: "data".
+#' @param layer character(1). The assay layer that should be used in the Seurat object. Default: "data".
 #' @return Returns a genotype object with the aggregated pseudo-bulk genotypes and their metadata.
 #' @keywords pseudo-bulk Pseudobulk genotype aggregation
 #' @export
 #' @examples
 #' GenotypeObject <- PseudoBulkGenotypes(MySeuratObject)
-PseudoBulkGenotypes <- function(object, ident=Idents(object), tolerance.pct=5, assays=c("VAR","REF","ALT"), slot="data"){
+PseudoBulkGenotypes <- function(object, ident=Idents(object), tolerance.pct=5, assays=c("VAR","REF","ALT"), layer="data"){
   # Clarify the identities to use
   if(!length(ident)){
     print("No cluster identity given, using default Idents(object)")
@@ -58,8 +58,8 @@ PseudoBulkGenotypes <- function(object, ident=Idents(object), tolerance.pct=5, a
   # Go through the clusters, pick up the data, aggregate, compute coverage, frequency, and make a genotype call:
   tol <- tolerance.pct/100
   for(i in gt.names){
-    ref <- Matrix::rowSums(GetAssayData(object, assay=assays[2], slot=slot)[,idents==i])
-    alt <- Matrix::rowSums(GetAssayData(object, assay=assays[3], slot=slot)[,idents==i])
+    ref <- Matrix::rowSums(GetAssayData(object, assay=assays[2], layer=layer)[,idents==i])
+    alt <- Matrix::rowSums(GetAssayData(object, assay=assays[3], layer=layer)[,idents==i])
     cvg <- ref+alt
     freq <- alt/cvg + 1 # Offset by one to distinguish no data from 0 frequency
     freq[cvg==0] <- 0

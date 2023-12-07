@@ -15,7 +15,7 @@ CrossImpute(
   knn = 3,
   t = 2,
   n.jobs = 6,
-  slot.use = "data"
+  layer.use = "data"
 )
 }
 \arguments{
@@ -39,10 +39,10 @@ CrossImpute(
 
 \item{n.jobs}{integer(1). Number of threads on which to run the imputation (Default: 6).}
 
-\item{slot.use}{character(1). Name of the slot to impute (Default: "data").}
+\item{layer.use}{character(1). Name of the layer to impute (Default: "data").}
 }
 \value{
-Seurat object with an additional slot containing MAGIC cross-imputed data.
+Seurat object with an additional layer containing MAGIC cross-imputed data.
 }
 \description{
 This function imputes features in an assay based on (the merger with) another assay. Typically using the high resolution in the RNA data to impute more noisy additional assays.

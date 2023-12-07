@@ -11,7 +11,7 @@ Classify(
   metadata.name = "celltype",
   cell.names = NA,
   assay = DefaultAssay(object),
-  slot = "data",
+  layer = "data",
   restrict.ident = "Default",
   restrict.to = as.character(unique(Idents(object))),
   by.clusters = NULL
@@ -30,7 +30,7 @@ Classify(
 
 \item{assay}{character(1). If some signatures used for classification are stored as assay features, which assay should be used in priority (Default: DefaultAssay(object)).}
 
-\item{slot}{character(1). If some signatures used for classification are stored as assay features, which slot should be used (Default: "data").}
+\item{layer}{character(1). If some signatures used for classification are stored as assay features, which layer should be used (Default: "data").}
 
 \item{restrict.ident}{character(1). The name of a metadata column containing celltype annotations, which will be used to define the subset of cells that should be classified. Default: "Default", which uses current default, i.e. Idents(object).}
 
@@ -50,7 +50,7 @@ Each single cell will be associated to the cell type whose signature is maximal 
 If the by.clusters parameter is set to some identities or metadata column containing identities, the classification will be done on clusters rather than single cells. This can help to overcome strong noise, or to take into account some prior knowledge such as dataset alignment in the classification.
 }
 \examples{
-# After MySeuratObject has been log-normalized in order to contain an RNA>data assay>slot and been augmented with a percent.mito metadata column:
+# After MySeuratObject has been log-normalized in order to contain an RNA>data assay>layer and been augmented with a percent.mito metadata column:
 # SignatureList should be a list of character vectors, each containing a series of feature/gene names. In this example, the signatures correspond to cell types, and the name of each signature is the name of the corresponding cell type (e.g. Tcell, Bcell, EpithelialCell, Fibroblasts, etc).
 MySeuratObject <- Impute(MySeuratObject)
 MySeuratObject <- ScoreSignatures(MySeuratObject,SignatureList)

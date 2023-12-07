@@ -1,6 +1,6 @@
 #' QC plot with cell type highlight
 #'
-#' This function makes interactive quality control (QC) plots from a Seurat object, by default percent.mito vs nFeature_RNA, while color-coding various cell types. Any metadata column, signature, or feature can be also be used for the x/y axis. To pick from a particular assay, use an underscore separator, as in "assay_feature" or set the assay parameter. Features are picked up from the data slot by default, set slot to change.
+#' This function makes interactive quality control (QC) plots from a Seurat object, by default percent.mito vs nFeature_RNA, while color-coding various cell types. Any metadata column, signature, or feature can be also be used for the x/y axis. To pick from a particular assay, use an underscore separator, as in "assay_feature" or set the assay parameter. Features are picked up from the data layer by default, set layer to change.
 #'
 #' Plotly interactions: click on legend categories to toggle the display on/off, double click to isolate one cell type/category/ident.
 #' Hover to get cell info (useful to choose filtering parameters), and select pan/zoom in the top-right menu to do close-ups and navigate.
@@ -16,20 +16,20 @@
 #' @param interactive Enable interactive plot? (Default: TRUE).
 #' @param colors.use For interactive plots, a colorbrewer2.org palette name (e.g. "YlOrRd" or "Blues"), or a vector of colors to interpolate in hexadecimal "#RRGGBB" format, or a color interpolation function like colorRamp(). For non-interactive plots, a vector of colors passed to ggplot2 scale_color_manual. If the vector is named, the values will be matched based on names.
 #' @param assay character(1). If axes are features rather than metadata columns, the assay from which they should be pulled in priority (Default: DefaultAssay(object)).
-#' @param slot character(1). If axes are features rather than metadata columns, the slot from which they should be pulled (Default: "data").
+#' @param layer character(1). If axes are features rather than metadata columns, the layer from which they should be pulled (Default: "data").
 #' @param ... Other arguments passed to plot_ly in the case of interactive plots.
 #' @return If one ident is plotted and interactive is enabled, returns interactive plot (plotly). If several, returns a ggplot grid (cowplot).
 #' @keywords QC plot with cell types highlighted.
 #' @export
 #' @examples
-#' # After MySeuratObject has been log-normalized in order to contain an RNA>data assay>slot and been augmented with a percent.mito metadata column:
+#' # After MySeuratObject has been log-normalized in order to contain an RNA>data assay>layer and been augmented with a percent.mito metadata column:
 #' # SignatureList should be a list of character vectors, each containing a series of feature/gene names. In this example, the signatures correspond to cell types, and the name of each signature is the name of the corresponding cell type (e.g. Tcell, Bcell, EpithelialCell, Fibroblasts, etc).
 #' MySeuratObject <- Impute(MySeuratObject)
 #' MySeuratObject <- ScoreSignatures(MySeuratObject,SignatureList)
 #' MySeuratObject <- Classify(MySeuratObject,names(SignatureList),"CellType") # Automatic cell type annotation based on cell type signatures.
 #' IdentPlotQC(MySeuratObject,"celltype")
 
-IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA, pt.size=1, interactive=TRUE, colors.use=NULL, assay=DefaultAssay(object), slot="data", ...){
+IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA, pt.size=1, interactive=TRUE, colors.use=NULL, assay=DefaultAssay(object), layer="data", ...){
   if(sum(is.na(ident))){
     object$tmp <- as.character(Idents(object))
     ident <- "tmp"
@@ -48,7 +48,7 @@ IdentPlotQC <- function(object, ident=NA, x= "nFeature_RNA", y="percent.mito", l
     }
   }
   
-  df <- GatherFeatures(object,c(x,y,ident), slot=slot, assay=assay)
+  df <- GatherFeatures(object,c(x,y,ident), layer=layer, assay=assay)
   if(length(ident)==0){
     warning("No valid ident found. Abort.")
     return()

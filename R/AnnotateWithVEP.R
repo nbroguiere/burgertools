@@ -18,7 +18,7 @@
 #' MyGenotype <- AnnotateWithVEP(MyGenotype,MyVepDataFrame,min.impact="HIGH",avoid_underscores=TRUE)
 #' @export
 
-AnnotateWithVEP <- function(genotype,vep,min_impact="MODERATE",avoid_underscores=TRUE){
+AnnotateWithVEP <- function(genotype, vep, min_impact="MODERATE", avoid_underscores=TRUE){
   vep2 <- vep[vep$Uploaded_variation %in% genotype@metadata$VEP_ID,c("Uploaded_variation","Location","Allele","Gene","SYMBOL","IMPACT","Consequence","Protein_position","Amino_acids","CLIN_SIG")]
   annotations <- data.frame(VEP_ID=genotype@metadata$VEP_ID, symbol="-",gene_ensembl_id="-",impact="-",protein_position="-",aminoacids="-", consequence="-", clinicalsign="-",summary="-",short_description="-", row.names=genotype@metadata$UNIQUE_ID)
   annotations$impact <- factor(annotations$impact,levels=c("-","MODIFIER","LOW","MODERATE","HIGH"),ordered = T)

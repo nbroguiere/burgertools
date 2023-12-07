@@ -15,7 +15,7 @@ IdentPlotQC(
   interactive = TRUE,
   colors.use = NULL,
   assay = DefaultAssay(object),
-  slot = "data",
+  layer = "data",
   ...
 )
 }
@@ -40,7 +40,7 @@ IdentPlotQC(
 
 \item{assay}{character(1). If axes are features rather than metadata columns, the assay from which they should be pulled in priority (Default: DefaultAssay(object)).}
 
-\item{slot}{character(1). If axes are features rather than metadata columns, the slot from which they should be pulled (Default: "data").}
+\item{layer}{character(1). If axes are features rather than metadata columns, the layer from which they should be pulled (Default: "data").}
 
 \item{...}{Other arguments passed to plot_ly in the case of interactive plots.}
 }
@@ -48,7 +48,7 @@ IdentPlotQC(
 If one ident is plotted and interactive is enabled, returns interactive plot (plotly). If several, returns a ggplot grid (cowplot).
 }
 \description{
-This function makes interactive quality control (QC) plots from a Seurat object, by default percent.mito vs nFeature_RNA, while color-coding various cell types. Any metadata column, signature, or feature can be also be used for the x/y axis. To pick from a particular assay, use an underscore separator, as in "assay_feature" or set the assay parameter. Features are picked up from the data slot by default, set slot to change.
+This function makes interactive quality control (QC) plots from a Seurat object, by default percent.mito vs nFeature_RNA, while color-coding various cell types. Any metadata column, signature, or feature can be also be used for the x/y axis. To pick from a particular assay, use an underscore separator, as in "assay_feature" or set the assay parameter. Features are picked up from the data layer by default, set layer to change.
 }
 \details{
 Plotly interactions: click on legend categories to toggle the display on/off, double click to isolate one cell type/category/ident.
@@ -57,7 +57,7 @@ Hover to get cell info (useful to choose filtering parameters), and select pan/z
 This is useful when making scRNA-seq from heterogeneous samples: for example immune cells are small and might be discarded as debris from much larger epithelial cancer cells if one is not aware of the differences in QC parameters occuring between various cell types.
 }
 \examples{
-# After MySeuratObject has been log-normalized in order to contain an RNA>data assay>slot and been augmented with a percent.mito metadata column:
+# After MySeuratObject has been log-normalized in order to contain an RNA>data assay>layer and been augmented with a percent.mito metadata column:
 # SignatureList should be a list of character vectors, each containing a series of feature/gene names. In this example, the signatures correspond to cell types, and the name of each signature is the name of the corresponding cell type (e.g. Tcell, Bcell, EpithelialCell, Fibroblasts, etc).
 MySeuratObject <- Impute(MySeuratObject)
 MySeuratObject <- ScoreSignatures(MySeuratObject,SignatureList)

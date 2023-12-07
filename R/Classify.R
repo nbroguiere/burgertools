@@ -12,7 +12,7 @@
 #' @param metadata.name character(1). The name of the new metadata column where cell type annotations are stored (Default: celltype)
 #' @param cell.names character(n). Give only if the signature names should not be used as celltypes names, but rather be replaced by these cell names.
 #' @param assay character(1). If some signatures used for classification are stored as assay features, which assay should be used in priority (Default: DefaultAssay(object)).
-#' @param slot character(1). If some signatures used for classification are stored as assay features, which slot should be used (Default: "data").
+#' @param layer character(1). If some signatures used for classification are stored as assay features, which layer should be used (Default: "data").
 #' @param restrict.ident character(1). The name of a metadata column containing celltype annotations, which will be used to define the subset of cells that should be classified. Default: "Default", which uses current default, i.e. Idents(object). 
 #' @param restrict.to character(n). Which celltypes (as defined in the restrict.ident metadata column) should be classified. Default: All cells. 
 #' @param by.clusters character(1) or character(n) or factor(n). If not NULL, clusters instead of single cells will be classified. The parameter should indicate the name of a metadata column containing the clusters to consider (e.g. "seurat_clusters"), or the actual cluster info (e.g. object$seurat_clusters). 
@@ -20,13 +20,13 @@
 #' @keywords Cell type classification celltype Classifier
 #' @export
 #' @examples
-#' # After MySeuratObject has been log-normalized in order to contain an RNA>data assay>slot and been augmented with a percent.mito metadata column:
+#' # After MySeuratObject has been log-normalized in order to contain an RNA>data assay>layer and been augmented with a percent.mito metadata column:
 #' # SignatureList should be a list of character vectors, each containing a series of feature/gene names. In this example, the signatures correspond to cell types, and the name of each signature is the name of the corresponding cell type (e.g. Tcell, Bcell, EpithelialCell, Fibroblasts, etc).
 #' MySeuratObject <- Impute(MySeuratObject)
 #' MySeuratObject <- ScoreSignatures(MySeuratObject,SignatureList)
 #' MySeuratObject <- Classify(MySeuratObject,SignatureList) # Automatic annotation based on cell type signatures, stored in metadata column "celltype".
 
-Classify <- function(object, signatures, expected.values=NA, metadata.name="celltype", cell.names=NA, assay=DefaultAssay(object), slot="data", restrict.ident="Default", restrict.to=as.character(unique(Idents(object))), by.clusters=NULL){
+Classify <- function(object, signatures, expected.values=NA, metadata.name="celltype", cell.names=NA, assay=DefaultAssay(object), layer="data", restrict.ident="Default", restrict.to=as.character(unique(Idents(object))), by.clusters=NULL){
   
   # Check that the idents requested for restriction are correct
   if(length(restrict.ident) != 1){
@@ -86,7 +86,7 @@ Classify <- function(object, signatures, expected.values=NA, metadata.name="cell
   }
   
   # Create a df with the signatures and features to be used:
-  df <- GatherFeatures(object, sign.names, assay=assay, slot=slot)
+  df <- GatherFeatures(object, sign.names, assay=assay, layer=layer)
   df <- df[cells.use,,drop=F]
   if(!ncol(df)){
     warning("None of the requested features/signatures were found. Did you forget to run Impute and/or ScoreSignatures?")

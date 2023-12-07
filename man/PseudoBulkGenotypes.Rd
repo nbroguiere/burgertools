@@ -9,7 +9,7 @@ PseudoBulkGenotypes(
   ident = Idents(object),
   tolerance.pct = 5,
   assays = c("VAR", "REF", "ALT"),
-  slot = "data"
+  layer = "data"
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ PseudoBulkGenotypes(
 
 \item{assays}{character(3). The name of the assays in which the consensus matrix (expected to also contain variant metadata), reference allele count and alt allele count are stored in the seurat object. Default: c("VAR","REF","ALT").}
 
-\item{slot}{character(1). The assay slot that should be used in the Seurat object. Default: "data".}
+\item{layer}{character(1). The assay layer that should be used in the Seurat object. Default: "data".}
 }
 \value{
 Returns a genotype object with the aggregated pseudo-bulk genotypes and their metadata.

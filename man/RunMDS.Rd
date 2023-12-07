@@ -10,7 +10,7 @@ RunMDS(
   n.dims = 30,
   features.use = NA,
   assay = NA,
-  slot = "data",
+  layer = "data",
   reduction.name = "mds",
   key = "MDS_",
   batch_size = 400,
@@ -29,7 +29,7 @@ RunMDS(
 
 \item{assay}{character(1). The assay to use. NA uses "VAR" if available, otherwise the DefaultAssay (Default:NA).}
 
-\item{slot}{character(1). The Seurat object assay slot to use (Default:"data").}
+\item{layer}{character(1). The Seurat object assay layer to use (Default:"data").}
 
 \item{reduction.name}{character(1). The name under which the dimensionality reduction will be stored under (Default: "mds").}
 
@@ -45,7 +45,7 @@ RunMDS(
 Returns the Seurat object.
 }
 \description{
-Compute a multidimensional scaling (MDS) dimensionality reduction on a Seurat object, using the provided distance metric. By default, using 30 dimensions in the reduced space, based on the variable features of the current default assay and data slot, with results stored under the name "mds".
+Compute a multidimensional scaling (MDS) dimensionality reduction on a Seurat object, using the provided distance metric. By default, using 30 dimensions in the reduced space, based on the variable features of the current default assay and data layer, with results stored under the name "mds".
 }
 \details{
 Wrapper of the bigmds divide and conquer method, see \code{\link[bigmds:divide_conquer_mds]{bigmds::divide_conquer_mds()}} for details and references.

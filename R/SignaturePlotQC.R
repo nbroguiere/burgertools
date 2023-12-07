@@ -13,19 +13,19 @@
 #' @param ncol num(1). Number of columns (Default = NA, determined from the data)
 #' @param pt.size num(1). The point size, passed to ggplot (Default: 1)
 #' @param assay character(1). If some values to highlight are features rather than metadata columns, the assay from which they should be pulled in priority (Default: DefaultAssay(object)).
-#' @param slot character(1). If some values to highlight are features rather than metadata columns, the slot from which they should be pulled (Default: "data").
+#' @param layer character(1). If some values to highlight are features rather than metadata columns, the layer from which they should be pulled (Default: "data").
 #' @return Returns a ggplot/cowplot grid object.
 #' @keywords QC plot signatures highlight
 #' @export
 #' @examples
-#' # After MySeuratObject has been log-normalized in order to contain an RNA>data assay>slot and been augmented with a percent.mito metadata column:
+#' # After MySeuratObject has been log-normalized in order to contain an RNA>data assay>layer and been augmented with a percent.mito metadata column:
 #' # SignatureList should be a list of character vectors, each containing a series of feature/gene names.
 #' MySeuratObject <- Impute(MySeuratObject)
 #' MySeuratObject <- ScoreSignatures(MySeuratObject,SignatureList)
 #' SignaturePlotQC(MySeuratObject,names(SignatureList))
 #' SignaturePlotQC(MySeuratObject,x="MKI67",y="PCNA",log.scale=FALSE,pt.size=1.5,)
 
-SignaturePlotQC <- function(object, signatures, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA, pt.size=1, assay=DefaultAssay(object), slot="data"){
+SignaturePlotQC <- function(object, signatures, x= "nFeature_RNA", y="percent.mito", log.scale=TRUE, ncol=NA, pt.size=1, assay=DefaultAssay(object), layer="data"){
   if(is.list(signatures)){
     if(length(unlist(signatures))==length(signatures)){
       sign.names <- unlist(signatures)
@@ -55,7 +55,7 @@ SignaturePlotQC <- function(object, signatures, x= "nFeature_RNA", y="percent.mi
   #   warning("The format of the 'signatures' argument (i.e. ",typeof(signatures),") is not supported. Provide a vector of metadata/feature/signature names, or a named signature list.")
   #   return()
   # }
-  df <- GatherFeatures(object,c(x,y,sign.names), slot=slot, assay=assay)
+  df <- GatherFeatures(object,c(x,y,sign.names), layer=layer, assay=assay)
   p <- list()
   for(n in sign.names){
     if(log.scale){

@@ -17,7 +17,7 @@
 #' @param gates charater(1). Gate definitions, with gates for various cell types delimited by commas (,). For each gate, the name of the cell type is given first, followed by equal (=) and a series of gates separated by AND symbol (&). Example: "celltype_a = sign_a > value_aa & sign_b < value_ab, celltype_b = sign_b > value_ba & sign_a < value_ab" where sign_a and sign_b are the names of metadata columns and value_xy are numeric values.
 #' @param metadata.name The name of the new metadata column where cell type annotations are stored (Default: celltype)
 #' @param assay character(1). If some signatures used for classification are stored as assay features, which assay should be used in priority (Default: DefaultAssay(object)).
-#' @param slot character(1). If some signatures used for classification are stored as assay features, which slot should be used (Default: "data").
+#' @param layer character(1). If some signatures used for classification are stored as assay features, which layer should be used (Default: "data").
 #' @param restrict.ident character(1). The name of a metadata column containing celltype annotations, which will be used to define the subset of cells that should be classified. Default: current Idents(object). 
 #' @param restrict.to character(n). Which celltypes (as defined in the restrict.ident metadata column) should be classified. Default: All cells. 
 #' @param unclassified.name character(1). Which name should be given to the cells which do not pass any gate. Can be set to "keep" to keep the existing names for cells which don't pass any gate. Default: "None". 
@@ -26,7 +26,7 @@
 #' @keywords Cell type classification celltype Classifier manual gates gating
 #' @export
 #' @examples
-#' # MySeuratObject should contain an RNA slot with log-normalized data assay.
+#' # MySeuratObject should contain an RNA layer with log-normalized data assay.
 #' # In this example cells are classified as T cells (TC) or Epithelial cells (EP) based on manual signatures.
 #' # Note that cells that validate no gate will have cell type "None", and cells which validate several will be classified as "Multiplets".
 #' # It's recommended to first do a signature scatter plot in order to choose threshold values for the gates.
@@ -44,7 +44,7 @@
 #' # Mark dividing cells by adding a suffix to their cell names:
 #' MySeuratObject <- ClassifyManual(MySeuratObject, gates="Dividing = PCNA > 1 & MKI67 > 1", naming.mode = "suffix", unclassified.name="")
 
-ClassifyManual <- function(object, gates, metadata.name="celltype", assay=DefaultAssay(object), slot="data", restrict.ident="Default", restrict.to=as.character(unique(Idents(object))), unclassified.name="None", naming.mode="replace"){
+ClassifyManual <- function(object, gates, metadata.name="celltype", assay=DefaultAssay(object), layer="data", restrict.ident="Default", restrict.to=as.character(unique(Idents(object))), unclassified.name="None", naming.mode="replace"){
   
   # Check that the requested Idents to use are correct
   if(!length(restrict.ident)){
@@ -95,7 +95,7 @@ ClassifyManual <- function(object, gates, metadata.name="celltype", assay=Defaul
   
   # Create a df with the signatures and features to be used:
   unique.signatures.needed <- unique(unlist(lapply(strsplit(unlist(subgates),"<|>"),"[",1)))
-  df <- GatherFeatures(object, unique.signatures.needed, assay=assay, slot=slot)
+  df <- GatherFeatures(object, unique.signatures.needed, assay=assay, layer=layer)
   df <- df[cells.use,,drop=F]
   if(!ncol(df)){
     warning("None of the requested features/signatures were found. Did you forget to run Impute and/or ScoreSignatures?")

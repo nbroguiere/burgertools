@@ -8,7 +8,7 @@
 #' @param min.cells numeric(1). The minimal number of cells that should be have data in both populations for differential testing to be performed. Default: 15.
 #' @param sort.by character(1). "pval" to sort the result dataframe by p-value, or "deltafreq" to sort by absolute difference in frequency. Any other value will result in no sorting, conserving the feature order in the Seurat object. Default: pval.
 #' @param assays character(2). The name of the assays in which the reference allele count and alt allele count are stored in the seurat object. Default: c("REF","ALT").
-#' @param slot character(1). The assay slot that should be used in the Seurat object. Default: "data".
+#' @param layer character(1). The assay layer that should be used in the Seurat object. Default: "data".
 #' @param show.progress numeric(1). Number of tests performed between updates on the advance. FALSE or 0 for no progress reports. Default: 500.
 #' @param pval.lower.limit numeric(1). p-vals lower than this limit will be truncated to this limit. Useful to avoid log(0) and set an axis limit in volcano-like plots of the results.
 #' @return Returns a data frame with columns "n1" (number of cells with variant data in population 1) and "n2" (same in population 2), the frequency of ref and alt allele in both populations "freq1" and "freq2", the difference in frequency "deltafreq", and the results of the chi-square test for identitical frequency with or without Bonferroni correction "pval" and "adj.pval".
@@ -16,7 +16,7 @@
 #' @export
 #' @examples
 #' DifferentialTestingresults <- FindDifferentVariants(MySeuratObject, "FirstIdentName", "OtherIdentName")
-FindDifferentVariants <- function(object, ident.1, ident.2=NULL, min.cells=15, sort.by="pval", assay=c("REF","ALT"), slot="data", show.progress=500, pval.lower.limit=1e-100){
+FindDifferentVariants <- function(object, ident.1, ident.2=NULL, min.cells=15, sort.by="pval", assay=c("REF","ALT"), layer="data", show.progress=500, pval.lower.limit=1e-100){
   # Clarify the identities to use
   if(length(ident.1)==1){
     ident.1 <- colnames(object)[Idents(object)==ident.1]
@@ -36,10 +36,10 @@ FindDifferentVariants <- function(object, ident.1, ident.2=NULL, min.cells=15, s
     return(object)
   }
   # Pick up the data filtered above min.cell threshold, and aggregate the counts of ref and alt:
-  variants_ident_1_ref <- GetAssayData(object, assay=assay[1], slot=slot)[,ident.1]
-  variants_ident_1_alt <- GetAssayData(object, assay=assay[2], slot=slot)[,ident.1]
-  variants_ident_2_ref <- GetAssayData(object, assay=assay[1], slot=slot)[,ident.2]
-  variants_ident_2_alt <- GetAssayData(object, assay=assay[2], slot=slot)[,ident.2]
+  variants_ident_1_ref <- GetAssayData(object, assay=assay[1], layer=layer)[,ident.1]
+  variants_ident_1_alt <- GetAssayData(object, assay=assay[2], layer=layer)[,ident.1]
+  variants_ident_2_ref <- GetAssayData(object, assay=assay[1], layer=layer)[,ident.2]
+  variants_ident_2_alt <- GetAssayData(object, assay=assay[2], layer=layer)[,ident.2]
   tmp1 <- Matrix::rowSums((variants_ident_1_ref+variants_ident_1_alt)>0)
   tmp2 <- Matrix::rowSums((variants_ident_2_ref+variants_ident_2_alt)>0)
   keep <- tmp1>min.cells & tmp2>min.cells

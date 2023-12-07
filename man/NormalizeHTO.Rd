@@ -27,7 +27,7 @@ NormalizeHTO(
 \item{imputed.assay}{character(1). Only used if scale.HTO="imputed_max". The name of the assay that contains imputed HTO data.}
 }
 \value{
-Returns a Seurat object with normalized HTO data in the data slot.
+Returns a Seurat object with normalized HTO data in the data layer.
 }
 \description{
 Normalizes hashtag oligo (HTO) data. By default, first scales each HTO to its standard deviation to account for difference of intensity for the various labels, then scales each cell so that HTO are reported as a percentage. Alternatively, can scale the HTOs to a quantile of their values, to the background value, or to their max after imputation.

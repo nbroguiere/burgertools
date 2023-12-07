@@ -14,7 +14,7 @@ Export10X(
   cols = "barcodes.tsv",
   counts = "matrix.mtx",
   meta = "metadata.tsv",
-  slot = "counts",
+  layer = "counts",
   assay = "RNA"
 )
 }
@@ -37,7 +37,7 @@ Export10X(
 
 \item{meta}{character(1). Name of the exported file that contains the metadata. Default: metadata.tsv}
 
-\item{slot}{character(1). Name of the slot in the Seurat object from which the count matrix is exported. Default: counts}
+\item{layer}{character(1). Name of the layer in the Seurat object from which the count matrix is exported. Default: counts}
 
 \item{assay}{character(1). Name of the assay in the Seurat object from which the count matrix is exported. Default: RNA}
 }
@@ -50,7 +50,7 @@ Export10X(SeuratObject, "MyDir")
 # Include only two custom metadata columns, two dimensionality reductions, and do not compress the matrices.
 Export10X(SeuratObject, "MyDir", c("nFeature_RNA", "mito.content"), c("pca","umap"), gzip=FALSE)
 # Export normalized CiteSeq data rather than raw RNA counts, and no metadata:
-Export10X(SeuratObject, "MyDir", meta_columns = c(), slot="data", assay="CiteSeq")
+Export10X(SeuratObject, "MyDir", meta_columns = c(), layer="data", assay="CiteSeq")
 }
 \keyword{10X}
 \keyword{Reexport}

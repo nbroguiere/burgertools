@@ -10,7 +10,7 @@
 #' @param assay character(1). The name of the assay which should be normalized. Default: "HTO".
 #' @param q numeric(1). Only used if scale.HTO="quantile". The quantile used for normalization.
 #' @param imputed.assay character(1). Only used if scale.HTO="imputed_max". The name of the assay that contains imputed HTO data.
-#' @return Returns a Seurat object with normalized HTO data in the data slot.
+#' @return Returns a Seurat object with normalized HTO data in the data layer.
 #' @keywords HTO normalization
 #' @export
 #' @examples
@@ -47,7 +47,7 @@ NormalizeHTO <- function(object, scale.HTO = "stdev", normalize.cells = 100, ass
     HTO_counts <- sweep(HTO_counts, 2, matrixStats::colSums2(as.matrix(HTO_counts)), FUN = '/') # Scale each col (cbc) to its sum.
     HTO_counts <- HTO_counts*normalize.cells
   }
-  object[["HTO"]]@data <- as(HTO_counts,"dgCMatrix")
+  object[["HTO"]]$data <- as(HTO_counts,"dgCMatrix")
 
   return(object)
 }

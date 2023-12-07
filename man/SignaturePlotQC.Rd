@@ -13,7 +13,7 @@ SignaturePlotQC(
   ncol = NA,
   pt.size = 1,
   assay = DefaultAssay(object),
-  slot = "data"
+  layer = "data"
 )
 }
 \arguments{
@@ -33,7 +33,7 @@ SignaturePlotQC(
 
 \item{assay}{character(1). If some values to highlight are features rather than metadata columns, the assay from which they should be pulled in priority (Default: DefaultAssay(object)).}
 
-\item{slot}{character(1). If some values to highlight are features rather than metadata columns, the slot from which they should be pulled (Default: "data").}
+\item{layer}{character(1). If some values to highlight are features rather than metadata columns, the layer from which they should be pulled (Default: "data").}
 }
 \value{
 Returns a ggplot/cowplot grid object.
@@ -47,7 +47,7 @@ Can also be used in general as a combination of scatter plot and feature plot, a
 This is useful when making scRNA-seq from heterogeneous samples: for example immune cells are small and might be discarded as debris from much larger epithelial cancer cells if one is not aware of the differences in QC parameters occurring between various cell types.
 }
 \examples{
-# After MySeuratObject has been log-normalized in order to contain an RNA>data assay>slot and been augmented with a percent.mito metadata column:
+# After MySeuratObject has been log-normalized in order to contain an RNA>data assay>layer and been augmented with a percent.mito metadata column:
 # SignatureList should be a list of character vectors, each containing a series of feature/gene names.
 MySeuratObject <- Impute(MySeuratObject)
 MySeuratObject <- ScoreSignatures(MySeuratObject,SignatureList)

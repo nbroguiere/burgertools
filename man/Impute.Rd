@@ -13,12 +13,12 @@ Impute(
   t = 2,
   n.jobs = 6,
   assay.use = "RNA",
-  slot.use = "data",
+  layer.use = "data",
   name = paste0("imputed.", assay.use)
 )
 }
 \arguments{
-\item{object}{Seurat object. Must contain an RNA assay with a data slot that will be used for imputation.}
+\item{object}{Seurat object. Must contain an RNA assay with a data layer (or a custom layer specified in argument layer.use) that will be used for imputation.}
 
 \item{features}{A subset of features/genes on which to run the imputation. Can be a list of signatures in which the features in the list will be added, or can be "all" (Default: NULL/none, i.e. only impute all variable features if append.variable.features is TRUE, as set by default).}
 
@@ -34,12 +34,12 @@ Impute(
 
 \item{assay.use}{Name of the assay to impute (Default: "RNA").}
 
-\item{slot.use}{Name of the slot to impute (Default: "data").}
+\item{layer.use}{Name of the layer to impute (Default: "data").}
 
-\item{name}{Name of the slot in which the imputed assay is stored (Default: paste0("imputed.",assay.use)).}
+\item{name}{Name of the assay in which the imputed data is stored (Default: paste0("imputed.",assay.use)).}
 }
 \value{
-Seurat object with an additional slot containing MAGIC imputed data.
+Seurat object with an additional layer containing MAGIC imputed data.
 }
 \description{
 This function is a wrapper of the MAGIC imputation function to easily impute Seurat objects containing scRNA-seq data, with reasonable default parameters when used in the context of signature scoring for cell classification: only imputing the most variable genes and additional features of interest, and using only 40 PCs for efficiency, and using a narrow neighborhood to avoid over-smoothing.
@@ -49,7 +49,7 @@ MySeuratObject <- Impute(MySeuratObject)
 MySeuratObject[["imputed.RNA"]]
 SL <- list(CD8TC=c("CD3","CD8","-CD4"), 
            Fibro=c("VIM","COL1A1","-EPCAM"))
-MySeuratObject <- Impute(MySeuratObject, features=SL, append.variable.features=TRUE, knn=4, t=3, npca=30, n.jobs=36, assay.use="RNA", slot.use="scale.data", name="custom.imputation")
+MySeuratObject <- Impute(MySeuratObject, features=SL, append.variable.features=TRUE, knn=4, t=3, npca=30, n.jobs=36, assay.use="RNA", layer.use="scale.data", name="custom.imputation")
 MySeuratObject[["imputed.RNA"]]
 }
 \keyword{MAGIC}

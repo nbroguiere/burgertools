@@ -11,7 +11,7 @@ FindDifferentVariants(
   min.cells = 15,
   sort.by = "pval",
   assay = c("REF", "ALT"),
-  slot = "data",
+  layer = "data",
   show.progress = 500,
   pval.lower.limit = 1e-100
 )
@@ -27,7 +27,7 @@ FindDifferentVariants(
 
 \item{sort.by}{character(1). "pval" to sort the result dataframe by p-value, or "deltafreq" to sort by absolute difference in frequency. Any other value will result in no sorting, conserving the feature order in the Seurat object. Default: pval.}
 
-\item{slot}{character(1). The assay slot that should be used in the Seurat object. Default: "data".}
+\item{layer}{character(1). The assay layer that should be used in the Seurat object. Default: "data".}
 
 \item{show.progress}{numeric(1). Number of tests performed between updates on the advance. FALSE or 0 for no progress reports. Default: 500.}
 

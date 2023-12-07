@@ -24,7 +24,7 @@
 #  # Annotate only a subset of the most variable genes:
 #' AnnotatedVariableFeaturePlot(SeuratObject,500)
 
-AnnotatedVariableFeaturePlot <- function(object, which.labels=NA, pt.size=1, text.size=2.5, log=NULL, xnudge=0, ynudge=0, colors=c("Black","Cyan"),selection.method=NULL, assay=NULL){
+AnnotatedVariableFeaturePlot <- function(object, which.labels=NA, pt.size=1, text.size=2.5, log=NULL, xnudge=0, ynudge=0, colors=c("Black","Cyan"), selection.method=NULL, assay=NULL){
   if(sum(is.na(which.labels))){
     points <- VariableFeatures(object,assay = assay)
   }else if(is.vector(which.labels,mode="numeric")){

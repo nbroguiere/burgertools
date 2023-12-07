@@ -28,7 +28,7 @@
 #' @export
 CreateGenotypeObject <- function(matrix=NULL, metadata=NULL, vartrix=list(), variants=NULL, ...){
   if(is.null(variants)){
-    if(!dplyr::setequal(rownames(matrix),rownames(metadata))){
+    if(!dplyr::setequal(rownames(matrix), rownames(metadata))){
       warning("The row names in the matrix and metadata do not match, and list of variants is not given. Aborting.")
     }else{
       variants <- rownames(matrix)
@@ -37,5 +37,5 @@ CreateGenotypeObject <- function(matrix=NULL, metadata=NULL, vartrix=list(), var
   if(!is.null(matrix)) rownames(matrix) <- variants
   if(!is.null(metadata)) rownames(metadata) <- variants
   if(length(vartrix)) rownames(vartrix) <- variants
-  return(GenotypeObject(matrix=matrix,metadata=metadata,vartrix=vartrix,variants=variants))
+  return(GenotypeObject(matrix=matrix, metadata=metadata, vartrix=vartrix, variants=variants))
 }

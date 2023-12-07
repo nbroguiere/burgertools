@@ -11,7 +11,7 @@ CellSimilarityToGenotypes(
   prefix = "Similarity-",
   features.use = "all",
   assays = c("VAR", "REF", "ALT"),
-  slots = c("data", "data", "data")
+  layers = c("data", "data", "data")
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ CellSimilarityToGenotypes(
 
 \item{assays}{character(3). The name of the assays within the Seurat object that contain the variant calls (sparse matrix with values 1,2,3 in vartrix conventions), and counts of reference and alt alleles (Default: c("VAR","REF","ALT")).}
 
-\item{slots.}{The slots to use within the assays above (Default: c("data","data","data")).}
+\item{layers}{The layers to use within the assays above (Default: c("data","data","data")).}
 }
 \value{
 Returns the Seurat object

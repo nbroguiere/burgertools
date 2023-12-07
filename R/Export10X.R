@@ -11,7 +11,7 @@
 #' @param cols character(1). Name of the exported file that lists column names. Default: barcodes.tsv
 #' @param counts character(1). Name of the exported file that contains the sparse raw count matrix. Default: matrix.mtx
 #' @param meta character(1). Name of the exported file that contains the metadata. Default: metadata.tsv
-#' @param slot character(1). Name of the slot in the Seurat object from which the count matrix is exported. Default: counts
+#' @param layer character(1). Name of the layer in the Seurat object from which the count matrix is exported. Default: counts
 #' @param assay character(1). Name of the assay in the Seurat object from which the count matrix is exported. Default: RNA
 #' @keywords Reexport export 10X
 #' @export
@@ -21,12 +21,12 @@
 #' # Include only two custom metadata columns, two dimensionality reductions, and do not compress the matrices.
 #' Export10X(SeuratObject, "MyDir", c("nFeature_RNA", "mito.content"), c("pca","umap"), gzip=FALSE)
 #' # Export normalized CiteSeq data rather than raw RNA counts, and no metadata:
-#' Export10X(SeuratObject, "MyDir", meta_columns = c(), slot="data", assay="CiteSeq")
-Export10X <- function(object, dir, meta_columns = "all", append_reductions = "all", gzip=T, rows = "features.tsv", cols = "barcodes.tsv", counts = "matrix.mtx", meta = "metadata.tsv", slot="counts", assay="RNA"){
+#' Export10X(SeuratObject, "MyDir", meta_columns = c(), layer="data", assay="CiteSeq")
+Export10X <- function(object, dir, meta_columns = "all", append_reductions = "all", gzip=T, rows = "features.tsv", cols = "barcodes.tsv", counts = "matrix.mtx", meta = "metadata.tsv", layer="counts", assay="RNA"){
   dir.backup <- getwd()
   if(!dir.exists(dir)){dir.create(dir)}
   setwd(dir)
-  data.tmp <- GetAssayData(object = object, slot = slot, assay = assay)
+  data.tmp <- GetAssayData(object = object, layer = layer, assay = assay)
   write(colnames(data.tmp), file = cols)
   write(rownames(data.tmp), file = rows)
   if(length(meta_columns)){

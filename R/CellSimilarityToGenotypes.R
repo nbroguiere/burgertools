@@ -10,7 +10,7 @@
 #' @param prefix character(1). A prefix appended to the genotype names to generate the feature names in the similarity assay (Default: "Similarity-").
 #' @param features.use character(n). The features (i.e. variants) to be used for the similarity calculations. Can be a vector of variants by name, or NA to use informative variants if available, or "all" (Default: "all").
 #' @param assays character(3). The name of the assays within the Seurat object that contain the variant calls (sparse matrix with values 1,2,3 in vartrix conventions), and counts of reference and alt alleles (Default: c("VAR","REF","ALT")).
-#' @param slots. The slots to use within the assays above (Default: c("data","data","data")).
+#' @param layers The layers to use within the assays above (Default: c("data","data","data")).
 #' @return Returns the Seurat object
 #' @keywords compute cell similarity genotype fraction matching variants
 #' @examples
@@ -18,7 +18,7 @@
 #' DefaultAssay(MySeuratObject) <- "similarity"
 #' FeaturePlot(MySeuratObject,"Similarity-MyGenotypeName1")
 #' @export
-CellSimilarityToGenotypes <- function(seurat, genotype, assay.name="similarity", prefix="Similarity-", features.use="all", assays=c("VAR","REF","ALT"), slots=c("data","data","data")){
+CellSimilarityToGenotypes <- function(seurat, genotype, assay.name="similarity", prefix="Similarity-", features.use="all", assays=c("VAR","REF","ALT"), layers=c("data","data","data")){
   # Choose the features on which the similarity is computed (default: informative variants. If not present, all variants)
   if(is.na(features.use[1])){
     if(length(VariableFeatures(seurat[[assays[1]]]))){
@@ -43,8 +43,8 @@ CellSimilarityToGenotypes <- function(seurat, genotype, assay.name="similarity",
     features.use <- intersect(features.use,rownames(seurat[[assays[1]]]))
     cat("Number of variants remaining:",length(features.use),"\n")
   }
-  tmp0 <- Matrix::t(GetAssayData(seurat, assay = assays[1], slot = slots[1])[features.use,])
-  cvg0 <- Matrix::t(GetAssayData(seurat, assay = assays[2], slot = slots[2])[features.use,]+GetAssayData(seurat, assay = assays[3], slot = slots[3])[features.use,])
+  tmp0 <- Matrix::t(GetAssayData(seurat, assay = assays[1], layer = layers[1])[features.use,])
+  cvg0 <- Matrix::t(GetAssayData(seurat, assay = assays[2], layer = layers[2])[features.use,] + GetAssayData(seurat, assay = assays[3], layer = layers[3])[features.use,])
   tmp1 <- Matrix::t(genotype[features.use,])
 
   # # Previous simple version - perfect match only:
