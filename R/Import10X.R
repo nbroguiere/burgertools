@@ -107,42 +107,7 @@ Import10X <- function(dir, project_name="Project", assay="RNA", gene.column=1, c
       tsne <- meta[,ii]
       meta <- meta[,-ii]
     }
-    if("umap_1" %in% colnames(meta)){
-      cat("\nFound UMAP in the metadata. Added to the Seurat object as a dimensionality reduction named umap.")
-      ii <- grep("^UMAP_",colnames(meta))
-      umap <- meta[,ii]
-      meta <- meta[,-ii]
-    }
-    if("pc_1" %in% colnames(meta)){
-      cat("\nFound PCA in the metadata. Added to the Seurat object as a dimensionality reduction named pca.")
-      ii <- grep("^PC_",colnames(meta))
-      pca <- meta[,ii]
-      meta <- meta[,-ii]
-    }
-    if("cc_1" %in% colnames(meta)){
-      cat("\nFound CC in the metadata. Added to the Seurat object as a dimensionality reduction named cca.")
-      ii <- grep("^CC_",colnames(meta))
-      pca <- meta[,ii]
-      meta <- meta[,-ii]
-    }
-    if("harmony_1" %in% colnames(meta)){
-      cat("\nFound Harmony in the metadata. Added to the Seurat object as a dimensionality reduction named harmony.")
-      ii <- grep("^HARMONY_",colnames(meta))
-      harmony <- meta[,ii]
-      meta <- meta[,-ii]
-    }
-    if("scanorama_1" %in% colnames(meta)){
-      cat("\nFound Scanorama in the metadata. Added to the Seurat object as a dimensionality reduction named scanorama.")
-      ii <- grep("^SCANORAMA_",colnames(meta))
-      scanorama <- meta[,ii]
-      meta <- meta[,-ii]
-    }
-    if("tsne_1" %in% colnames(meta)){
-      cat("\nFound TSNE in the metadata. Added to the Seurat object as a dimensionality reduction named tsne")
-      ii <- grep("^TSNE_",colnames(meta))
-      tsne <- meta[,ii]
-      meta <- meta[,-ii]
-    }
+
     object <- CreateSeuratObject(counts = counts, project = project_name, assay = assay, min.cells = 0,min.features = 0,meta.data = meta)
     if(exists("umap"))
     {
