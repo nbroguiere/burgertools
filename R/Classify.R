@@ -152,6 +152,6 @@ Classify <- function(object, signatures, expected.values=NA, metadata.name="cell
   }
   
   # Make it the default Idents and return
-  Idents(object) <- object[[metadata.name]]
+  Idents(object) <- object@meta.data[,metadata.name]
   return(object)
 }
