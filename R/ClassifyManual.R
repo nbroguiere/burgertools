@@ -145,6 +145,6 @@ ClassifyManual <- function(object, gates, metadata.name="celltype", assay=Defaul
   }
   
   # Make it the default Idents and return
-  Idents(object) <- object[[metadata.name]]
+  Idents(object) <- object@meta.data[,metadata.name]
   return(object)
 }
